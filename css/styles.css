@@ -886,16 +886,6 @@ body.dark-theme .tag {
     padding: 0.6rem 1rem;
     height: 3.25rem;
 }
-.mobile-site-title {
-    font-size: 1rem;
-    font-weight: 600;
-    background: linear-gradient(to right, var(--emerald-400), var(--blue-500));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    pointer-events: none;
-    user-select: none;
-}
 @media (max-width: 900px) {
     .mobile-nav-bar {
         display: flex;
@@ -911,3 +901,6 @@ body.dark-theme .tag {
         right: 1.25rem;
     }
 }
+
+/* Safety: hide mobile-site-title if it somehow still appears */
+.mobile-site-title { display: none !important; }
