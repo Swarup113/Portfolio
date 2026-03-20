@@ -20,7 +20,7 @@ const portfolioData = {
             skills: ["Big Data", "HDFS", "Apache Drill", "Python", "Deep Learning"],
             github: "https://github.com/Swarup113/TrafficGuard",
             live: null,
-            image: "https://i.postimg.cc/LsYwhXx8/tg.png"
+            image: "https://i.postimg.cc/nrQjRNYS/tg.png"
         },
         {
             title: "Nudge",
