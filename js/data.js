@@ -10,7 +10,7 @@ const portfolioData = {
             skills: ["Deep Learning", "XAI", "Tabular Network", "Python", "Flask"],
             github: "https://github.com/Swarup113/NeuroTab",
             live: "https://huggingface.co/spaces/dewanjee/NeuroTab",
-            image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1074&q=80"
+            image: "https://i.postimg.cc/sD1FGsDj/neurotab.png"
         },
         {
             title: "TrafficGuard",
@@ -20,17 +20,26 @@ const portfolioData = {
             skills: ["Big Data", "HDFS", "Apache Drill", "Python", "Deep Learning"],
             github: "https://github.com/Swarup113/TrafficGuard",
             live: null,
-            image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1074&q=80"
+            image: "https://i.postimg.cc/LsYwhXx8/tg.png"
         },
         {
             title: "Nudge",
             category: "web",
             date: "Dec 2025 - Jan 2026",
-            description: "Health Companion Browser Extension. Built a web app and browser extension with medication/hydration reminders, Pomodoro timer, and wellness nudges.",
+            description: "Desktop Health Companion. Built with pure HTML, CSS, and JS, featuring medicine reminders, hydration tracking, Pomodoro timer, and wellness nudges.",
             skills: ["JavaScript", "HTML", "CSS", "Browser Extension", "Chrome API"],
             github: "https://github.com/Swarup113/Nudge",
             live: "https://swarup113.github.io/Nudge/",
-            image: "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&w=1074&q=80"
+            image: "https://i.postimg.cc/XJZH77kp/nudge.png"
+        },
+        {
+            title: "Nudge Browser Extension",
+            category: "web",
+            date: "Dec 2025 - Jan 2026",
+            description: "Health Companion Browser Extension. Built a web app and browser extension with medication/hydration reminders, Pomodoro timer, and wellness nudges.",
+            skills: ["JavaScript", "HTML", "CSS", "Browser Extension", "Chrome API"],
+            github: "https://github.com/Swarup113/Nudge-Extension",
+            image: "https://i.postimg.cc/K8v1MK32/extension.png"
         },
         {
             title: "CricSpin",
@@ -40,7 +49,7 @@ const portfolioData = {
             skills: ["HTML", "CSS", "JavaScript", "Canvas API"],
             github: "https://github.com/Swarup113/CricSpin",
             live: "https://swarup113.github.io/CricSpin/",
-            image: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1074&q=80"
+            image: "https://i.postimg.cc/cL2TkNS4/cricspin.png"
         },
         {
             title: "Chor-Dakat-Babu-Pulish",
@@ -50,27 +59,7 @@ const portfolioData = {
             skills: ["HTML", "CSS", "JavaScript"],
             github: "https://github.com/Swarup113/Chor-Dakat-Babu-Pulish",
             live: "https://swarup113.github.io/chor-dakat-babu-pulish/",
-            image: "https://images.unsplash.com/photo-1611996575749-79a3a250f948?auto=format&fit=crop&w=1074&q=80"
-        },
-        {
-            title: "Dognostic",
-            category: "ml",
-            date: "Aug 2023 - Sep 2023",
-            description: "Dog Breed Prediction. Crafted a website that embeds a trained machine learning model for instant identification of dog breed through image uploads.",
-            skills: ["Digital Image Processing", "Flask", "Image Segmentation", "Machine Learning", "Image Classification"],
-            github: "https://github.com/Swarup113/Dog-breed-prediction-webpage",
-            live: null,
-            image: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=1074&q=80"
-        },
-        {
-            title: "Timmy Turtle",
-            category: "game",
-            date: "May 2023 - Sep 2023",
-            description: "GUI-based Game. Developed a GUI-based Python game using the Turtle library, featuring multiple distinct game levels and varying difficulty settings.",
-            skills: ["Python", "Pygame", "PyCharm", "Turtle Graphics"],
-            github: "https://github.com/Swarup113/Timmy-the-Turtle",
-            live: null,
-            image: "https://images.unsplash.com/photo-1518331647614-7a1f04cd34cf?auto=format&fit=crop&w=1169&q=80"
+            image: "https://i.postimg.cc/mkf0vHWN/chordakat.png"
         },
         {
             title: "PetMate",
@@ -80,7 +69,7 @@ const portfolioData = {
             skills: ["Arduino", "Arduino IDE", "HTML", "NodeMCU"],
             github: "https://github.com/Swarup113/Petmate",
             live: null,
-            image: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=1170&q=80"
+            image: "https://i.postimg.cc/fLWdB31d/petmate.png"
         },
         {
             title: "Scribble",
@@ -90,7 +79,7 @@ const portfolioData = {
             skills: ["Java", "Room Database", "Android Studio"],
             github: "https://github.com/Swarup113/Scribble",
             live: null,
-            image: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?auto=format&fit=crop&w=1171&q=80"
+            image: "https://i.postimg.cc/PJ3Qmbq0/scrible.png"
         },
         {
             title: "Chakribazar",
@@ -100,7 +89,27 @@ const portfolioData = {
             skills: ["HTML", "CSS", "PHP", "XAMPP", "JavaScript"],
             github: "https://github.com/Swarup113/Chakribazar.com",
             live: null,
-            image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1172&q=80"
+            image: "https://i.postimg.cc/gkSnWzrk/chakribazar.png"
+        },
+        {
+            title: "Dognostic",
+            category: "ml",
+            date: "Aug 2023 - Sep 2023",
+            description: "Dog Breed Prediction. Crafted a website that embeds a trained machine learning model for instant identification of dog breed through image uploads.",
+            skills: ["Digital Image Processing", "Flask", "Image Segmentation", "Machine Learning", "Image Classification"],
+            github: "https://github.com/Swarup113/Dog-breed-prediction-webpage",
+            live: null,
+            image: "https://i.postimg.cc/Hs8yZ1vW/dognostic.png"
+        },
+        {
+            title: "Timmy Turtle",
+            category: "game",
+            date: "May 2023 - Sep 2023",
+            description: "GUI-based Game. Developed a GUI-based Python game using the Turtle library, featuring multiple distinct game levels and varying difficulty settings.",
+            skills: ["Python", "Pygame", "PyCharm", "Turtle Graphics"],
+            github: "https://github.com/Swarup113/Timmy-the-Turtle",
+            live: null,
+            image: "https://i.postimg.cc/YqT1MCLD/timmy-turtle.png"
         }
     ],
 
