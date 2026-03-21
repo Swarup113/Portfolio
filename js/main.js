@@ -1,5 +1,5 @@
 // =============================================
-//  PORTFOLIO MAIN.JS — v5
+//  PORTFOLIO MAIN.JS — v6
 // =============================================
 
 // Theme-aware color helpers
@@ -17,6 +17,11 @@ function titleStyle() {
     return document.body.classList.contains('dark-theme')
         ? 'color:var(--dark-text-bright)'
         : 'color:var(--light-text-body)';
+}
+function citeBadgeStyle() {
+    return document.body.classList.contains('dark-theme')
+        ? 'background:rgba(59,130,246,0.15);color:#93c5fd;'
+        : 'background:var(--light-card-hover);color:var(--light-text);';
 }
 
 // ── Loading Screen ──
@@ -42,6 +47,7 @@ function titleStyle() {
         updateProfileImage(next);
         renderExperience();
         renderResearch();
+        renderHighlights();
         renderProjects();
         renderEducation();
         renderAwards();
@@ -124,30 +130,25 @@ const yearEl = document.getElementById('current-year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // ── Email injection (bypass Cloudflare protection) ──
-// Built in JS so Cloudflare cannot intercept at HTML parse time
 (function injectEmail() {
     const u = 'dewanjee.swarup';
     const d = 'gmail.com';
     const email = u + '@' + d;
     const mailto = 'mailto:' + email + '?subject=Hello%20Swarup';
 
-    // Hero email display + link
     const heroText = document.getElementById('hero-email-text');
     const heroLink = document.getElementById('hero-email-link');
     if (heroText) heroText.textContent = email;
     if (heroLink) heroLink.href = mailto;
 
-    // Contact Me button
     const contactBtn = document.getElementById('contact-me-btn');
     if (contactBtn) contactBtn.href = mailto;
 
-    // Contact section email
     const contactText = document.getElementById('contact-email-text');
     const contactLink = document.getElementById('contact-email-link');
     if (contactText) contactText.textContent = email;
     if (contactLink) contactLink.href = mailto;
 
-    // Footer email icon
     const footerBtn = document.getElementById('footer-email-btn');
     if (footerBtn) footerBtn.href = mailto;
 })();
@@ -194,11 +195,30 @@ document.querySelectorAll('.tabs').forEach(tabGroup => {
                 return;
             }
             if (['languages','frameworks','software'].includes(tabId)) { renderTools(tabId); return; }
+
+            // ── Research Highlights tab ──
+            if (tabId === 'highlights') {
+                var hEl = document.getElementById('research-highlights-container');
+                var pEl = document.getElementById('research-pubs-container');
+                if (hEl) hEl.style.display = 'block';
+                if (pEl) pEl.style.display = 'none';
+                renderHighlights();
+                return;
+            }
+
+            // ── Journal / Conference tab ──
             if (tabId === 'journal' || tabId === 'conference') {
+                var hEl2 = document.getElementById('research-highlights-container');
+                var pEl2 = document.getElementById('research-pubs-container');
+                if (hEl2) hEl2.style.display = 'none';
+                if (pEl2) pEl2.style.display = 'block';
                 currentResearchState.tab = tabId;
                 currentResearchState.index = 0;
+                currentResearchState.filter = 'default';
+                renderResearchFilters();
                 renderResearch(); updateResearchBtns(); return;
             }
+
             if (['courses','presentations','simulations'].includes(tabId)) {
                 currentCertState.tab = tabId;
                 currentCertState.index = 0;
@@ -241,24 +261,29 @@ function renderExperience() {
     container.innerHTML = portfolioData.experience.map(function(exp, i) {
         return '<div class="timeline-item">' +
             '<div class="timeline-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>' +
-            '<div class="timeline-content" style="display:flex;align-items:flex-start;gap:1.25rem;flex-wrap:wrap">' +
-            '<div style="flex-shrink:0;width:3.5rem;height:3.5rem;border-radius:9999px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.2)">' +
-            '<img src="' + exp.companyLogo + '" alt="' + exp.company + '" style="width:100%;height:100%;object-fit:cover"></div>' +
-            '<div style="flex:1;min-width:200px">' +
-            '<h3 class="card-title" style="margin-bottom:0.2rem">' + exp.title + '</h3>' +
+            '<div class="timeline-content">' +
+            // ── header: logo + title + company (like education) ──
+            '<div class="exp-header">' +
+            '<div class="exp-logo"><img src="' + exp.companyLogo + '" alt="' + exp.company + '"></div>' +
+            '<div>' +
+            '<h3 class="card-title" style="margin-bottom:0.1rem">' + exp.title + '</h3>' +
             '<p class="card-subtitle">' + exp.company + '</p>' +
+            '</div></div>' +
+            // ── meta: date + location ──
             '<p style="font-size:0.8rem;' + ac + ';display:flex;align-items:center;gap:0.35rem;margin-bottom:0.2rem">' +
             '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>' +
             exp.date + '</p>' +
-            '<p style="font-size:0.8rem;' + ac + ';display:flex;align-items:center;gap:0.35rem;margin-bottom:1rem">' +
+            '<p style="font-size:0.8rem;' + ac + ';display:flex;align-items:center;gap:0.35rem;margin-bottom:0.75rem">' +
             '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>' +
             exp.location + '</p>' +
-            '<div style="display:flex;justify-content:flex-end;gap:0.6rem;flex-wrap:wrap">' +
+            // ── actions ──
+            '<div class="exp-actions">' +
             '<a href="' + exp.offerLetterLink + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:0.78rem;padding:0.35rem 0.9rem">' +
             '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg> Offer Letter</a>' +
             '<button class="btn btn-secondary" style="font-size:0.78rem;padding:0.35rem 0.9rem" onclick="openExpModal(' + i + ')">' +
             '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View Details</button>' +
-            '</div></div></div></div>';
+            '</div>' +
+            '</div></div>';
     }).join('');
 }
 (function() { renderExperience(); })();
@@ -288,6 +313,9 @@ window.stepExpProj = function(dir) {
     renderExpModal();
 };
 
+// ── Mobile helper — show all items on mobile (buttons hidden, so paginate only on desktop) ──
+function isMobile() { return window.innerWidth <= 768; }
+
 // ── Projects ──
 var projState = { filter: 'all', index: 0 };
 var PROJ_PAGE = 3;
@@ -295,7 +323,8 @@ var GITHUB_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" st
 var LIVE_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
 
 (function initProjects() {
-    var fc = document.querySelector('.project-filters');
+    // Use section-scoped selector — avoids grabbing the research filter row
+    var fc = document.querySelector('#projects .project-filters');
     if (fc) {
         var FILTERS = [{key:'all',label:'All'},{key:'ml',label:'ML / DL'},{key:'web',label:'Web Dev'},{key:'game',label:'Game'},{key:'app',label:'App'},{key:'iot',label:'IoT'}];
         fc.innerHTML = FILTERS.map(function(f){ return '<button class="filter-btn ' + (f.key==='all'?'active':'') + '" data-filter="' + f.key + '">' + f.label + '</button>'; }).join('');
@@ -324,7 +353,11 @@ function renderProjects() {
     if (!container) return;
     var ac = accentStyle();
     var all = filteredProjects();
-    var slice = all.slice(projState.index, projState.index + PROJ_PAGE);
+    var page = isMobile() ? all.length : PROJ_PAGE;
+    var slice = all.slice(projState.index, projState.index + page);
+    // Centre cards when fewer than 3 are visible on desktop/tablet
+    var isFew = !isMobile() && slice.length < 3;
+    if (isFew) container.classList.add('centered-few'); else container.classList.remove('centered-few');
     if (slice.length === 0) {
         container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;opacity:0.6">No projects in this category.</div>';
     } else {
@@ -346,16 +379,135 @@ function renderProjects() {
     var prev = document.getElementById('projects-prev');
     var next = document.getElementById('projects-next');
     if (prev) prev.disabled = projState.index === 0;
-    if (next) next.disabled = projState.index + PROJ_PAGE >= filteredProjects().length;
+    if (next) next.disabled = projState.index + page >= all.length;
 }
 
-// ── Research ──
-var currentResearchState = { tab: 'journal', index: 0 };
+// ── Research Highlights ──
+var ARROW_RIGHT_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+var ARROW_LEFT_SVG  = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>';
+var ARROW_NEXT_SVG  = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+var CIRCLE_DOT_SVG  = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="5"></circle></svg>';
+var CITE_SVG        = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path></svg>';
+
+var currentHighlightState = { index: 0 };
+var HIGHLIGHT_PAGE = 3;
+
+function renderHighlights() {
+    var container = document.getElementById('research-highlights-container');
+    if (!container) return;
+    var highlights = (portfolioData.research && portfolioData.research.highlights) || [];
+    if (highlights.length === 0) {
+        container.innerHTML = '<p style="text-align:center;opacity:0.6;padding:2rem">No highlights available yet.</p>';
+        return;
+    }
+
+    // On mobile: show all items in a single scrollable column
+    var page = isMobile() ? highlights.length : HIGHLIGHT_PAGE;
+    var slice = highlights.slice(currentHighlightState.index, currentHighlightState.index + page);
+    var atStart = currentHighlightState.index === 0;
+    var atEnd   = currentHighlightState.index + page >= highlights.length;
+
+    // Centre cards when fewer than 3 are visible on desktop
+    var isFew = slice.length < 3;
+    var gridClass = 'research-carousel' + (isFew ? ' centered-few' : '');
+
+    var prevDisabled = atStart  ? 'disabled' : '';
+    var nextDisabled = atEnd    ? 'disabled' : '';
+
+    container.innerHTML =
+        '<div class="carousel-container">' +
+        // ── Prev button ──
+        '<button class="carousel-btn prev" id="hl-prev" ' + prevDisabled + '>' + ARROW_LEFT_SVG + '</button>' +
+        // ── Cards ──
+        '<div class="' + gridClass + '">' +
+        slice.map(function(h, i) {
+            var absIdx = currentHighlightState.index + i;
+            return '<div class="research-card" style="cursor:pointer" onclick="openHighlightModal(' + absIdx + ')">' +
+                '<div style="position:relative">' +
+                '<div class="card-image" style="height:8rem"><img src="' + h.architecture + '" alt="' + (h.shortTitle||h.title) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>' +
+                '<span class="highlight-badge">' + h.badge + '</span>' +
+                '</div>' +
+                '<div class="card-content">' +
+                '<h3 class="card-title">' + h.title + '</h3>' +
+                '<p class="card-description">' + h.contribution + '</p>' +
+                '<div class="card-tags">' + h.skills.map(function(s){ return '<span class="tag">' + s + '</span>'; }).join('') + '</div>' +
+                '<div class="card-actions">' +
+                '<span class="inprogress-badge" style="margin-right:auto">' + CIRCLE_DOT_SVG + ' ' + h.status + '</span>' +
+                '<button class="btn btn-secondary" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="event.stopPropagation();openHighlightModal(' + absIdx + ')">' +
+                ARROW_RIGHT_SVG + ' View Details</button>' +
+                '</div></div></div>';
+        }).join('') +
+        '</div>' +
+        // ── Next button ──
+        '<button class="carousel-btn next" id="hl-next" ' + nextDisabled + '>' + ARROW_NEXT_SVG + '</button>' +
+        '</div>';
+
+    // Re-attach listeners (buttons are recreated each render)
+    var hlPrev = document.getElementById('hl-prev');
+    var hlNext = document.getElementById('hl-next');
+    if (hlPrev) hlPrev.addEventListener('click', function() {
+        currentHighlightState.index = Math.max(0, currentHighlightState.index - HIGHLIGHT_PAGE);
+        renderHighlights();
+    });
+    if (hlNext) hlNext.addEventListener('click', function() {
+        if (currentHighlightState.index + HIGHLIGHT_PAGE < highlights.length) {
+            currentHighlightState.index += HIGHLIGHT_PAGE;
+        }
+        renderHighlights();
+    });
+}
+
+window.openHighlightModal = function(i) {
+    var h = (portfolioData.research.highlights || [])[i];
+    if (!h) return;
+    var ac = accentStyle();
+    document.getElementById('modal-body').innerHTML =
+        '<h3 class="card-title" style="font-size:1.35rem;margin-bottom:1rem;padding-right:2rem">' + h.title + '</h3>' +
+        '<div style="width:100%;border-radius:0.5rem;overflow:hidden;margin-bottom:1rem">' +
+        '<img src="' + h.architecture + '" alt="Architecture" style="width:100%;height:auto;object-fit:contain"></div>' +
+        '<h4 class="card-title" style="font-size:0.95rem;margin-bottom:0.4rem">Key Contribution</h4>' +
+        '<p class="card-description" style="margin-bottom:1rem">' + h.contribution + '</p>' +
+        '<div class="card-tags" style="margin-bottom:1rem">' + h.skills.map(function(s){ return '<span class="tag">' + s + '</span>'; }).join('') + '</div>' +
+        '<div style="display:flex;justify-content:flex-end">' +
+        '<span class="inprogress-badge">' + CIRCLE_DOT_SVG + ' ' + h.status + '</span>' +
+        '</div>';
+    openModal();
+};
+
+// ── Research Publications ──
+var currentResearchState = { tab: 'journal', index: 0, filter: 'default' };
 var RESEARCH_PAGE = 3;
 var DOI_SVG = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>';
 
+function renderResearchFilters() {
+    var row = document.getElementById('research-filter-row');
+    if (!row) return;
+    row.style.display = 'flex';
+    row.style.flexWrap = 'wrap';
+    row.style.justifyContent = 'center';
+    row.style.gap = '0.6rem';
+    var filters = [
+        { key: 'default', label: 'All' },
+        { key: 'latest',  label: 'Latest Publication' },
+        { key: 'cited',   label: 'Most Cited' }
+    ];
+    row.innerHTML = filters.map(function(f) {
+        return '<button class="filter-btn' + (currentResearchState.filter === f.key ? ' active' : '') + '" data-rfilter="' + f.key + '">' + f.label + '</button>';
+    }).join('');
+    row.querySelectorAll('.filter-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            row.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+            btn.classList.add('active');
+            currentResearchState.filter = btn.dataset.rfilter;
+            currentResearchState.index = 0;
+            renderResearch();
+            updateResearchBtns();
+        });
+    });
+}
+
 (function initResearch() {
-    renderResearch(); updateResearchBtns();
+    renderHighlights();
     var rp = document.getElementById('research-prev');
     var rn = document.getElementById('research-next');
     if (rp) rp.addEventListener('click', function(){ currentResearchState.index = Math.max(0, currentResearchState.index - RESEARCH_PAGE); renderResearch(); updateResearchBtns(); });
@@ -363,7 +515,17 @@ var DOI_SVG = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" strok
 })();
 
 function getPapers() {
-    return currentResearchState.tab === 'journal' ? portfolioData.research.journal : portfolioData.research.conference;
+    var base = currentResearchState.tab === 'journal'
+        ? (portfolioData.research.journal || [])
+        : (portfolioData.research.conference || []);
+    var sorted = base.slice(); // copy, never mutate original
+    if (currentResearchState.filter === 'cited') {
+        sorted.sort(function(a, b) { return (b.citations || 0) - (a.citations || 0); });
+    } else if (currentResearchState.filter === 'latest') {
+        // Sort descending by numeric timestamp added by data-extra.js
+        sorted.sort(function(a, b) { return (b.date || 0) - (a.date || 0); });
+    }
+    return sorted;
 }
 
 function renderResearch() {
@@ -372,32 +534,38 @@ function renderResearch() {
     var papers = getPapers();
     var isJournal = currentResearchState.tab === 'journal';
     var ac = accentStyle();
-    var slice = papers.slice(currentResearchState.index, currentResearchState.index + RESEARCH_PAGE);
+    var page = isMobile() ? papers.length : RESEARCH_PAGE;
+    var slice = papers.slice(currentResearchState.index, currentResearchState.index + page);
+    var isFew = !isMobile() && slice.length < 3;
+    if (isFew) container.classList.add('centered-few'); else container.classList.remove('centered-few');
     container.innerHTML = slice.map(function(p) {
         return '<div class="research-card" style="cursor:pointer" onclick="openResearchModal(' + papers.indexOf(p) + ',\'' + currentResearchState.tab + '\')">' +
             '<div class="card-image" style="height:8rem;cursor:pointer"><img src="' + p.architecture + '" alt="' + p.shortTitle + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>' +
             '<div class="card-content">' +
             '<h3 class="card-title">' + p.title + '</h3>' +
             '<p class="card-subtitle" style="font-size:0.78rem;line-height:1.4">' + (isJournal ? p.journal : p.conference) + '</p>' +
-            (!isJournal && p.location ? '<p style="font-size:0.72rem;' + ac + ';margin-bottom:0.35rem">' + p.location + '</p>' : '') +
+            (!isJournal && p.location ? '<p style="font-size:0.72rem;' + ac + ';margin-bottom:0.2rem">' + p.location + '</p>' : '') +
+            (p.dateLabel ? '<p style="font-size:0.72rem;' + ac + ';margin-bottom:0.35rem">Published: ' + p.dateLabel + '</p>' : '') +
             '<p class="card-description">' + p.summary + '</p>' +
             '<div style="margin-bottom:0.6rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">' +
             '<span class="tag">' + p.status + '</span>' +
             (p.doi ? '<a href="' + p.doi + '" target="_blank" rel="noopener noreferrer" class="doi-btn" title="View DOI" onclick="event.stopPropagation()">' + DOI_SVG + ' DOI</a>' : '') +
+            (p.citations !== undefined ? '<span class="tag cite-badge">' + CITE_SVG + ' ' + p.citations + '</span>' : '') +
             '</div>' +
             '<div class="card-actions">' +
             '<button class="btn btn-secondary" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="event.stopPropagation();openResearchModal(' + papers.indexOf(p) + ',\'' + currentResearchState.tab + '\')">' +
-            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View Details</button>' +
+            ARROW_RIGHT_SVG + ' View Details</button>' +
             '</div></div></div>';
     }).join('');
 }
 
 function updateResearchBtns() {
     var papers = getPapers();
+    var page = isMobile() ? papers.length : RESEARCH_PAGE;
     var prev = document.getElementById('research-prev');
     var next = document.getElementById('research-next');
     if (prev) prev.disabled = currentResearchState.index === 0;
-    if (next) next.disabled = currentResearchState.index + RESEARCH_PAGE >= papers.length;
+    if (next) next.disabled = currentResearchState.index + page >= papers.length;
 }
 
 window.openResearchModal = function(idx, tab) {
@@ -410,10 +578,12 @@ window.openResearchModal = function(idx, tab) {
         '<h3 class="card-title" style="font-size:1.35rem;margin-bottom:1rem;padding-right:2rem">' + p.shortTitle + '</h3>' +
         '<div style="width:100%;border-radius:0.5rem;overflow:hidden;margin-bottom:1rem;background:#f1f5f9">' +
         '<img src="' + p.architecture + '" alt="Architecture" style="width:100%;height:auto;object-fit:contain"></div>' +
-        '<p style="font-size:0.8rem;' + ac + ';margin-bottom:1rem">' + (isJournal ? p.journal : p.conference) + '</p>' +
+        '<p style="font-size:0.8rem;' + ac + ';margin-bottom:0.35rem">' + (isJournal ? p.journal : p.conference) + '</p>' +
+        (p.dateLabel ? '<p style="font-size:0.8rem;' + ac + ';margin-bottom:1rem">Published: ' + p.dateLabel + '</p>' : '<br>') +
         '<h4 class="card-title" style="font-size:0.95rem;margin-bottom:0.4rem">Abstract</h4>' +
         '<p class="card-description" style="margin-bottom:1.25rem">' + p.abstract + '</p>' +
         '<div style="display:flex;justify-content:flex-end;align-items:center;gap:0.75rem;flex-wrap:wrap">' +
+        (p.citations !== undefined ? '<span class="tag cite-badge" style="font-size:0.78rem;padding:0.3rem 0.7rem">' + CITE_SVG + ' Citations: ' + p.citations + '</span>' : '') +
         (p.doi ? '<a href="' + p.doi + '" target="_blank" rel="noopener noreferrer" class="doi-btn" title="View DOI">' + DOI_SVG + ' View DOI</a>' : '') +
         (p.link && p.link !== '#' ? '<a href="' + p.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:0.875rem"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> Read Paper</a>' : '<span class="tag" style="font-size:0.8rem;padding:0.4rem 0.8rem;opacity:0.8">Under Review</span>') +
         '</div>';
@@ -486,7 +656,12 @@ var CERT_PAGE = 3;
 function renderCerts() {
     var container = document.getElementById('certifications-carousel');
     if (!container) return;
-    var items = (portfolioData.certifications[currentCertState.tab]||[]).slice(currentCertState.index, currentCertState.index + CERT_PAGE);
+    var all = portfolioData.certifications[currentCertState.tab]||[];
+    var page = isMobile() ? all.length : CERT_PAGE;
+    var items = all.slice(currentCertState.index, currentCertState.index + page);
+    // Centre cards when fewer than 3 are visible on desktop/tablet
+    var isFew = !isMobile() && items.length < 3;
+    if (isFew) container.classList.add('centered-few'); else container.classList.remove('centered-few');
     container.innerHTML = items.map(function(c) {
         return '<div class="cert-card"><div class="card-image"><img src="' + c.image + '" alt="' + c.title + '" loading="lazy"></div>' +
             '<div class="card-content"><h3 class="card-title" style="font-size:0.9rem">' + c.title + '</h3>' +
@@ -497,11 +672,12 @@ function renderCerts() {
     }).join('');
 }
 function updateCertBtns() {
-    var items = portfolioData.certifications[currentCertState.tab]||[];
+    var all = portfolioData.certifications[currentCertState.tab]||[];
+    var page = isMobile() ? all.length : CERT_PAGE;
     var prev = document.getElementById('certifications-prev');
     var next = document.getElementById('certifications-next');
     if (prev) prev.disabled = currentCertState.index === 0;
-    if (next) next.disabled = currentCertState.index + CERT_PAGE >= items.length;
+    if (next) next.disabled = currentCertState.index + page >= all.length;
 }
 
 // ── Modal ──
