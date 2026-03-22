@@ -325,8 +325,9 @@ var GITHUB_SVG      = '<svg width="13" height="13" viewBox="0 0 24 24" fill="non
 var LIVE_SVG        = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
 var DOI_SVG         = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>';
 
-// ── Mobile carousel builder helper ──
-// Wraps a grid + arrows. Returns { html, addListeners(container, onPrev, onNext) }
+// ── Mobile carousel builder helpers ──
+
+// TOOLS only: left/right inline buttons
 function buildMobileCarousel(gridClass, cardsHtml, atStart, atEnd, gridId) {
     var html =
         '<div class="mob-carousel-wrap">' +
@@ -335,6 +336,16 @@ function buildMobileCarousel(gridClass, cardsHtml, atStart, atEnd, gridId) {
         '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
         '</div>';
     return html;
+}
+
+// ALL OTHER SECTIONS: cards on top, buttons centred below
+function buildBottomCarousel(cardsHtml, atStart, atEnd, innerClass, gridId) {
+    return '<div class="mob-bottom-wrap">' +
+        '<div class="mob-cards-area ' + (innerClass || '') + '" id="' + gridId + '">' + cardsHtml + '</div>' +
+        '<div class="mob-bottom-btns">' +
+        '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
+        '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
+        '</div></div>';
 }
 
 // ── Projects ──
@@ -409,14 +420,12 @@ function renderProjects() {
         var atStart = projState.index === 0;
         var atEnd   = projState.index + page >= all.length;
         container.className = 'projects-carousel';
-        container.innerHTML = buildMobileCarousel('projects-carousel-inner', cardsHtml, atStart, atEnd, 'proj-inner');
-        var wrap = container.querySelector('.mob-carousel-wrap');
+        container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, 'projects-carousel-inner', 'proj-inner');
         var prevBtn = container.querySelector('.mob-prev-btn');
         var nextBtn = container.querySelector('.mob-next-btn');
         if (prevBtn) prevBtn.addEventListener('click', function(){ projState.index = Math.max(0, projState.index - page); renderProjects(); });
         if (nextBtn) nextBtn.addEventListener('click', function(){ if (projState.index + page < all.length) projState.index += page; renderProjects(); });
         addSwipe(container.querySelector('#proj-inner'), function(){ projState.index = Math.max(0, projState.index - page); renderProjects(); }, function(){ if (projState.index + page < all.length) projState.index += page; renderProjects(); });
-        // Hide the desktop arrow buttons
         var dp = document.getElementById('projects-prev'); var dn = document.getElementById('projects-next');
         if (dp) dp.style.display = 'none'; if (dn) dn.style.display = 'none';
     } else {
@@ -466,21 +475,28 @@ function renderHighlights() {
 
     var cardsHtml = slice.map(function(h, i) { return cardHtml(h, currentHighlightState.index + i); }).join('');
 
-    container.innerHTML =
-        '<div class="mob-carousel-wrap">' +
-        '<button class="mob-nav-btn" id="hl-prev"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
-        '<div class="' + gridClass + '" id="hl-grid">' + cardsHtml + '</div>' +
-        '<button class="mob-nav-btn" id="hl-next"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
-        '</div>';
-
-    var hlPrev = document.getElementById('hl-prev');
-    var hlNext = document.getElementById('hl-next');
-    if (hlPrev) hlPrev.addEventListener('click', function(){ currentHighlightState.index = Math.max(0, currentHighlightState.index - page); renderHighlights(); });
-    if (hlNext) hlNext.addEventListener('click', function(){ if (currentHighlightState.index + page < highlights.length) currentHighlightState.index += page; renderHighlights(); });
-    addSwipe(document.getElementById('hl-grid'),
-        function(){ currentHighlightState.index = Math.max(0, currentHighlightState.index - page); renderHighlights(); },
-        function(){ if (currentHighlightState.index + page < highlights.length) { currentHighlightState.index += page; renderHighlights(); } }
-    );
+    if (isMobile()) {
+        // Mobile: cards stacked, buttons centred below
+        container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, gridClass, 'hl-grid');
+        var hlPrev = container.querySelector('.mob-prev-btn');
+        var hlNext = container.querySelector('.mob-next-btn');
+        if (hlPrev) hlPrev.addEventListener('click', function(){ currentHighlightState.index = Math.max(0, currentHighlightState.index - page); renderHighlights(); });
+        if (hlNext) hlNext.addEventListener('click', function(){ if (currentHighlightState.index + page < highlights.length) currentHighlightState.index += page; renderHighlights(); });
+        addSwipe(document.getElementById('hl-grid'),
+            function(){ currentHighlightState.index = Math.max(0, currentHighlightState.index - page); renderHighlights(); },
+            function(){ if (currentHighlightState.index + page < highlights.length) { currentHighlightState.index += page; renderHighlights(); } }
+        );
+    } else {
+        // Desktop: side-by-side grid with left/right arrow buttons (same as journal/conference)
+        container.innerHTML =
+            '<div class="carousel-container">' +
+            '<button class="carousel-btn" id="hl-prev"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
+            '<div class="' + gridClass + '" id="hl-grid">' + cardsHtml + '</div>' +
+            '<button class="carousel-btn" id="hl-next"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
+            '</div>';
+        document.getElementById('hl-prev').addEventListener('click', function(){ currentHighlightState.index = Math.max(0, currentHighlightState.index - page); renderHighlights(); });
+        document.getElementById('hl-next').addEventListener('click', function(){ if (currentHighlightState.index + page < highlights.length) currentHighlightState.index += page; renderHighlights(); });
+    }
 }
 
 window.openHighlightModal = function(i) {
@@ -580,7 +596,7 @@ function renderResearch() {
         var atStart = currentResearchState.index === 0;
         var atEnd   = currentResearchState.index + page >= papers.length;
         container.className = 'research-carousel';
-        container.innerHTML = buildMobileCarousel('research-carousel-inner', cardsHtml, atStart, atEnd, 'res-inner');
+        container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, 'research-carousel-inner', 'res-inner');
         var prevBtn = container.querySelector('.mob-prev-btn');
         var nextBtn = container.querySelector('.mob-next-btn');
         if (prevBtn) prevBtn.addEventListener('click', function(){ currentResearchState.index = Math.max(0, currentResearchState.index - page); renderResearch(); updateResearchBtns(); });
@@ -589,7 +605,6 @@ function renderResearch() {
             function(){ currentResearchState.index = Math.max(0, currentResearchState.index - page); renderResearch(); updateResearchBtns(); },
             function(){ if (currentResearchState.index + page < papers.length) { currentResearchState.index += page; renderResearch(); updateResearchBtns(); } }
         );
-        // Hide desktop arrow buttons
         var dp = document.getElementById('research-prev'); var dn = document.getElementById('research-next');
         if (dp) dp.style.display = 'none'; if (dn) dn.style.display = 'none';
     } else {
@@ -703,12 +718,7 @@ function renderEducation() {
         var slice = all.slice(eduState.index, eduState.index + page);
         var atStart = eduState.index === 0;
         var atEnd   = eduState.index + page >= all.length;
-        container.innerHTML =
-            '<div class="mob-carousel-wrap">' +
-            '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
-            '<div id="edu-inner" style="flex:1;min-width:0">' + slice.map(itemHtml).join('') + '</div>' +
-            '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
-            '</div>';
+        container.innerHTML = buildBottomCarousel(slice.map(itemHtml).join(''), atStart, atEnd, '', 'edu-inner');
         var prevBtn = container.querySelector('.mob-prev-btn');
         var nextBtn = container.querySelector('.mob-next-btn');
         if (prevBtn) prevBtn.addEventListener('click', function(){ eduState.index = Math.max(0, eduState.index - page); renderEducation(); });
@@ -749,14 +759,10 @@ function renderAwards() {
         var slice = all.slice(awardState.index, awardState.index + page);
         var atStart = awardState.index === 0;
         var atEnd   = awardState.index + page >= all.length;
-        container.innerHTML =
-            '<div class="mob-carousel-wrap">' +
-            '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
-            '<div id="award-inner" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1rem">' +
-            slice.map(function(a, i) { return cardHtml(a, awardState.index + i); }).join('') +
-            '</div>' +
-            '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
-            '</div>';
+        container.innerHTML = buildBottomCarousel(
+            slice.map(function(a, i) { return cardHtml(a, awardState.index + i); }).join(''),
+            atStart, atEnd, '', 'award-inner'
+        );
         var prevBtn = container.querySelector('.mob-prev-btn');
         var nextBtn = container.querySelector('.mob-next-btn');
         if (prevBtn) prevBtn.addEventListener('click', function(){ awardState.index = Math.max(0, awardState.index - page); renderAwards(); });
@@ -808,7 +814,7 @@ function renderCerts() {
         var atStart = currentCertState.index === 0;
         var atEnd   = currentCertState.index + page >= all.length;
         container.className = 'certifications-carousel';
-        container.innerHTML = buildMobileCarousel('certifications-carousel-inner', slice.map(cardHtml).join(''), atStart, atEnd, 'cert-inner');
+        container.innerHTML = buildBottomCarousel(slice.map(cardHtml).join(''), atStart, atEnd, 'certifications-carousel-inner', 'cert-inner');
         var prevBtn = container.querySelector('.mob-prev-btn');
         var nextBtn = container.querySelector('.mob-next-btn');
         if (prevBtn) prevBtn.addEventListener('click', function(){ currentCertState.index = Math.max(0, currentCertState.index - page); renderCerts(); updateCertBtns(); });

@@ -603,7 +603,7 @@ body.dark-theme       .stat-label { color: var(--dark-text-bright); }
 /* Citation badge icon alignment */
 .cite-badge { display: inline-flex !important; align-items: center; gap: 0.3rem; }
 
-/* ── Mobile carousel wrapper ── */
+/* ── Tools section: keeps inline left/right buttons ── */
 .mob-carousel-wrap {
     display: flex;
     align-items: center;
@@ -611,17 +611,7 @@ body.dark-theme       .stat-label { color: var(--dark-text-bright); }
     width: 100%;
 }
 .mob-carousel-wrap > .mob-nav-btn { flex-shrink: 0; }
-/* Inner grids fill remaining space */
-.projects-carousel-inner,
-.research-carousel-inner,
-.certifications-carousel-inner {
-    flex: 1;
-    min-width: 0;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
-/* Tools mobile grid — 2×2, centred */
+/* Tools mobile grid — centred */
 .tools-mob-grid {
     flex: 1;
     min-width: 0;
@@ -631,6 +621,45 @@ body.dark-theme       .stat-label { color: var(--dark-text-bright); }
     gap: 0.75rem;
 }
 .tools-mob-grid .tool-card { width: 100px; flex-shrink: 0; }
+
+/* ── Bottom-nav layout: cards on top, arrow buttons centred below ── */
+/* Used for research, projects, education, awards, certifications, skills */
+.mob-bottom-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 1rem;
+}
+.mob-bottom-wrap .mob-cards-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+/* Cards inside bottom-wrap fill full width */
+.mob-bottom-wrap .mob-cards-area .research-card,
+.mob-bottom-wrap .mob-cards-area .project-card,
+.mob-bottom-wrap .mob-cards-area .cert-card,
+.mob-bottom-wrap .mob-cards-area .timeline-item,
+.mob-bottom-wrap .mob-cards-area .award-card,
+.mob-bottom-wrap .mob-cards-area .skill-card { width: 100%; }
+/* Bottom button row */
+.mob-bottom-btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+}
+/* Inner grid classes used inside mob-bottom-wrap cards area */
+.projects-carousel-inner,
+.research-carousel-inner,
+.certifications-carousel-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
 .research-highlights-container { animation: fadeIn 0.4s; margin-top: 2rem; }
 #research-pubs-container { margin-top: 2rem; }
 .highlights-grid {
