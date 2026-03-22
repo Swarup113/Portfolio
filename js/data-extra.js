@@ -5,7 +5,7 @@
 
 (function () {
 
-    // ── Helper: pull architecture image from real paper entry ──
+    // ── Helper: pull architecture image from a paper in any array ──
     function archFrom(arr, keywords, fallback) {
         var paper = (arr || []).find(function (p) {
             var t = (p.title || '').toLowerCase();
@@ -27,7 +27,7 @@
         },
         {
             title: "TrafficGuard: Scalable Accident Data Pipeline for Severity Prediction",
-            shortTitle: "TrafficGuard",
+            shortTitle: "TrafficGuard: Accident Prediction",
             status: "In Progress",
             badge: "Current Work",
             contribution: "Deployed 10 million Parquet records to HDFS in Oracle VirtualBox and executed distributed queries through Apache Drill to predict accident severity using deep learning models on big data infrastructure.",
@@ -36,18 +36,18 @@
         }
     ];
 
-    // ── Actual order in data.js ──
-    // conf[0] = PCOS           → Published, Jun 2025, 3 citations
-    // conf[1] = Parkinson's    → Published, Jun 2025, 2 citations
-    // conf[2] = Maternal-Fetal → Published, Apr 2025, 5 citations
-    // conf[3] = Dyslexia       → Published, Nov 2024, 5 citations
-    // conf[4] = TrafficGuard   → In Progress, 0 citations
+    // ── Conference papers — exact order in data.js ──
+    // conf[0] = TrafficGuard   → Under Review,  0 citations
+    // conf[1] = PCOS           → Published, Jun 2025, 3 citations
+    // conf[2] = Parkinson's    → Published, Jun 2025, 2 citations
+    // conf[3] = Maternal-Fetal → Published, Apr 2025, 5 citations
+    // conf[4] = Dyslexia       → Published, Nov 2024, 5 citations
     var CONF_META = [
-        { date: new Date('2025-06-10').getTime(), dateLabel: 'Jun 2025', citations: 3, status: 'Published'   }, // [0] PCOS
-        { date: new Date('2025-06-10').getTime(), dateLabel: 'Jun 2025', citations: 2, status: 'Published'   }, // [1] Parkinson's
-        { date: new Date('2025-04-01').getTime(), dateLabel: 'Apr 2025', citations: 5, status: 'Published'   }, // [2] Maternal-Fetal
-        { date: new Date('2024-11-04').getTime(), dateLabel: 'Nov 2024', citations: 5, status: 'Published'   }, // [3] Dyslexia
-        { date: 0,                                dateLabel: null,       citations: 0, status: 'In Progress' }  // [4] TrafficGuard
+        { date: 0,                                dateLabel: null,       citations: 0, status: 'Under Review' }, // [0] TrafficGuard
+        { date: new Date('2025-06-10').getTime(), dateLabel: 'Jun 2025', citations: 3, status: 'Published'    }, // [1] PCOS
+        { date: new Date('2025-06-10').getTime(), dateLabel: 'Jun 2025', citations: 2, status: 'Published'    }, // [2] Parkinson's
+        { date: new Date('2025-04-01').getTime(), dateLabel: 'Apr 2025', citations: 5, status: 'Published'    }, // [3] Maternal-Fetal
+        { date: new Date('2024-11-04').getTime(), dateLabel: 'Nov 2024', citations: 5, status: 'Published'    }  // [4] Dyslexia
     ];
 
     (portfolioData.research.conference || []).forEach(function (paper, i) {
@@ -61,15 +61,14 @@
     });
 
     // ── Journal papers ──
-    // NeuroTab (Under Review) → 0 citations
-    // Any other journal paper (e.g. suicide risk) gets its own citation count
+    // NeuroTab → Under Review, 0 citations
+    // Suicide risk → Published, Feb 2024, 4 citations
     (portfolioData.research.journal || []).forEach(function (p) {
         var t = (p.title || '').toLowerCase();
         if (t.indexOf('neurotab') !== -1 || t.indexOf('headache') !== -1) {
             p.citations = 0;
             p.date      = 0;
         } else {
-            // Suicide risk paper (Published, Feb 2024, 4 citations)
             p.citations = 4;
             p.date      = new Date('2024-02-04').getTime();
             p.dateLabel = 'Feb 2024';
