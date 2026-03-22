@@ -240,19 +240,19 @@ document.querySelectorAll('.tabs').forEach(function(tabGroup) {
             if (hidden.length > 0) {
                 var expandBtn = document.createElement('button');
                 expandBtn.className = 'expand-btn skill-expand-btn';
-                expandBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:0.4rem;margin:0.75rem auto 0;padding:0.4rem 1rem;font-size:0.82rem;';
-                expandBtn.innerHTML = '<svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg> Show More';
+                expandBtn.style.cssText = 'margin:0.75rem auto 0;';
+                expandBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"></polyline></svg>';
                 var expanded = false;
                 expandBtn.addEventListener('click', function() {
                     expanded = !expanded;
                     if (expanded) {
                         grid.innerHTML = all.map(buildSkillCard).join('');
                         grid.parentNode.insertBefore(expandBtn, grid.nextSibling);
-                        expandBtn.innerHTML = '<svg style="transform:rotate(180deg)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg> Show Less';
+                        expandBtn.classList.add('active');
                     } else {
                         grid.innerHTML = visible.map(buildSkillCard).join('');
                         grid.parentNode.insertBefore(expandBtn, grid.nextSibling);
-                        expandBtn.innerHTML = '<svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg> Show More';
+                        expandBtn.classList.remove('active');
                     }
                 });
                 grid.parentNode.insertBefore(expandBtn, grid.nextSibling);
@@ -330,22 +330,19 @@ var DOI_SVG         = '<svg width="11" height="11" viewBox="0 0 24 24" fill="non
 function buildMobileCarousel(gridClass, cardsHtml, atStart, atEnd, gridId) {
     var html =
         '<div class="mob-carousel-wrap">' +
-        '<button class="carousel-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
+        '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
         '<div class="' + gridClass + '" id="' + gridId + '">' + cardsHtml + '</div>' +
-        '<button class="carousel-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
+        '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
         '</div>';
     return html;
 }
 
 // ── Projects ──
 var projState = { filter: 'all', index: 0 };
-var PROJ_PAGE_ALL    = 3;  // desktop "All" page and mobile "All"
-var PROJ_PAGE_FILTER = 2;  // mobile other-filter page
+var PROJ_PAGE_ALL    = 3;  // desktop + mobile page size
+var PROJ_PAGE_FILTER = 3;  // mobile filtered tabs — also 3
 
-function projPageSize() {
-    if (!isMobile()) return PROJ_PAGE_ALL;
-    return projState.filter === 'all' ? PROJ_PAGE_ALL : PROJ_PAGE_FILTER;
-}
+function projPageSize() { return PROJ_PAGE_ALL; }
 
 (function initProjects() {
     var fc = document.querySelector('#projects .project-filters');
@@ -470,10 +467,10 @@ function renderHighlights() {
     var cardsHtml = slice.map(function(h, i) { return cardHtml(h, currentHighlightState.index + i); }).join('');
 
     container.innerHTML =
-        '<div class="carousel-container">' +
-        '<button class="carousel-btn" id="hl-prev"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
+        '<div class="mob-carousel-wrap">' +
+        '<button class="mob-nav-btn" id="hl-prev"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
         '<div class="' + gridClass + '" id="hl-grid">' + cardsHtml + '</div>' +
-        '<button class="carousel-btn" id="hl-next"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
+        '<button class="mob-nav-btn" id="hl-next"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
         '</div>';
 
     var hlPrev = document.getElementById('hl-prev');
@@ -655,9 +652,9 @@ function renderTools(tab) {
         var atEnd   = toolState.index + page >= all.length;
         container.innerHTML =
             '<div class="mob-carousel-wrap">' +
-            '<button class="carousel-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
+            '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
             '<div class="tools-mob-grid" id="tools-inner">' + slice.map(cardHtml).join('') + '</div>' +
-            '<button class="carousel-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
+            '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
             '</div>';
         var prevBtn = container.querySelector('.mob-prev-btn');
         var nextBtn = container.querySelector('.mob-next-btn');
@@ -708,9 +705,9 @@ function renderEducation() {
         var atEnd   = eduState.index + page >= all.length;
         container.innerHTML =
             '<div class="mob-carousel-wrap">' +
-            '<button class="carousel-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
+            '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
             '<div id="edu-inner" style="flex:1;min-width:0">' + slice.map(itemHtml).join('') + '</div>' +
-            '<button class="carousel-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
+            '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
             '</div>';
         var prevBtn = container.querySelector('.mob-prev-btn');
         var nextBtn = container.querySelector('.mob-next-btn');
@@ -754,11 +751,11 @@ function renderAwards() {
         var atEnd   = awardState.index + page >= all.length;
         container.innerHTML =
             '<div class="mob-carousel-wrap">' +
-            '<button class="carousel-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
+            '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
             '<div id="award-inner" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1rem">' +
             slice.map(function(a, i) { return cardHtml(a, awardState.index + i); }).join('') +
             '</div>' +
-            '<button class="carousel-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
+            '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
             '</div>';
         var prevBtn = container.querySelector('.mob-prev-btn');
         var nextBtn = container.querySelector('.mob-next-btn');
