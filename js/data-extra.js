@@ -37,11 +37,6 @@
     ];
 
     // ── Conference papers — exact order in data.js ──
-    // conf[0] = TrafficGuard   → Under Review,  0 citations
-    // conf[1] = PCOS           → Published, Jun 2025, 3 citations
-    // conf[2] = Parkinson's    → Published, Jun 2025, 2 citations
-    // conf[3] = Maternal-Fetal → Published, Apr 2025, 5 citations
-    // conf[4] = Dyslexia       → Published, Nov 2024, 5 citations
     var CONF_META = [
         { date: 0,                                dateLabel: null,       citations: 0, status: 'Under Review' }, // [0] TrafficGuard
         { date: new Date('2025-06-10').getTime(), dateLabel: 'Jun 2025', citations: 3, status: 'Published'    }, // [1] PCOS
@@ -61,8 +56,6 @@
     });
 
     // ── Journal papers ──
-    // NeuroTab → Under Review, 0 citations
-    // Suicide risk → Published, Feb 2024, 4 citations
     (portfolioData.research.journal || []).forEach(function (p) {
         var t = (p.title || '').toLowerCase();
         if (t.indexOf('neurotab') !== -1 || t.indexOf('headache') !== -1) {

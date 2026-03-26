@@ -27,10 +27,20 @@ const portfolioData = {
             category: "web",
             date: "Dec 2025 - Jan 2026",
             description: "Desktop Health Companion. Built with pure HTML, CSS, and JS, featuring medicine reminders, hydration tracking, Pomodoro timer, and wellness nudges.",
-            skills: ["JavaScript", "HTML", "CSS", "Browser Extension", "Chrome API"],
+            skills: ["JavaScript", "HTML", "CSS"],
             github: "https://github.com/Swarup113/Nudge",
             live: "https://swarup113.github.io/Nudge/",
             image: "https://i.postimg.cc/XJZH77kp/nudge.png"
+        },
+                {
+            title: "kover",
+            category: "web",
+            date: "March 2026",
+            description: "Kover is a lightweight academic cover page generator that creates clean, properly formatted cover pages from structured input. It provides real-time preview and exports fully editable Word documents.",
+            skills: ["JavaScript", "HTML", "CSS"],
+            github: "https://github.com/Swarup113/kover",
+            live: "https://swarup113.github.io/kover/",
+            image: "https://i.postimg.cc/W1cV5Qkm/kover.png"
         },
         {
             title: "Nudge Browser Extension",
