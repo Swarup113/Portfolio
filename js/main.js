@@ -1,18 +1,14 @@
-// =============================================
-//  PORTFOLIO MAIN.JS — v7 (mobile pagination)
-// =============================================
-
 // ── Theme helpers ──
 function accentStyle() {
-    return document.body.classList.contains('dark-theme') ? 'color:#6ee7b7' : 'color:var(--light-text)';
+    return document.body.classList.contains('dark-theme') ? 'color:#b4b4bc' : 'color:#475569';
 }
 function dimStyle() {
-    return document.body.classList.contains('dark-theme') ? 'color:#9ca3af' : 'color:var(--light-text-body)';
+    return document.body.classList.contains('dark-theme') ? 'color:#b4b4bc' : 'color:#475569';
 }
 function citeBadgeStyle() {
     return document.body.classList.contains('dark-theme')
-        ? 'background:rgba(59,130,246,0.15);color:#93c5fd;'
-        : 'background:var(--light-card-hover);color:var(--light-text);';
+        ? 'background:rgba(255,255,255,0.06);color:#fafafa;'
+        : 'background:#f1f5f9;color:#0f172a;';
 }
 
 // ── Loading Screen ──
@@ -46,8 +42,8 @@ function updateProfileImage(theme) {
     var img = document.getElementById('profile-image');
     if (!img) return;
     img.src = theme === 'dark'
-        ? 'https://i.postimg.cc/3NLTN30R/dark.png'
-        : 'https://i.postimg.cc/sDR6Qk9L/light.png';
+        ? 'https://i.postimg.cc/8Phb2BhH/dark.png'
+        : 'https://i.postimg.cc/wvcPT8NX/light.png';
 }
 
 // ── Floating Nav ──
@@ -162,7 +158,6 @@ function addSwipe(el, onPrev, onNext) {
     el.addEventListener('touchend', function(e) {
         var dx = e.changedTouches[0].clientX - startX;
         var dy = e.changedTouches[0].clientY - startY;
-        // Only trigger if horizontal swipe is dominant
         if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
             if (dx < 0) onNext(); else onPrev();
         }
@@ -232,7 +227,6 @@ document.querySelectorAll('.tabs').forEach(function(tabGroup) {
         var all = portfolioData.skills[type] || [];
 
         if (isMobile()) {
-            // Show first 3, expand button reveals the rest
             var visible = all.slice(0, 3);
             var hidden  = all.slice(3);
             grid.innerHTML = visible.map(buildSkillCard).join('');
@@ -325,20 +319,14 @@ var GITHUB_SVG      = '<svg width="13" height="13" viewBox="0 0 24 24" fill="non
 var LIVE_SVG        = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
 var DOI_SVG         = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>';
 
-// ── Mobile carousel builder helpers ──
-
-// TOOLS only: left/right inline buttons
+// ── Mobile carousel builders ──
 function buildMobileCarousel(gridClass, cardsHtml, atStart, atEnd, gridId) {
-    var html =
-        '<div class="mob-carousel-wrap">' +
+    return '<div class="mob-carousel-wrap">' +
         '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
         '<div class="' + gridClass + '" id="' + gridId + '">' + cardsHtml + '</div>' +
         '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
         '</div>';
-    return html;
 }
-
-// ALL OTHER SECTIONS: cards on top, buttons centred below
 function buildBottomCarousel(cardsHtml, atStart, atEnd, innerClass, gridId) {
     return '<div class="mob-bottom-wrap">' +
         '<div class="mob-cards-area ' + (innerClass || '') + '" id="' + gridId + '">' + cardsHtml + '</div>' +
@@ -350,15 +338,14 @@ function buildBottomCarousel(cardsHtml, atStart, atEnd, innerClass, gridId) {
 
 // ── Projects ──
 var projState = { filter: 'all', index: 0 };
-var PROJ_PAGE_ALL    = 3;  // desktop + mobile page size
-var PROJ_PAGE_FILTER = 3;  // mobile filtered tabs — also 3
-
+var PROJ_PAGE_ALL    = 3;
+var PROJ_PAGE_FILTER = 3;
 function projPageSize() { return PROJ_PAGE_ALL; }
 
 (function initProjects() {
     var fc = document.querySelector('#projects .project-filters');
     if (fc) {
-        var FILTERS = [{key:'all',label:'All'},{key:'ml',label:'ML / DL'},{key:'web',label:'Web Dev'},{key:'game',label:'Game'},{key:'app',label:'App'},{key:'iot',label:'IoT'}];
+        var FILTERS = [{key:'all',label:'All'},{key:'ml',label:'ML / DL'},{key:'web',label:'Web Dev'},{key:'game',label:'Game'},{key:'app',label:'App'},{key:'iot',label:'IoT'},{key:'uiux',label:'UI/UX'}];
         fc.innerHTML = FILTERS.map(function(f) {
             return '<button class="filter-btn ' + (f.key==='all'?'active':'') + '" data-filter="' + f.key + '">' + f.label + '</button>';
         }).join('');
@@ -371,7 +358,6 @@ function projPageSize() { return PROJ_PAGE_ALL; }
             });
         });
     }
-    // Desktop arrow buttons (in HTML)
     var pp = document.getElementById('projects-prev');
     var pn = document.getElementById('projects-next');
     if (pp) pp.addEventListener('click', function(){ projState.index = Math.max(0, projState.index - PROJ_PAGE_ALL); renderProjects(); });
@@ -476,7 +462,6 @@ function renderHighlights() {
     var cardsHtml = slice.map(function(h, i) { return cardHtml(h, currentHighlightState.index + i); }).join('');
 
     if (isMobile()) {
-        // Mobile: cards stacked, buttons centred below
         container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, gridClass, 'hl-grid');
         var hlPrev = container.querySelector('.mob-prev-btn');
         var hlNext = container.querySelector('.mob-next-btn');
@@ -487,7 +472,6 @@ function renderHighlights() {
             function(){ if (currentHighlightState.index + page < highlights.length) { currentHighlightState.index += page; renderHighlights(); } }
         );
     } else {
-        // Desktop: side-by-side grid with left/right arrow buttons (same as journal/conference)
         container.innerHTML =
             '<div class="carousel-container">' +
             '<button class="carousel-btn" id="hl-prev"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
@@ -572,8 +556,9 @@ function renderResearch() {
     var isFew = !isMobile() && slice.length < 3;
 
     function cardHtml(p) {
-        var origIdx = papers.indexOf(p);
-        return '<div class="research-card" style="cursor:pointer" onclick="openResearchModal(' + origIdx + ',\'' + currentResearchState.tab + '\')">' +
+        // Escape single quotes in title for safe attribute
+        var safeTitle = p.title.replace(/'/g, "\\'");
+        return '<div class="research-card" style="cursor:pointer" onclick="openResearchModal(\'' + safeTitle + '\',\'' + currentResearchState.tab + '\')">' +
             '<div class="card-image" style="height:8rem"><img src="' + p.architecture + '" alt="' + p.shortTitle + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>' +
             '<div class="card-content">' +
             '<h3 class="card-title">' + p.title + '</h3>' +
@@ -586,7 +571,7 @@ function renderResearch() {
             (p.doi ? '<a href="' + p.doi + '" target="_blank" rel="noopener noreferrer" class="doi-btn" onclick="event.stopPropagation()">' + DOI_SVG + ' DOI</a>' : '') +
             (p.citations !== undefined ? '<span class="tag cite-badge">' + CITE_SVG + ' ' + p.citations + '</span>' : '') +
             '</div>' +
-            '<div class="card-actions"><button class="btn btn-secondary" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="event.stopPropagation();openResearchModal(' + origIdx + ',\'' + currentResearchState.tab + '\')">' + ARROW_RIGHT_SVG + ' View Details</button></div>' +
+            '<div class="card-actions"><button class="btn btn-secondary" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="event.stopPropagation();openResearchModal(\'' + safeTitle + '\',\'' + currentResearchState.tab + '\')">' + ARROW_RIGHT_SVG + ' View Details</button></div>' +
             '</div></div>';
     }
 
@@ -617,16 +602,16 @@ function renderResearch() {
 }
 
 function updateResearchBtns() {
-    if (isMobile()) return; // mobile buttons are inside the rendered HTML
+    if (isMobile()) return;
     var papers = getPapers(); var page = RESEARCH_PAGE;
     var prev = document.getElementById('research-prev'); var next = document.getElementById('research-next');
     if (prev) prev.disabled = currentResearchState.index === 0;
     if (next) next.disabled = currentResearchState.index + page >= papers.length;
 }
 
-window.openResearchModal = function(idx, tab) {
+window.openResearchModal = function(title, tab) {
     var papers = tab === 'journal' ? portfolioData.research.journal : portfolioData.research.conference;
-    var p = papers[idx];
+    var p = papers.find(function(paper) { return paper.title === title; });
     if (!p) return;
     var isJournal = tab === 'journal';
     var ac = accentStyle();
@@ -707,7 +692,7 @@ function renderEducation() {
             '<p style="font-size:0.75rem;' + ac + '">' + edu.duration + '</p></div></div>' +
             (edu.achievements ? '<ul style="list-style:none;padding:0;margin:0">' + edu.achievements.map(function(a) {
                 return '<li style="display:flex;gap:0.4rem;font-size:0.8rem;margin-bottom:0.4rem;align-items:flex-start">' +
-                    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + (isDark ? '#6ee7b7' : 'var(--light-text)') + '" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>' +
+                    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + (isDark ? '#b4b4bc' : '#475569') + '" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>' +
                     '<span class="card-description" style="margin:0">' + a + '</span></li>';
             }).join('') + '</ul>' : '') +
             '</div></div>';

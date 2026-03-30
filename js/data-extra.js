@@ -1,8 +1,3 @@
-// =============================================
-//  data-extra.js — Portfolio data extensions
-//  Load this AFTER data.js and BEFORE main.js
-// =============================================
-
 (function () {
 
     // ── Helper: pull architecture image from a paper in any array ──
@@ -42,7 +37,7 @@
         { date: new Date('2025-06-10').getTime(), dateLabel: 'Jun 2025', citations: 3, status: 'Published'    }, // [1] PCOS
         { date: new Date('2025-06-10').getTime(), dateLabel: 'Jun 2025', citations: 2, status: 'Published'    }, // [2] Parkinson's
         { date: new Date('2025-04-01').getTime(), dateLabel: 'Apr 2025', citations: 5, status: 'Published'    }, // [3] Maternal-Fetal
-        { date: new Date('2024-11-04').getTime(), dateLabel: 'Nov 2024', citations: 5, status: 'Published'    }  // [4] Dyslexia
+        { date: new Date('2024-11-04').getTime(), dateLabel: 'Nov 2024', citations: 6, status: 'Published'    }  // [4] Dyslexia
     ];
 
     (portfolioData.research.conference || []).forEach(function (paper, i) {

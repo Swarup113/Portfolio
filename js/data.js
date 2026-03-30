@@ -40,7 +40,7 @@ const portfolioData = {
             skills: ["JavaScript", "HTML", "CSS"],
             github: "https://github.com/Swarup113/kover",
             live: "https://swarup113.github.io/kover/",
-            image: "https://i.postimg.cc/W1cV5Qkm/kover.png"
+            image: "https://i.postimg.cc/SRKx042x/kover.png"
         },
         {
             title: "Nudge Browser Extension",
@@ -50,6 +50,16 @@ const portfolioData = {
             skills: ["JavaScript", "HTML", "CSS", "Browser Extension", "Chrome API"],
             github: "https://github.com/Swarup113/Nudge-Extension",
             image: "https://i.postimg.cc/K8v1MK32/extension.png"
+        },
+        {
+            title: "Bangladeshi Classic Game Hub",
+            category: "game",
+            date: "March 2025",
+            description: "Designed an interactive web platform integrating CricSpin and Chor Dakat Babu Pulish using HTML, CSS, and JS.", 
+            skills: ["HTML", "CSS", "JavaScript", "Canvas API"],
+            github: "https://github.com/Swarup113/Bangladeshi-Classic-Game-Hub",
+            live: "https://swarup113.github.io/Bangladeshi-Classic-Game-Hub/",
+            image: "https://i.postimg.cc/90LJLdTB/BCGH.png"
         },
         {
             title: "CricSpin",
