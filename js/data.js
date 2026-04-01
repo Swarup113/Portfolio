@@ -378,6 +378,19 @@ const portfolioData = {
 
     experience: [
         {
+            title: "Machine Learning & AI Researcher",
+            company: "Independent Researcher",
+            date: "Jan 2024 - Present",
+            location: "Chattagram, Bangladesh",
+            description: [
+        "Designed and developed multiple ML/DL models in healthcare and clinical domains, achieving up to 99.31% accuracy.",
+        "Conducted end-to-end research including literature review, methodology design, model development, and experimental evaluation.",
+        "Published 5 peer-reviewed papers (4 IEEE conferences, 1 Q3 journal), with additional Q1 (under review) and Q2 (in progress) manuscripts.",
+        "Worked with multimodal datasets including clinical, GPS, EEG, vocal, and textual data."
+             ],
+            scholarLink: "https://scholar.google.com/citations?user=nlgsBIIAAAAJ&hl=en"
+        },
+        {
             title: "Data Science Virtual Internship Program",
             company: "LetsGrowMore",
             date: "Aug 2024 - Sep 2024",

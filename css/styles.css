@@ -300,6 +300,27 @@ body.dark-theme .exp-logo { background: #2a2a30; }
 .exp-logo img { width: 100%; height: 100%; object-fit: contain; }
 .exp-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; justify-content: flex-end; margin-top: auto; padding-top: 0.75rem; }
 
+.logo-placeholder-white {
+    width: 40px;
+    height: 40px;
+    background: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.tag {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255,255,255,0.08);
+    border-radius: 6px;
+    opacity: 0.85;
+}
+
+
+
 /* Carousels */
 .carousel-container { position: relative; display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; }
 .carousel-btn { flex-shrink: 0; padding: 0.5rem; border-radius: 9999px; cursor: pointer; transition: all 0.25s; background: transparent; }
@@ -576,6 +597,16 @@ body.dark-theme .highlight-card .card-title { color: var(--dark-text-bright) !im
 body.dark-theme .highlight-card .card-description { color: var(--dark-text-secondary) !important; }
 body.dark-theme .contact-info h3 { color: var(--dark-text-bright) !important; }
 body.dark-theme .contact-link { color: var(--dark-text-secondary) !important; }
+
+/* Dark mode: experience list items */
+body.dark-theme .timeline-content ul li {
+    color: var(--dark-text-secondary); /* #b4b4bc */
+}
+
+/* Dark mode: highlighted words inside experience */
+body.dark-theme .timeline-content ul li .highlight-text {
+    color: #c5c2c2; /* bright white for emphasis */
+}
 
 /* ═══════════════════════════════════════════════════
    DARK MODE — CONTAINER SVG COLOUR OVERRIDE
