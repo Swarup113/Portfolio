@@ -52,19 +52,29 @@ const portfolioData = {
             image: "https://i.postimg.cc/K8v1MK32/extension.png"
         },
         {
-            title: "Bangladeshi Classic Game Hub",
+            title: "Bangladeshi Classic Games Hub",
             category: "game",
             date: "March 2025",
             description: "Designed an interactive web platform integrating CricSpin and Chor Dakat Babu Pulish using HTML, CSS, and JS.", 
             skills: ["HTML", "CSS", "JavaScript", "Canvas API"],
-            github: "https://github.com/Swarup113/Bangladeshi-Classic-Game-Hub",
-            live: "https://swarup113.github.io/Bangladeshi-Classic-Game-Hub/",
-            image: "https://i.postimg.cc/90LJLdTB/BCGH.png"
+            github: "https://github.com/Swarup113/Bangladeshi-Classic-Games-Hub",
+            live: "https://swarup113.github.io/Bangladeshi-Classic-Games-Hub/",
+            image: "https://i.postimg.cc/6ptgSTvq/BCGH.png"
+        },
+        {
+            title: "Qub",
+            category: "game",
+            date: "April 2026",
+            description: "A strategic word‑battle game where two players compete on a 10x10 grid, forming valid English words to score points",
+            skills: ["HTML5", "CSS3", "JavaScript", "Dictionary API"],
+            github: "https://github.com/Swarup113/Qub",
+            live: "https://swarup113.github.io/Qub/",
+            image: "https://i.postimg.cc/j5frTmdf/qub.png"
         },
         {
             title: "CricSpin",
             category: "game",
-            date: "Jan 2025 - Feb 2025",
+            date: "Jan 2026 - Feb 2026",
             description: "2-Player Cricket Game. Designed a 2-player cricket game featuring a 14-segment spinning wheel, coin toss, and dynamic gameplay with interactive scoreboard.",
             skills: ["HTML", "CSS", "JavaScript", "Canvas API"],
             github: "https://github.com/Swarup113/CricSpin",
@@ -80,6 +90,16 @@ const portfolioData = {
             github: "https://github.com/Swarup113/Chor-Dakat-Babu-Pulish",
             live: "https://swarup113.github.io/chor-dakat-babu-pulish/",
             image: "https://i.postimg.cc/mkf0vHWN/chordakat.png"
+        },
+        {
+            title: "kaTakuTi",
+            category: "game",
+            date: "jan 2026",
+            description: "A modern, responsive multi-grid kaTaKuti game (3×3, 5×5, 7×7) with dynamic win conditions, animations, and a sleek neon UI.",
+            skills: ["HTML5", "CSS3", "JavaScript"],
+            github: "https://github.com/Swarup113/kaTakuTi",
+            live: "https://swarup113.github.io/kaTakuTi/",
+            image: "https://i.postimg.cc/wT8j15SG/katakuti.png"
         },
         {
             title: "PetMate",
