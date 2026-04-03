@@ -22,7 +22,7 @@
     --gradient-main: linear-gradient(135deg, #000000 0%, #4b5563 100%);
     --gradient-accent: linear-gradient(135deg, #3f3f46 0%, #18181b 100%);
 
-    --dark-btn-gradient: linear-gradient(135deg, #ffffff 0%, #3f3e3e 100%);
+    --dark-btn-gradient: linear-gradient(135deg, #a5a5a5 0%, #ffffff 100%);
     --dark-btn-text: #18181b;
 }
 
