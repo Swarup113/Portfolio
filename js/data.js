@@ -92,6 +92,16 @@ const portfolioData = {
             image: "https://i.postimg.cc/mkf0vHWN/chordakat.png"
         },
         {
+            title: "GoalDao",
+            category: "game",
+            date: "April 2026",
+            description: "2-Player strategic paper-football inspired passing game built with HTML5 Canvas and Vanilla JavaScript. Pass the ball, intercept opponents, and score goals!",
+            skills: ["HTML", "CSS", "JavaScript"],
+            github: "https://github.com/Swarup113/GoalDao",
+            live: "https://swarup113.github.io/GoalDao/",
+            image: "https://i.postimg.cc/T3VR6H9V/goal-DAo.png"
+        },
+        {
             title: "kaTakuTi",
             category: "game",
             date: "jan 2026",
