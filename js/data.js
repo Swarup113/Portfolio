@@ -55,7 +55,7 @@ const portfolioData = {
             title: "Bangladeshi Classic Games Hub",
             category: "game",
             date: "March 2025",
-            description: "Designed an interactive web platform integrating CricSpin and Chor Dakat Babu Pulish using HTML, CSS, and JS.", 
+            description: "Designed an interactive web platform integrating CricSpin, Chor Dakat Babu Pulish, Qub, GoalDao and KaTakuTi using HTML, CSS, and JS.", 
             skills: ["HTML", "CSS", "JavaScript", "Canvas API"],
             github: "https://github.com/Swarup113/Bangladeshi-Classic-Games-Hub",
             live: "https://swarup113.github.io/Bangladeshi-Classic-Games-Hub/",
@@ -69,7 +69,7 @@ const portfolioData = {
             skills: ["HTML5", "CSS3", "JavaScript", "Dictionary API"],
             github: "https://github.com/Swarup113/Qub",
             live: "https://swarup113.github.io/Qub/",
-            image: "https://i.postimg.cc/j5frTmdf/qub.png"
+            image: "https://i.postimg.cc/HspRSwsn/qub.png"
         },
         {
             title: "CricSpin",
@@ -79,7 +79,7 @@ const portfolioData = {
             skills: ["HTML", "CSS", "JavaScript", "Canvas API"],
             github: "https://github.com/Swarup113/CricSpin",
             live: "https://swarup113.github.io/CricSpin/",
-            image: "https://i.postimg.cc/cL2TkNS4/cricspin.png"
+            image: "https://i.postimg.cc/52DztmXJ/cs.png"
         },
         {
             title: "Chor-Dakat-Babu-Pulish",
@@ -89,7 +89,7 @@ const portfolioData = {
             skills: ["HTML", "CSS", "JavaScript"],
             github: "https://github.com/Swarup113/Chor-Dakat-Babu-Pulish",
             live: "https://swarup113.github.io/chor-dakat-babu-pulish/",
-            image: "https://i.postimg.cc/mkf0vHWN/chordakat.png"
+            image: "https://i.postimg.cc/R0Gg88Pb/cdbp.png"
         },
         {
             title: "GoalDao",
@@ -99,7 +99,7 @@ const portfolioData = {
             skills: ["HTML", "CSS", "JavaScript"],
             github: "https://github.com/Swarup113/GoalDao",
             live: "https://swarup113.github.io/GoalDao/",
-            image: "https://i.postimg.cc/T3VR6H9V/goal-DAo.png"
+            image: "https://i.postimg.cc/J4MVfwKw/goal-DAo.png"
         },
         {
             title: "kaTakuTi",
@@ -109,7 +109,7 @@ const portfolioData = {
             skills: ["HTML5", "CSS3", "JavaScript"],
             github: "https://github.com/Swarup113/kaTakuTi",
             live: "https://swarup113.github.io/kaTakuTi/",
-            image: "https://i.postimg.cc/wT8j15SG/katakuti.png"
+            image: "https://i.postimg.cc/QthHBYhD/kk.png"
         },
         {
             title: "PetMate",
@@ -159,7 +159,7 @@ const portfolioData = {
             skills: ["Python", "Pygame", "PyCharm", "Turtle Graphics"],
             github: "https://github.com/Swarup113/Timmy-the-Turtle",
             live: null,
-            image: "https://i.postimg.cc/YqT1MCLD/timmy-turtle.png"
+            image: "https://i.postimg.cc/cL3zCXDN/tt.png"
         }
     ],
 
