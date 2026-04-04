@@ -24,7 +24,7 @@ function citeBadgeStyle() {
 // ── Theme + Logo switching ──
 function updateLogo(theme) {
     var lightLogo = 'https://i.postimg.cc/m2846ych/light.png';
-    var darkLogo  = 'https://i.postimg.cc/4x0gX4bW/dark.png'; 
+    var darkLogo  = 'https://i.postimg.cc/nVj5b8dc/dark.png'; 
     var logoUrl = theme === 'dark' ? darkLogo : lightLogo;
     var logoImgPC = document.getElementById('nav-logo-img');
     var logoImgMobile = document.getElementById('nav-logo-img-mobile');

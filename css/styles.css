@@ -882,11 +882,11 @@ body.dark-theme .modal-content .btn-secondary:hover svg {
         align-items: center !important;
         width: 100% !important;
         padding: 0.6rem 1rem !important;
-        background: rgba(255,255,255,0.8);
+        background: #f8fafc;
         backdrop-filter: blur(20px);
     }
     body.dark-theme .mobile-nav-bar {
-        background: rgba(9,9,11,0.8);
+        background: #09090b;
     }
 
     /* Logo – left column */
