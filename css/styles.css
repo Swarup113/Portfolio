@@ -897,8 +897,18 @@ body.dark-theme .modal-content .btn-secondary:hover svg {
 
     /* Hamburger button – center column */
     .mobile-menu-btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
         justify-self: center !important;
-        margin: 0 !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+     .mobile-menu-btn svg {
+        width: 26px;
+        height: 26px;
+        display: block;
     }
 
     /* Empty right column – no content, just to balance */
