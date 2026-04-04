@@ -50,7 +50,7 @@ const portfolioData = {
             skills: ["HTML", "CSS", "JavaScript", "Canvas API", "Dicktionary API"],
             github: "https://github.com/Swarup113/Bangladeshi-Classic-Games-Hub",
             live: "https://swarup113.github.io/Bangladeshi-Classic-Games-Hub/",
-            image: "https://i.postimg.cc/ncn2wgMS/bdgh.png"
+            image: "https://i.postimg.cc/d1qXm3MS/bdgh.png"
         },
         {
             title: "Qub",
