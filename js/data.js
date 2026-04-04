@@ -43,23 +43,14 @@ const portfolioData = {
             image: "https://i.postimg.cc/SRKx042x/kover.png"
         },
         {
-            title: "Nudge Browser Extension",
-            category: "web",
-            date: "Dec 2025 - Jan 2026",
-            description: "Health Companion Browser Extension. Built a web app and browser extension with medication/hydration reminders, Pomodoro timer, and wellness nudges.",
-            skills: ["JavaScript", "HTML", "CSS", "Browser Extension", "Chrome API"],
-            github: "https://github.com/Swarup113/Nudge-Extension",
-            image: "https://i.postimg.cc/K8v1MK32/extension.png"
-        },
-        {
             title: "Bangladeshi Classic Games Hub",
             category: "game",
             date: "March 2025",
-            description: "Designed an interactive web platform integrating CricSpin, Chor Dakat Babu Pulish, Qub, GoalDao and KaTakuTi using HTML, CSS, and JS.", 
-            skills: ["HTML", "CSS", "JavaScript", "Canvas API"],
+            description: "Designed an interactive web platform integrating CricSpin, Chor Dakat Babu Pulish, Qub, GoalDao, LettR and KaTakuTi using HTML, CSS, and JS.", 
+            skills: ["HTML", "CSS", "JavaScript", "Canvas API", "Dicktionary API"],
             github: "https://github.com/Swarup113/Bangladeshi-Classic-Games-Hub",
             live: "https://swarup113.github.io/Bangladeshi-Classic-Games-Hub/",
-            image: "https://i.postimg.cc/6ptgSTvq/BCGH.png"
+            image: "https://i.postimg.cc/ncn2wgMS/bdgh.png"
         },
         {
             title: "Qub",
@@ -89,7 +80,7 @@ const portfolioData = {
             skills: ["HTML", "CSS", "JavaScript"],
             github: "https://github.com/Swarup113/Chor-Dakat-Babu-Pulish",
             live: "https://swarup113.github.io/chor-dakat-babu-pulish/",
-            image: "https://i.postimg.cc/R0Gg88Pb/cdbp.png"
+            image: "https://i.postimg.cc/bYRz0f13/cdbp.png"
         },
         {
             title: "GoalDao",
@@ -102,6 +93,16 @@ const portfolioData = {
             image: "https://i.postimg.cc/J4MVfwKw/goal-DAo.png"
         },
         {
+            title: "LettR",
+            category: "game",
+            date: "April 2026",
+            description: "A fast-paced, 2-player local word duel game. Test your vocabulary under pressure with random letters, a 60-second timer, and real-time API validation. Built with pure HTML, CSS, and JavaScript.",
+            skills: ["HTML5", "CSS3", "JavaScript", "Dictionary API"],
+            github: "https://github.com/Swarup113/LettR",
+            live: "https://swarup113.github.io/LettR/",
+            image: "https://i.postimg.cc/MGm8xyZn/lett-R.png"
+        },
+        {
             title: "kaTakuTi",
             category: "game",
             date: "jan 2026",
@@ -110,6 +111,15 @@ const portfolioData = {
             github: "https://github.com/Swarup113/kaTakuTi",
             live: "https://swarup113.github.io/kaTakuTi/",
             image: "https://i.postimg.cc/QthHBYhD/kk.png"
+        },
+        {
+            title: "Nudge Browser Extension",
+            category: "web",
+            date: "Dec 2025 - Jan 2026",
+            description: "Health Companion Browser Extension. Built a web app and browser extension with medication/hydration reminders, Pomodoro timer, and wellness nudges.",
+            skills: ["JavaScript", "HTML", "CSS", "Browser Extension", "Chrome API"],
+            github: "https://github.com/Swarup113/Nudge-Extension",
+            image: "https://i.postimg.cc/K8v1MK32/extension.png"
         },
         {
             title: "PetMate",
