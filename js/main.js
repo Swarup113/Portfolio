@@ -21,22 +21,16 @@ function citeBadgeStyle() {
     }, 1200);
 })();
 
-// ── Theme ──
-(function initTheme() {
-    var btn = document.getElementById('theme-toggle');
-    var saved = localStorage.getItem('theme') || 'dark';
-    applyTheme(saved);
-    updateProfileImage(saved);
-    if (btn) btn.addEventListener('click', function() {
-        var next = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
-        applyTheme(next);
-        localStorage.setItem('theme', next);
-        updateProfileImage(next);
-        renderExperience(); renderResearch(); renderHighlights();
-        renderProjects(); renderEducation(); renderAwards();
-    });
-    function applyTheme(t) { document.body.classList.toggle('dark-theme', t === 'dark'); }
-})();
+// ── Theme + Logo switching ──
+function updateLogo(theme) {
+    var lightLogo = 'https://i.postimg.cc/m2846ych/light.png';
+    var darkLogo  = 'https://i.postimg.cc/4x0gX4bW/dark.png'; 
+    var logoUrl = theme === 'dark' ? darkLogo : lightLogo;
+    var logoImgPC = document.getElementById('nav-logo-img');
+    var logoImgMobile = document.getElementById('nav-logo-img-mobile');
+    if (logoImgPC) logoImgPC.src = logoUrl;
+    if (logoImgMobile) logoImgMobile.src = logoUrl;
+}
 
 function updateProfileImage(theme) {
     var img = document.getElementById('profile-image');
@@ -45,6 +39,31 @@ function updateProfileImage(theme) {
         ? 'https://i.postimg.cc/8Phb2BhH/dark.png'
         : 'https://i.postimg.cc/wvcPT8NX/light.png';
 }
+
+(function initTheme() {
+    var btn = document.getElementById('theme-toggle');
+    var saved = localStorage.getItem('theme') || 'dark';
+    applyTheme(saved);
+    updateProfileImage(saved);
+    updateLogo(saved);
+    if (btn) btn.addEventListener('click', function() {
+        var next = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem('theme', next);
+        updateProfileImage(next);
+        updateLogo(next);
+        // Re-render sections that depend on theme-based inline styles
+        renderExperience();
+        renderResearch();
+        renderHighlights();
+        renderProjects();
+        renderEducation();
+        renderAwards();
+        renderCerts();
+        renderTools(toolState.tab);
+    });
+    function applyTheme(t) { document.body.classList.toggle('dark-theme', t === 'dark'); }
+})();
 
 // ── Floating Nav ──
 (function initNav() {
@@ -266,33 +285,25 @@ function renderExperience() {
 
     container.innerHTML = portfolioData.experience.map(function(exp, i) {
 
-        // Highlight important metrics clinical, GPS, EEG, vocal, and textual
         function highlight(text) {
-    return text
-        // Key metrics
-        .replace(/99\.31%/g, "<strong class='highlight-text'>99.31%</strong>")
-        .replace(/5 peer-reviewed papers|5 papers/g, "<strong class='highlight-text'>5 papers</strong>")
-        .replace(/IEEE/g, "<strong class='highlight-text'>IEEE</strong>")
-        .replace(/Q1/g, "<strong class='highlight-text'>Q1</strong>")
-        // Domain / modalities: highlight each individually
-        .replace(/\b(clinical|GPS|EEG|vocal|textual)\b/g, "<strong class='highlight-text'>$1</strong>");
-}
+            return text
+                .replace(/99\.31%/g, "<strong class='highlight-text'>99.31%</strong>")
+                .replace(/5 peer-reviewed papers|5 papers/g, "<strong class='highlight-text'>5 papers</strong>")
+                .replace(/IEEE/g, "<strong class='highlight-text'>IEEE</strong>")
+                .replace(/Q1/g, "<strong class='highlight-text'>Q1</strong>")
+                .replace(/\b(clinical|GPS|EEG|vocal|textual)\b/g, "<strong class='highlight-text'>$1</strong>");
+        }
 
         return `
         <div class="timeline-item">
-
             <div class="timeline-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                 </svg>
             </div>
-
             <div class="timeline-content">
-
                 <div class="exp-header">
-
-                    <!-- WHITE LOGO -->
                     <div class="exp-logo">
                         ${
                             exp.companyLogo
@@ -309,25 +320,17 @@ function renderExperience() {
                                 `
                         }
                     </div>
-
                     <div>
                         <h3 class="card-title" style="margin-bottom:0.1rem">${exp.title}</h3>
                         <p class="card-subtitle">${exp.company}</p>
                     </div>
-
                 </div>
-
-                <!-- DATE -->
                 <p style="font-size:0.8rem;${ac};display:flex;align-items:center;gap:0.35rem;margin-bottom:0.2rem">
                     ${exp.date}
                 </p>
-
-                <!-- LOCATION -->
                 <p style="font-size:0.8rem;${ac};display:flex;align-items:center;gap:0.35rem;margin-bottom:0.6rem">
                     ${exp.location}
                 </p>
-
-                <!-- IMPACT TAGS -->
                 ${
                     exp.description
                         ? `
@@ -340,22 +343,16 @@ function renderExperience() {
                         `
                         : ''
                 }
-
-                <!-- (LIMITED + LIGHT STYLE) -->
                 ${
                     exp.description
                         ? `
-                        <ul style="margin:0.3rem 0 0.75rem 0; padding-left:1rem; font-size:0.75rem; line-height:1.45;"
-    class="exp-desc">
+                        <ul style="margin:0.3rem 0 0.75rem 0; padding-left:1rem; font-size:0.75rem; line-height:1.45;" class="exp-desc">
                             ${exp.description.slice(0, 4).map(item => `<li>${highlight(item)}</li>`).join('')}
                         </ul>
                         `
                         : ''
                 }
-
-                <!-- ACTIONS -->
                 <div class="exp-actions">
-
                     ${
                         exp.offerLetterLink
                             ? `
@@ -371,7 +368,6 @@ function renderExperience() {
                             `
                             : ''
                     }
-
                     ${
                         exp.scholarLink
                             ? `
@@ -386,27 +382,22 @@ function renderExperience() {
                             `
                             : ''
                     }
-
                     ${
                         (exp.projects && exp.projects.length > 0)
                             ? `
                             <button class="btn btn-secondary"
                                     style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem"
                                     onclick="openExpModal(${i})">
-
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>
                                 </svg>
-
                                 View Details
                             </button>
                             `
                             : ''
                     }
-
                 </div>
-
             </div>
         </div>
         `;
@@ -686,7 +677,6 @@ function renderResearch() {
     var isFew = !isMobile() && slice.length < 3;
 
     function cardHtml(p) {
-        // Escape single quotes in title for safe attribute
         var safeTitle = p.title.replace(/'/g, "\\'");
         return '<div class="research-card" style="cursor:pointer" onclick="openResearchModal(\'' + safeTitle + '\',\'' + currentResearchState.tab + '\')">' +
             '<div class="card-image" style="height:8rem"><img src="' + p.architecture + '" alt="' + p.shortTitle + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>' +
