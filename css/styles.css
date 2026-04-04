@@ -866,7 +866,7 @@ body.dark-theme .modal-content .btn-secondary:hover svg {
     .skills-grid { grid-template-columns: 1fr; }
 }
 
-.mobile-nav-bar { display: none; align-items: center; justify-content: space-between; padding: 0.6rem 1rem; height: 3.25rem; }
+.mobile-nav-bar { display: none; align-items: center; justify-content: flex-start; padding: 0.6rem 1rem; height: 3.25rem; }
 @media (max-width: 900px) {
     .mobile-nav-bar { display: flex; }
     .theme-toggle { top: 0.5rem; right: 0.75rem; }
