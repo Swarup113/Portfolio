@@ -23,6 +23,16 @@ const portfolioData = {
             image: "https://i.postimg.cc/nrQjRNYS/tg.png"
         },
         {
+    "title": "WatchSync",
+    "category": "web",
+    "date": "Apr 2026",
+    "description": "Real-time YouTube watch party app. Create rooms, invite friends via shareable links, and watch videos in perfect sync with live chat. Only host controls playback.",
+    "skills": ["Node.js", "Express", "Socket.io", "JavaScript", "HTML", "CSS", "YouTube API"],
+    "github": "https://github.com/Swarup113/WatchSync",
+    "live": "https://watchsync-424p.onrender.com",
+    "image": "https://i.postimg.cc/G2D0fS3D/WS.png"
+},
+        {
             title: "Nudge",
             category: "web",
             date: "Dec 2025 - Jan 2026",
