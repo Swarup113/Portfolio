@@ -802,6 +802,16 @@ function renderEducation() {
     var all = portfolioData.education || [];
 
     function itemHtml(edu) {
+        // Build courses HTML if course array exists
+        var coursesHtml = '';
+        if (edu.course && edu.course.length) {
+            coursesHtml = '<div class="card-tags" style="margin:0.5rem 0 0.75rem 0; gap:0.4rem; display:flex; flex-wrap:wrap;">' +
+                edu.course.map(function(c) {
+                    return '<span class="tag" style="font-size:0.7rem; background:var(--light-card-hover, #f1f5f9);">' + c + '</span>';
+                }).join('') +
+                '</div>';
+        }
+
         return '<div class="timeline-item">' +
             '<div class="timeline-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></div>' +
             '<div class="timeline-content">' +
@@ -810,6 +820,7 @@ function renderEducation() {
             '<div><h3 class="card-title" style="margin:0;font-size:1rem">' + edu.school + '</h3>' +
             '<p class="card-subtitle" style="margin:0;font-size:0.8rem">' + edu.degree + '</p>' +
             '<p style="font-size:0.75rem;' + ac + '">' + edu.duration + '</p></div></div>' +
+            coursesHtml +
             (edu.achievements ? '<ul style="list-style:none;padding:0;margin:0">' + edu.achievements.map(function(a) {
                 return '<li style="display:flex;gap:0.4rem;font-size:0.8rem;margin-bottom:0.4rem;align-items:flex-start">' +
                     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + (isDark ? '#b4b4bc' : '#475569') + '" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>' +

@@ -331,6 +331,13 @@ const portfolioData = {
             school: "Chittagong University of Engineering & Technology",
             degree: "Master of Science - MS, Computer Science and Engineering",
             duration: "Jan 2025 - Jan 2027",
+            course: ["Advanced Machine Learning", "Computer Vision", "Natural Language Processing", "Bio-Informatics", "Big Data", "Cryptography and Networking Security", "Research Methedology"],
+            achievements: [
+                "Coursework – Successfully completed with strong academic standing.",
+                "Research Articles – Multiple manuscripts currently under review.",
+                "Thesis – In progress and will be submitted to a Q1-indexed journal."
+
+            ],
             image: "https://upload.wikimedia.org/wikipedia/en/0/0e/CUET_Vector_Logo.svg"
         },
         {
@@ -338,7 +345,7 @@ const portfolioData = {
             degree: "Bachelor of Science - BS, Computer Science and Engineering",
             duration: "Jan 2020 - March 2024",
             achievements: [
-                "Graduated with Distinction – Dean's List (11 times) and Vice Chancellor's List (4 times).",
+                "Graduated with Distinction – Dean's List (12 times) and Vice Chancellor's List (4 times).",
                 "Thesis – Hybrid Deep Learning Model for Early Detection of Critical Health Conditions (Published in IJACSA)."
             ],
             image: "https://upload.wikimedia.org/wikipedia/commons/8/87/Seal_of_EDU.jpg"
