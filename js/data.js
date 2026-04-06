@@ -100,7 +100,7 @@ const portfolioData = {
             skills: ["HTML", "CSS", "JavaScript"],
             github: "https://github.com/Swarup113/GoalDao",
             live: "https://swarup113.github.io/GoalDao/",
-            image: "https://i.postimg.cc/J4MVfwKw/goal-DAo.png"
+            image: "https://i.postimg.cc/K88fC4rX/gd.png"
         },
         {
             title: "LettR",
