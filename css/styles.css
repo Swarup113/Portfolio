@@ -26,6 +26,46 @@
     --dark-btn-text: #18181b;
 }
 
+/* ═══════════════════════════════════════════════════
+   CUSTOM SCROLLBAR — GLOBAL (PC)
+   ═══════════════════════════════════════════════════ */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Light mode */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 9999px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #000000, #4b5563);
+}
+
+/* Dark mode */
+body.dark-theme ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #e4e4e7, #71717a);
+}
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}
+
+body.dark-theme {
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {

@@ -110,7 +110,7 @@ const portfolioData = {
             skills: ["HTML5", "CSS3", "JavaScript", "Dictionary API"],
             github: "https://github.com/Swarup113/LettR",
             live: "https://swarup113.github.io/LettR/",
-            image: "https://i.postimg.cc/MGm8xyZn/lett-R.png"
+            image: "https://i.postimg.cc/yN99kSFb/lr.png"
         },
         {
             title: "kaTakuTi",
