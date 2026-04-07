@@ -9,7 +9,7 @@
 
 ## Live
 
-**[https://swarup113.github.io/Portfolio/](https://swarup113.github.io/Portfolio/)**
+**[https://swarup113.github.io/Portfolio/](https://swarup113.github.io/)**
 
 ---
 
