@@ -290,7 +290,7 @@ function renderExperience() {
                 .replace(/99\.31%/g, "<strong class='highlight-text'>99.31%</strong>")
                 .replace(/5 peer-reviewed papers|5 papers/g, "<strong class='highlight-text'>5 papers</strong>")
                 .replace(/IEEE/g, "<strong class='highlight-text'>IEEE</strong>")
-                .replace(/Q1/g, "<strong class='highlight-text'>Q1</strong>")
+                .replace(/\b(Q1|Q2|Q3)\b/g, "<strong class='highlight-text'>$1</strong>")
                 .replace(/\b(clinical|GPS|EEG|vocal|textual)\b/g, "<strong class='highlight-text'>$1</strong>");
         }
 
@@ -335,7 +335,7 @@ function renderExperience() {
                     exp.description
                         ? `
                         <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem">
-                            <span class="tag"> 99.31% Accuracy</span>
+                            <span class="tag"> Predictive Modeling</span>
                             <span class="tag"> 5 Publications</span>
                             <span class="tag"> ML/DL</span>
                             <span class="tag"> Healthcare AI</span>
@@ -346,8 +346,16 @@ function renderExperience() {
                 ${
                     exp.description
                         ? `
-                        <ul style="margin:0.3rem 0 0.75rem 0; padding-left:1rem; font-size:0.75rem; line-height:1.45;" class="exp-desc">
-                            ${exp.description.slice(0, 4).map(item => `<li>${highlight(item)}</li>`).join('')}
+                        <ul style="list-style:none;padding:0;margin:0.3rem 0 0.75rem 0;font-size:0.75rem;line-height:1.45;" class="exp-desc">
+                            ${exp.description.slice(0, 4).map(item => `
+                                <li style="display:flex;gap:0.4rem;align-items:flex-start;margin-bottom:0.4rem">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${document.body.classList.contains('dark-theme') ? '#b4b4bc' : '#475569'}" stroke-width="2" style="flex-shrink:0;margin-top:2px">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    <span>${highlight(item)}</span>
+                                </li>
+                            `).join('')}
                         </ul>
                         `
                         : ''
