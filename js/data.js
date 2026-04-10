@@ -23,6 +23,16 @@ const portfolioData = {
             image: "https://i.postimg.cc/nrQjRNYS/tg.png"
         },
         {
+            title: "OmniViz",
+            category: "web",
+            date: "April 2026",
+            description: "Browser-based interactive data visualization tool for ML classification datasets. Supports CSV, JSON, and XLS/XLSX file formats with six chart types, smart data preview, and one-click chart export.",
+            skills: ["JavaScript","Chart.js","PapaParse","SheetJS ", "HTML", "CSS"],
+            github: "https://github.com/Swarup113/OmniViz",
+            live: "https://swarup113.github.io/OmniViz/",
+            image: "https://i.postimg.cc/3xwMRW4V/omniviz.png"
+        },
+        {
     "title": "WatchSync",
     "category": "web",
     "date": "Apr 2026",
