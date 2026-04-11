@@ -14,7 +14,7 @@ const portfolioData = {
         },
         {
             title: "TrafficGuard",
-            category: "ml",
+            category: "data-system",
             date: "Jan 2026 - Feb 2026",
             description: "Scalable Accident Data Pipeline. Deployed 10 million Parquet records to HDFS in Oracle VirtualBox and executed queries through Apache Drill to predict accident severity.",
             skills: ["Big Data", "HDFS", "Apache Drill", "Python", "Deep Learning"],
@@ -31,6 +31,16 @@ const portfolioData = {
             github: "https://github.com/Swarup113/OmniViz",
             live: "https://swarup113.github.io/OmniViz/",
             image: "https://i.postimg.cc/15sDJ5Wp/omniviz.png"
+        },
+        {
+            title: "MediQo+",
+            category: "web",
+            date: "Feb 2026",
+            description: "A modern, lightweight web application to discover nearby healthcare facilities, pet care services, and community lost & found boards. Powered by OpenStreetMap, Leaflet, and OSRM for accurate geolocation, routing, and distance calculations.",
+            skills: ["JavaScript","Leaflet.js","CartoDB Voyager","OSRM ", "HTML", "CSS"],
+            github: "https://github.com/Swarup113/MediQoPlus",
+            live: "https://swarup113.github.io/MediQoPlus/",
+            image: "https://i.postimg.cc/fbPZzkG3/Medi-Qo.png"
         },
         {
     "title": "WatchSync",

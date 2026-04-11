@@ -474,7 +474,7 @@ function projPageSize() { return PROJ_PAGE_ALL; }
 (function initProjects() {
     var fc = document.querySelector('#projects .project-filters');
     if (fc) {
-        var FILTERS = [{key:'all',label:'All'},{key:'ml',label:'ML / DL'},{key:'web',label:'Web Dev'},{key:'game',label:'Game'},{key:'app',label:'App'},{key:'iot',label:'IoT'},{key:'uiux',label:'UI/UX'}];
+        var FILTERS = [{key:'all',label:'All'},{key:'ml',label:'AI / ML'},{key:'data-system',label:'Data System'},{key:'web',label:'Web Apps'},{key:'game',label:'Games'},{key:'app',label:'Mobile App'},{key:'iot',label:'IoT & Hardware'}];
         fc.innerHTML = FILTERS.map(function(f) {
             return '<button class="filter-btn ' + (f.key==='all'?'active':'') + '" data-filter="' + f.key + '">' + f.label + '</button>';
         }).join('');
