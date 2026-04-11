@@ -30,7 +30,7 @@ const portfolioData = {
             skills: ["JavaScript","Chart.js","PapaParse","SheetJS ", "HTML", "CSS"],
             github: "https://github.com/Swarup113/OmniViz",
             live: "https://swarup113.github.io/OmniViz/",
-            image: "https://i.postimg.cc/3xwMRW4V/omniviz.png"
+            image: "https://i.postimg.cc/15sDJ5Wp/omniviz.png"
         },
         {
     "title": "WatchSync",
