@@ -365,7 +365,7 @@ function renderExperience() {
                         exp.offerLetterLink
                             ? `
                             <a href="${exp.offerLetterLink}" target="_blank"
-                               class="btn btn-primary"
+                               class="btn btn-secondary"
                                style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem">
                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> 
                                      <path d="M17 3l4 4-7 7H10v-4l7-7z"/>
@@ -393,7 +393,7 @@ function renderExperience() {
                     ${
                         (exp.projects && exp.projects.length > 0)
                             ? `
-                            <button class="btn btn-secondary"
+                            <button class="btn btn-primary"
                                     style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem"
                                     onclick="openExpModal(${i})">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -583,7 +583,7 @@ function renderHighlights() {
             '<div class="card-tags">' + h.skills.map(function(s){ return '<span class="tag">' + s + '</span>'; }).join('') + '</div>' +
             '<div class="card-actions">' +
             '<span class="inprogress-badge" style="margin-right:auto">' + CIRCLE_DOT_SVG + ' ' + h.status + '</span>' +
-            '<button class="btn btn-secondary" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="event.stopPropagation();openHighlightModal(' + absIdx + ')">' +
+            '<button class="btn btn-primary" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="event.stopPropagation();openHighlightModal(' + absIdx + ')">' +
             ARROW_RIGHT_SVG + ' View Details</button>' +
             '</div></div></div>';
     }
@@ -699,7 +699,7 @@ function renderResearch() {
             (p.doi ? '<a href="' + p.doi + '" target="_blank" rel="noopener noreferrer" class="doi-btn" onclick="event.stopPropagation()">' + DOI_SVG + ' DOI</a>' : '') +
             (p.citations !== undefined ? '<span class="tag cite-badge">' + CITE_SVG + ' ' + p.citations + '</span>' : '') +
             '</div>' +
-            '<div class="card-actions"><button class="btn btn-secondary" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="event.stopPropagation();openResearchModal(\'' + safeTitle + '\',\'' + currentResearchState.tab + '\')">' + ARROW_RIGHT_SVG + ' View Details</button></div>' +
+            '<div class="card-actions"><button class="btn btn-primary" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="event.stopPropagation();openResearchModal(\'' + safeTitle + '\',\'' + currentResearchState.tab + '\')">' + ARROW_RIGHT_SVG + ' View Details</button></div>' +
             '</div></div>';
     }
 
@@ -754,7 +754,7 @@ window.openResearchModal = function(title, tab) {
         '<div style="display:flex;justify-content:flex-end;align-items:center;gap:0.75rem;flex-wrap:wrap">' +
         (p.citations !== undefined ? '<span class="tag cite-badge" style="font-size:0.78rem;padding:0.3rem 0.7rem">' + CITE_SVG + ' Citations: ' + p.citations + '</span>' : '') +
         (p.doi ? '<a href="' + p.doi + '" target="_blank" rel="noopener noreferrer" class="doi-btn">' + DOI_SVG + ' View DOI</a>' : '') +
-        (p.link && p.link !== '#' ? '<a href="' + p.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:0.875rem"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> Read Paper</a>' : '<span class="tag" style="font-size:0.8rem;padding:0.4rem 0.8rem;opacity:0.8">Under Review</span>') +
+        (p.link && p.link !== '#' ? '<a href="' + p.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:0.875rem"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> Read Paper</a>' : '<span class="tag" style="font-size:0.8rem;padding:0.4rem 0.8rem;opacity:0.8">Under Review</span>') +
         '</div>';
     openModal();
 };
@@ -927,7 +927,7 @@ function renderCerts() {
         return '<div class="cert-card"><div class="card-image"><img src="' + c.image + '" alt="' + c.title + '" loading="lazy"></div>' +
             '<div class="card-content"><h3 class="card-title" style="font-size:0.9rem">' + c.title + '</h3>' +
             '<p class="card-subtitle">' + (c.issuer||c.conference||'') + '</p>' +
-            '<div class="card-actions"><a href="' + c.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:0.75rem;padding:0.3rem 0.8rem">' +
+            '<div class="card-actions"><a href="' + c.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:0.75rem;padding:0.3rem 0.8rem">' +
             '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View</a>' +
             '</div></div></div>';
     }

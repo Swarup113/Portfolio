@@ -206,16 +206,277 @@ body.dark-theme .mobile-menu-btn:hover { background: var(--dark-btn-gradient); c
 .mobile-menu-btn.active .menu-icon  { display: none; }
 .mobile-menu-btn.active .close-icon { display: block; }
 
+/* ═══════════════════════════════════════════════════
+   PC DROPDOWN NAV
+   ═══════════════════════════════════════════════════ */
+
+/* Wrapper makes the dropdown position relative to the trigger */
+.nav-dropdown-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/*
+  INVISIBLE HOVER BRIDGE — this is the key fix.
+  Creates a rectangular zone below the trigger that catches
+  the mouse cursor so it never "falls into the gap" between
+  the nav item and the dropdown panel.
+  Has no background/border so it is completely invisible.
+*/
+.nav-dropdown-wrap::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 0.75rem;
+    z-index: 1999;
+}
+
+/* Chevron inside nav item with dropdown */
+.nav-item--has-dropdown {
+    padding-right: 0.75rem;
+}
+.nav-chevron {
+    width: 12px !important;
+    height: 12px !important;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+    margin-left: 0.1rem;
+}
+
+/* Rotate chevron when dropdown is open */
+.nav-dropdown-wrap:hover .nav-chevron,
+.nav-dropdown-wrap.open .nav-chevron {
+    transform: rotate(180deg);
+}
+
+/* The dropdown panel */
+.nav-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 11rem;
+    border-radius: 1rem;
+    padding: 0.5rem 0.4rem 0.4rem;
+    opacity: 0;
+    pointer-events: none;
+    /* Only opacity transition — NO transform shift.
+       The old translateY(-6px) caused the panel to move
+       position during show/hide, making the cursor "fall off". */
+    transition: opacity 0.2s ease;
+    z-index: 2000;
+}
+
+body:not(.dark-theme) .nav-dropdown {
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+body.dark-theme .nav-dropdown {
+    background: rgba(19,19,21,0.95);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.3);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Show on hover */
+.nav-dropdown-wrap:hover .nav-dropdown,
+.nav-dropdown-wrap.open .nav-dropdown {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Small decorative notch/arrow at top of dropdown */
+.nav-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    border-radius: 1px 0 0 0;
+    pointer-events: none;
+}
+body:not(.dark-theme) .nav-dropdown::before {
+    background: rgba(255,255,255,0.95);
+    border-left: 1px solid rgba(0,0,0,0.08);
+    border-top: 1px solid rgba(0,0,0,0.08);
+}
+body.dark-theme .nav-dropdown::before {
+    background: rgba(19,19,21,0.95);
+    border-left: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Dropdown items */
+.nav-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.55rem 0.85rem;
+    border-radius: 0.65rem;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    margin-top: 0.15rem;
+}
+.nav-dropdown-item:first-child {
+    margin-top: 0;
+}
+.nav-dropdown-item svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+body:not(.dark-theme) .nav-dropdown-item {
+    color: var(--light-text-secondary);
+}
+body.dark-theme .nav-dropdown-item {
+    color: var(--dark-text-secondary);
+}
+
+body:not(.dark-theme) .nav-dropdown-item:hover {
+    background: var(--gradient-main);
+    color: #fff !important;
+}
+body:not(.dark-theme) .nav-dropdown-item:hover svg {
+    color: #fff !important;
+    stroke: #fff !important;
+}
+
+body.dark-theme .nav-dropdown-item:hover {
+    background: var(--dark-btn-gradient);
+    color: var(--dark-btn-text) !important;
+}
+body.dark-theme .nav-dropdown-item:hover svg {
+    color: var(--dark-btn-text) !important;
+    stroke: var(--dark-btn-text) !important;
+}
+
+body.dark-theme .nav-dropdown-item.active-nav {
+    background: var(--dark-btn-gradient);
+    color: var(--dark-btn-text) !important;
+}
+body:not(.dark-theme) .nav-dropdown-item.active-nav {
+    background: var(--gradient-main);
+    color: #fff !important;
+}
+
+/* Active state svg fix inside dropdown */
+body.dark-theme .nav-dropdown-item.active-nav svg,
+body.dark-theme .nav-dropdown-item:hover svg {
+    stroke: var(--dark-btn-text) !important;
+    fill: none !important;
+}
+body:not(.dark-theme) .nav-dropdown-item.active-nav svg,
+body:not(.dark-theme) .nav-dropdown-item:hover svg {
+    stroke: #fff !important;
+    fill: none !important;
+}
+
+/* Chevron color inherits properly from nav-item */
+body.dark-theme .nav-item.active-nav .nav-chevron,
+body.dark-theme .nav-item:hover .nav-chevron {
+    stroke: var(--dark-btn-text) !important;
+}
+body:not(.dark-theme) .nav-item.active-nav .nav-chevron,
+body:not(.dark-theme) .nav-item:hover .nav-chevron {
+    stroke: #fff !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   END PC DROPDOWN — hide everything dropdown on mobile
+   ═══════════════════════════════════════════════════ */
 @media (max-width: 900px) {
-    .floating-nav { 
-        top: 0; 
-        left: 0; 
-        transform: none; 
-        width: 100%; 
-        max-width: 100%; 
-        padding: 0; 
-        border-radius: 0; 
+    .nav-dropdown-wrap {
+        display: contents; /* dissolves wrapper, children flow inline in mobile nav */
     }
+    .nav-dropdown {
+        display: none !important; /* completely hidden on mobile */
+    }
+    .nav-chevron {
+        display: none !important; /* no chevron on mobile */
+    }
+    .nav-item--has-dropdown {
+        padding-right: 1rem; /* restore normal padding */
+    }
+
+    /* Override floating nav container */
+    .floating-nav {
+        justify-content: flex-start !important;
+        padding: 0 !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+    }
+
+    /* Mobile bar as a 3-column grid */
+    .mobile-nav-bar {
+        display: grid !important;
+        grid-template-columns: 1fr auto 1fr !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding: 0.6rem 1rem !important;
+        background: #f8fafc;
+        backdrop-filter: blur(20px);
+    }
+    body.dark-theme .mobile-nav-bar {
+        background: #09090b;
+    }
+
+    /* Logo – left column */
+    .nav-logo-mobile {
+        justify-self: start !important;
+        margin: 0 !important;
+    }
+
+    /* Hamburger button – center column */
+    .mobile-menu-btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        justify-self: center !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .mobile-menu-btn svg {
+        width: 26px;
+        height: 26px;
+        display: block;
+    }
+
+    /* Empty right column – no content, just to balance */
+    .mobile-nav-bar::after {
+        content: "";
+        visibility: hidden;
+    }
+
+    .theme-toggle {
+        top: 0.75rem;
+        right: 0.75rem;
+        z-index: 1001;
+    }
+
+    .nav-menu {
+        top: 100%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        border-radius: 0 0 1.5rem 1.5rem;
+    }
+}
+
+@media (max-width: 900px) {
     .floating-nav.hidden { transform: translateY(-100%); opacity: 0; }
     
     /* Hide PC logo on mobile */
@@ -571,7 +832,7 @@ body.dark-theme       .stat-label { color: var(--dark-text-secondary); }
 .projects-carousel-inner, .research-carousel-inner, .certifications-carousel-inner { display: flex; flex-direction: column; gap: 1rem; width: 100%; }
 .research-highlights-container { animation: fadeIn 0.4s; margin-top: 2rem; }
 #research-pubs-container { margin-top: 2rem; }
-.highlights-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+.highlights-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; margin-bottom: 2rem; }
 @media (max-width: 768px) { .highlights-grid { grid-template-columns: 1fr; } }
 
 .highlight-card { border-radius: 1rem; overflow: hidden; border: 1px solid transparent; transition: all 0.3s; display: flex; flex-direction: column; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
@@ -751,18 +1012,16 @@ body.dark-theme .contact-link { color: var(--dark-text-secondary) !important; }
 
 /* Dark mode: experience list items */
 body.dark-theme .timeline-content ul li {
-    color: var(--dark-text-secondary); /* #b4b4bc */
+    color: var(--dark-text-secondary);
 }
 
 /* Dark mode: highlighted words inside experience */
 body.dark-theme .timeline-content ul li .highlight-text {
-    color: #c5c2c2; /* bright white for emphasis */
+    color: #c5c2c2;
 }
 
 /* ═══════════════════════════════════════════════════
    DARK MODE — CONTAINER SVG COLOUR OVERRIDE
-   (these broad rules intentionally come before
-    the btn-primary fix below so they don't win)
    ═══════════════════════════════════════════════════ */
 body.dark-theme .timeline-content svg[stroke],
 body.dark-theme .research-card svg[stroke],
@@ -779,8 +1038,6 @@ body.dark-theme .modal-content svg[stroke] {
 
 /* ═══════════════════════════════════════════════════
    PRIMARY BUTTON ICON FIX — must come LAST
-   Overrides all container-level svg rules above.
-   In dark mode: btn-primary has white bg → black icon.
    ═══════════════════════════════════════════════════ */
 body.dark-theme .btn-primary svg,
 body.dark-theme .timeline-content .btn-primary svg,
@@ -821,7 +1078,6 @@ body.dark-theme .theme-toggle svg {
 
 /* ═══════════════════════════════════════════════════
    SECONDARY BUTTON (GHOST) HOVER FIX — CRITICAL
-   Ensures icons turn black on hover in dark mode
    ═══════════════════════════════════════════════════ */
 body.dark-theme .btn-secondary:hover svg,
 body.dark-theme .timeline-content .btn-secondary:hover svg,
@@ -901,70 +1157,4 @@ body.dark-theme .modal-content .btn-secondary:hover svg {
     .hero-title { font-size: 1.75rem !important; }
     .image-wrapper { width: 12rem; height: 12rem; }
     .skills-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 900px) {
-    /* Override floating nav container */
-    .floating-nav {
-        justify-content: flex-start !important;
-        padding: 0 !important;
-        background: transparent !important; /* remove background overlay */
-        backdrop-filter: none !important;
-    }
-
-    /* Mobile bar as a 3‑column grid */
-    .mobile-nav-bar {
-        display: grid !important;
-        grid-template-columns: 1fr auto 1fr !important;
-        align-items: center !important;
-        width: 100% !important;
-        padding: 0.6rem 1rem !important;
-        background: #f8fafc;
-        backdrop-filter: blur(20px);
-    }
-    body.dark-theme .mobile-nav-bar {
-        background: #09090b;
-    }
-
-    /* Logo – left column */
-    .nav-logo-mobile {
-        justify-self: start !important;
-        margin: 0 !important;
-    }
-
-    /* Hamburger button – center column */
-    .mobile-menu-btn {
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        justify-self: center !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-
-     .mobile-menu-btn svg {
-        width: 26px;
-        height: 26px;
-        display: block;
-    }
-
-    /* Empty right column – no content, just to balance */
-    .mobile-nav-bar::after {
-        content: "";
-        visibility: hidden;
-    }
-
-    .theme-toggle {
-        top: 0.75rem;
-        right: 0.75rem;
-        z-index: 1001;
-    }
-
-    .nav-menu {
-        top: 100%;
-        left: 0;
-        right: 0;
-        width: 100%;
-        border-radius: 0 0 1.5rem 1.5rem;
-    }
 }
