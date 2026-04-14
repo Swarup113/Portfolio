@@ -1158,3 +1158,128 @@ body.dark-theme .modal-content .btn-secondary:hover svg {
     .image-wrapper { width: 12rem; height: 12rem; }
     .skills-grid { grid-template-columns: 1fr; }
 }
+/* ═══════════════════════════════════════════════════
+   WRITING SECTION
+   ═══════════════════════════════════════════════════ */
+
+.writing-carousel {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    flex: 1;
+}
+@media (max-width: 1024px) { .writing-carousel { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px)  { .writing-carousel { grid-template-columns: 1fr; } }
+
+.writing-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+body:not(.dark-theme) .writing-card { background: var(--light-card); }
+body.dark-theme       .writing-card { background: var(--dark-card); box-shadow: 0 4px 6px rgba(0,0,0,0.15); }
+.writing-card:hover { transform: translateY(-5px); border-color: #000; box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+body.dark-theme .writing-card:hover { border-color: #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+
+.writing-card-content {
+    padding: 1.35rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.writing-card-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+}
+
+.writing-topic-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--gradient-main);
+    color: #fff;
+}
+body.dark-theme .writing-topic-badge {
+    background: var(--dark-btn-gradient);
+    color: var(--dark-btn-text);
+}
+
+.writing-card-title {
+    font-size: 1rem !important;
+    font-weight: 600;
+    margin-bottom: 0.6rem !important;
+    line-height: 1.45;
+}
+
+.writing-card-desc {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    margin-bottom: 0.75rem;
+    flex: 1;
+}
+
+.writing-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.writing-read-btn {
+    font-size: 0.75rem !important;
+    padding: 0.3rem 0.9rem !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+/* Centered few fix for writing carousel */
+@media (min-width: 1025px) {
+    .writing-carousel.centered-few {
+        display: flex !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+    .writing-carousel.centered-few > .writing-card {
+        flex: 0 0 calc(33.333% - 1rem);
+        max-width: calc(33.333% - 1rem);
+    }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+    .writing-carousel.centered-few {
+        display: flex !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+    .writing-carousel.centered-few > .writing-card {
+        flex: 0 0 calc(50% - 0.75rem);
+        max-width: calc(50% - 0.75rem);
+    }
+}
+
+/* Dark mode text fixes for writing cards */
+body.dark-theme .writing-card-title  { color: var(--dark-text-bright) !important; }
+body.dark-theme .writing-card-desc   { color: var(--dark-text-secondary) !important; }
+
+/* Writing read btn dark mode icon fix */
+body.dark-theme .writing-read-btn svg,
+body.dark-theme .writing-card .btn-primary svg {
+    color:  var(--dark-btn-text) !important;
+    stroke: var(--dark-btn-text) !important;
+    fill:   none !important;
+}
