@@ -1020,45 +1020,6 @@ var writingState = { index: 0, articles: [] };
 var WRITING_PAGE = 3;
 var MOB_WRITING_PAGE = 1;
 
-// Tag inference from title/content
-function inferWritingTags(item) {
-    var text = ((item.title || '') + ' ' + (item.description || '') + ' ' + (item.tags || []).join(' ')).toLowerCase();
-    var tags = [];
-    if (/xai|explainable/.test(text))        tags.push('XAI');
-    if (/medical|healthcare|clinical|diagnosis|disease/.test(text)) tags.push('Healthcare');
-    if (/deep learn|neural|cnn|rnn|lstm|transformer/.test(text))    tags.push('Deep Learning');
-    if (/machine learn|ml|random forest|svm|classifier/.test(text)) tags.push('ML');
-    if (/nlp|language model|llm|gpt|bert/.test(text))               tags.push('NLP');
-    if (/data scien|data analys|visualization/.test(text))          tags.push('Data Science');
-    if (/python|tensorflow|pytorch|keras/.test(text))                tags.push('Python');
-    if (tags.length === 0) tags.push('AI');
-    return tags.slice(0, 4);
-}
-
-// Topic label badge from tags
-function inferTopicBadge(tags) {
-    if (tags.indexOf('XAI') !== -1)         return 'XAI';
-    if (tags.indexOf('Healthcare') !== -1)   return 'Healthcare';
-    if (tags.indexOf('Deep Learning') !== -1) return 'Deep Learning';
-    if (tags.indexOf('NLP') !== -1)          return 'NLP';
-    if (tags.indexOf('ML') !== -1)           return 'ML';
-    return 'AI';
-}
-
-// Hardcoded fallback article matching the requested URL
-var MEDIUM_FALLBACK = [
-    {
-        title: 'Beyond the Black Box: Is Explainable AI Enough for Medical Diagnosis?',
-        description: 'Exploring the promises and limitations of Explainable AI (XAI) in high-stakes clinical settings.',
-        link: 'https://medium.com/@dewanjee.swarup/beyond-the-black-box-is-explainable-ai-enough-for-medical-diagnosis-d733c8c751af',
-        pubDate: 'Apr 2025',
-        tags: ['XAI', 'Healthcare', 'ML', 'Deep Learning']
-    }
-];
-
-function writingPageSize() { return isMobile() ? MOB_WRITING_PAGE : WRITING_PAGE; }
-
-
 function inferWritingTags(article) {
     var text = ((article.title || '') + ' ' + (article.description || '')).toLowerCase();
     var tags = [];
@@ -1073,24 +1034,84 @@ function inferWritingTags(article) {
     return tags.length ? tags.slice(0, 4) : ['AI'];
 }
 
-
 function inferTopicBadge(tags) {
     if (!tags || tags.length === 0) return 'AI';
 
-    var t = tags.map(t => t.toLowerCase());
+    var t = tags.map(function(tag) { return tag.toLowerCase(); });
 
-    if (t.includes('xai')) return 'XAI';
-    if (t.includes('explainable-ai')) return 'XAI';
+    if (t.includes('xai') || t.includes('explainable-ai')) return 'XAI';
     if (t.includes('healthcare')) return 'Health';
-    if (t.includes('deep-learning')) return 'DL';
-    if (t.includes('machine-learning')) return 'ML';
-    if (t.includes('data-analysis')) return 'Data Analysis';
-    if (t.includes('ai')) return 'AI';
-     if (t.includes('artificial-intelligence')) return 'AI';
+    if (t.includes('deep-learning') || t.includes('deep learning')) return 'DL';
+    if (t.includes('machine-learning') || t.includes('machine learning')) return 'ML';
+    if (t.includes('data-analysis') || t.includes('data analysis')) return 'Data Analysis';
+    if (t.includes('ai') || t.includes('artificial intelligence')) return 'AI';
 
     return tags[0];
 }
 
+var MEDIUM_FALLBACK = [
+    {
+        title: 'Beyond the Black Box: Is Explainable AI Enough for Medical Diagnosis?',
+        description: 'Exploring the promises and limitations of Explainable AI (XAI) in high-stakes clinical settings.',
+        link: 'https://medium.com/@dewanjee.swarup/beyond-the-black-box-is-explainable-ai-enough-for-medical-diagnosis-d733c8c751af',
+        pubDate: 'Apr 2025',
+        tags: ['XAI', 'Healthcare', 'ML', 'Deep Learning']
+    }
+];
+
+function writingPageSize() { return isMobile() ? MOB_WRITING_PAGE : WRITING_PAGE; }
+
+function updateWritingNav() {
+    var wp = document.getElementById('writing-prev');
+    var wn = document.getElementById('writing-next');
+    if (!wp || !wn) return;
+
+    var all = writingState.articles;
+    var mobile = isMobile();
+
+    // Toggle positioning classes
+    wp.classList.remove('nav-arrow-desktop', 'nav-arrow-mobile');
+    wn.classList.remove('nav-arrow-desktop', 'nav-arrow-mobile');
+
+    if (mobile) {
+        wp.classList.add('nav-arrow-mobile');
+        wn.classList.add('nav-arrow-mobile');
+    } else {
+        wp.classList.add('nav-arrow-desktop');
+        wn.classList.add('nav-arrow-desktop');
+    }
+
+    // Compute disabled states
+    var canGoPrev = writingState.index > 0;
+    var canGoNext;
+
+    if (mobile) {
+        canGoNext = writingState.index + MOB_WRITING_PAGE < all.length;
+    } else {
+        // Desktop: right arrow only works when there are at least 4 items
+        // AND there is actually a next page to show
+        canGoNext = all.length >= 4 && (writingState.index + WRITING_PAGE < all.length);
+    }
+
+    wp.disabled = !canGoPrev;
+    wn.disabled = !canGoNext;
+
+    if (canGoPrev) {
+        wp.classList.remove('nav-disabled');
+        wp.removeAttribute('aria-disabled');
+    } else {
+        wp.classList.add('nav-disabled');
+        wp.setAttribute('aria-disabled', 'true');
+    }
+
+    if (canGoNext) {
+        wn.classList.remove('nav-disabled');
+        wn.removeAttribute('aria-disabled');
+    } else {
+        wn.classList.add('nav-disabled');
+        wn.setAttribute('aria-disabled', 'true');
+    }
+}
 
 function renderWriting() {
     var container = document.getElementById('writing-carousel');
@@ -1101,6 +1122,7 @@ function renderWriting() {
 
     if (all.length === 0) {
         container.innerHTML = '<div style="text-align:center;padding:3rem;opacity:0.6;width:100%">Loading articles...</div>';
+        updateWritingNav();
         return;
     }
 
@@ -1138,27 +1160,101 @@ function renderWriting() {
         if (isFew) container.classList.add('centered-few'); else container.classList.remove('centered-few');
         container.innerHTML = cardsHtml;
     }
+
+    updateWritingNav();
 }
 
+/* ── Swipe gesture state ── */
+var swipeState = { startX: 0, startY: 0, tracking: false };
 
+function initSwipeGestures() {
+    var container = document.getElementById('writing-carousel');
+    if (!container) return;
+
+    container.addEventListener('touchstart', function(e) {
+        swipeState.startX = e.touches[0].clientX;
+        swipeState.startY = e.touches[0].clientY;
+        swipeState.tracking = true;
+    }, { passive: true });
+
+    container.addEventListener('touchmove', function(e) {
+        // Prevent vertical scroll takeover only when swipe is clearly horizontal
+        if (!swipeState.tracking) return;
+        var dx = Math.abs(e.touches[0].clientX - swipeState.startX);
+        var dy = Math.abs(e.touches[0].clientY - swipeState.startY);
+        if (dx > dy && dx > 15) {
+            // e.preventDefault(); // uncomment if you want to block scroll during horizontal swipe
+        }
+    }, { passive: true });
+
+    container.addEventListener('touchend', function(e) {
+        if (!swipeState.tracking) return;
+        swipeState.tracking = false;
+
+        if (!isMobile()) return;
+
+        var endX = e.changedTouches[0].clientX;
+        var endY = e.changedTouches[0].clientY;
+        var diffX = swipeState.startX - endX;
+        var diffY = swipeState.startY - endY;
+
+        // Must be a clear horizontal swipe, not a vertical scroll
+        if (Math.abs(diffX) < 50 || Math.abs(diffY) > Math.abs(diffX)) return;
+
+        if (diffX > 0) {
+            // Swiped left → go next
+            writingNavigateNext();
+        } else {
+            // Swiped right → go prev
+            writingNavigatePrev();
+        }
+    }, { passive: true });
+}
+
+/* ── Navigation helpers (used by both buttons and swipe) ── */
+function writingNavigateNext() {
+    var canGoNext;
+
+    if (isMobile()) {
+        canGoNext = writingState.index + MOB_WRITING_PAGE < writingState.articles.length;
+        if (canGoNext) writingState.index += MOB_WRITING_PAGE;
+    } else {
+        canGoNext = writingState.articles.length >= 4 &&
+                    (writingState.index + WRITING_PAGE < writingState.articles.length);
+        if (canGoNext) writingState.index += WRITING_PAGE;
+    }
+
+    if (canGoNext) renderWriting();
+}
+
+function writingNavigatePrev() {
+    if (writingState.index <= 0) return;
+
+    var page = writingPageSize();
+    writingState.index = Math.max(0, writingState.index - page);
+    renderWriting();
+}
+
+/* ── Init ── */
 (function initWriting() {
     var wp = document.getElementById('writing-prev');
     var wn = document.getElementById('writing-next');
 
-    if (wp) wp.addEventListener('click', function(){
-        writingState.index = Math.max(0, writingState.index - WRITING_PAGE);
-        renderWriting();
+    if (wp) wp.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (wp.disabled || wp.classList.contains('nav-disabled')) return;
+        writingNavigatePrev();
     });
 
-    if (wn) wn.addEventListener('click', function(){
-        if (writingState.index + WRITING_PAGE < writingState.articles.length) {
-            writingState.index += WRITING_PAGE;
-            renderWriting();
-        }
+    if (wn) wn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (wn.disabled || wn.classList.contains('nav-disabled')) return;
+        writingNavigateNext();
     });
 
     writingState.articles = MEDIUM_FALLBACK.slice();
     renderWriting();
+    initSwipeGestures();
 
     var rssUrl = 'https://medium.com/feed/@dewanjee.swarup';
 
@@ -1167,7 +1263,8 @@ function renderWriting() {
         'https://api.allorigins.win/raw?url='
     ];
 
-    function fetchMedium(i = 0) {
+    function fetchMedium(i) {
+        i = i || 0;
         if (i >= proxies.length) {
             console.error("All proxies failed");
             return;
@@ -1176,8 +1273,8 @@ function renderWriting() {
         var url = proxies[i] + encodeURIComponent(rssUrl) + '&_=' + Date.now();
 
         fetch(url)
-            .then(r => r.json())
-            .then(data => {
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
 
                 var items = data.items || [];
 
@@ -1185,13 +1282,13 @@ function renderWriting() {
                     var parser = new DOMParser();
                     var xml = parser.parseFromString(data.contents, "text/xml");
 
-                    items = Array.from(xml.querySelectorAll("item")).map(function (item) {
+                    items = Array.from(xml.querySelectorAll("item")).map(function(item) {
                         return {
-                            title: item.querySelector("title")?.textContent,
-                            link: item.querySelector("link")?.textContent,
-                            pubDate: item.querySelector("pubDate")?.textContent,
-                            description: item.querySelector("description")?.textContent,
-                            categories: Array.from(item.querySelectorAll("category")).map(c => c.textContent)
+                            title: item.querySelector("title") ? item.querySelector("title").textContent : null,
+                            link: item.querySelector("link") ? item.querySelector("link").textContent : null,
+                            pubDate: item.querySelector("pubDate") ? item.querySelector("pubDate").textContent : null,
+                            description: item.querySelector("description") ? item.querySelector("description").textContent : null,
+                            categories: Array.from(item.querySelectorAll("category")).map(function(c) { return c.textContent; })
                         };
                     });
                 }
@@ -1199,7 +1296,6 @@ function renderWriting() {
                 if (!items.length) throw new Error("No items");
 
                 var articles = items.map(function(item) {
-
                     var tmp = document.createElement('div');
                     tmp.innerHTML = item.description || '';
 
@@ -1208,7 +1304,7 @@ function renderWriting() {
                         .trim()
                         .slice(0, 180);
 
-                    if (plain.length === 180) plain += '…';
+                    if (plain.length === 180) plain += '\u2026';
 
                     var pubDate = '';
                     if (item.pubDate) {
@@ -1217,7 +1313,7 @@ function renderWriting() {
                                 year: 'numeric',
                                 month: 'short'
                             });
-                        } catch(e){}
+                        } catch(e) {}
                     }
 
                     var art = {
@@ -1246,9 +1342,7 @@ function renderWriting() {
     }
 
     fetchMedium();
-
 })();
-
 
 (function patchThemeForWriting() {
     var btn = document.getElementById('theme-toggle');
@@ -1258,3 +1352,8 @@ function renderWriting() {
         renderWriting();
     });
 })();
+
+// Keep nav state correct on resize
+window.addEventListener('resize', function() {
+    updateWritingNav();
+});
