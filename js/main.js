@@ -1049,7 +1049,7 @@ function inferTopicBadge(tags) {
 var MEDIUM_FALLBACK = [
     {
         title: 'Beyond the Black Box: Is Explainable AI Enough for Medical Diagnosis?',
-        description: 'Exploring the promises and limitations of Explainable AI (XAI) in high-stakes clinical settings — can transparency alone bridge the gap between algorithmic predictions and physician trust?',
+        description: 'Exploring the promises and limitations of Explainable AI (XAI) in high-stakes clinical settings.',
         link: 'https://medium.com/@dewanjee.swarup/beyond-the-black-box-is-explainable-ai-enough-for-medical-diagnosis-d733c8c751af',
         pubDate: 'Apr 2025',
         tags: ['XAI', 'Healthcare', 'ML', 'Deep Learning']
@@ -1058,22 +1058,60 @@ var MEDIUM_FALLBACK = [
 
 function writingPageSize() { return isMobile() ? MOB_WRITING_PAGE : WRITING_PAGE; }
 
+
+function inferWritingTags(article) {
+    var text = ((article.title || '') + ' ' + (article.description || '')).toLowerCase();
+    var tags = [];
+
+    if (text.includes('explainable') || text.includes('xai')) tags.push('XAI');
+    if (text.includes('health') || text.includes('medical') || text.includes('clinical')) tags.push('Healthcare');
+    if (text.includes('deep learning') || text.includes('neural')) tags.push('Deep Learning');
+    if (text.includes('machine learning') || text.includes('ml')) tags.push('ML');
+    if (text.includes('data')) tags.push('Data');
+    if (text.includes('ai') || text.includes('artificial intelligence')) tags.push('AI');
+
+    return tags.length ? tags.slice(0, 4) : ['AI'];
+}
+
+
+function inferTopicBadge(tags) {
+    if (!tags || tags.length === 0) return 'AI';
+
+    var t = tags.map(t => t.toLowerCase());
+
+    if (t.includes('xai')) return 'XAI';
+    if (t.includes('explainable-ai')) return 'XAI';
+    if (t.includes('healthcare')) return 'Health';
+    if (t.includes('deep-learning')) return 'DL';
+    if (t.includes('machine-learning')) return 'ML';
+    if (t.includes('data-analysis')) return 'Data Analysis';
+    if (t.includes('ai')) return 'AI';
+     if (t.includes('artificial-intelligence')) return 'AI';
+
+    return tags[0];
+}
+
+
 function renderWriting() {
     var container = document.getElementById('writing-carousel');
     if (!container) return;
+
     var ac = accentStyle();
     var all = writingState.articles;
+
     if (all.length === 0) {
         container.innerHTML = '<div style="text-align:center;padding:3rem;opacity:0.6;width:100%">Loading articles...</div>';
         return;
     }
+
     var page = writingPageSize();
     var slice = all.slice(writingState.index, writingState.index + page);
     var isFew = !isMobile() && slice.length < 3;
 
     function cardHtml(a) {
-        var tags = a.tags || inferWritingTags(a);
+        var tags = a.tags && a.tags.length ? a.tags : inferWritingTags(a);
         var badge = inferTopicBadge(tags);
+
         return '<div class="writing-card">' +
             '<div class="writing-card-content">' +
             '<div class="writing-card-header">' +
@@ -1081,12 +1119,12 @@ function renderWriting() {
             '</div>' +
             '<h3 class="card-title writing-card-title">' + a.title + '</h3>' +
             '<p class="card-description writing-card-desc">' + (a.description || '') + '</p>' +
-            '<div class="card-tags">' + tags.map(function(t){ return '<span class="tag">' + t + '</span>'; }).join('') + '</div>' +
+            '<div class="card-tags">' +
+            tags.map(function(t){ return '<span class="tag">' + t + '</span>'; }).join('') +
+            '</div>' +
             '<div class="writing-card-footer">' +
             (a.pubDate ? '<span style="font-size:0.75rem;' + ac + '">' + a.pubDate + '</span>' : '') +
-            '<a href="' + a.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary writing-read-btn">' +
-            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' +
-            ' Read More</a>' +
+            '<a href="' + a.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary writing-read-btn">Read More</a>' +
             '</div>' +
             '</div></div>';
     }
@@ -1094,113 +1132,128 @@ function renderWriting() {
     var cardsHtml = slice.map(cardHtml).join('');
 
     if (isMobile()) {
-        var atStart = writingState.index === 0;
-        var atEnd   = writingState.index + page >= all.length;
         container.className = 'writing-carousel';
-        container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, 'writing-carousel-inner', 'writing-inner');
-        var prevBtn = container.querySelector('.mob-prev-btn');
-        var nextBtn = container.querySelector('.mob-next-btn');
-        if (prevBtn) prevBtn.addEventListener('click', function(){ writingState.index = Math.max(0, writingState.index - page); renderWriting(); });
-        if (nextBtn) nextBtn.addEventListener('click', function(){ if (writingState.index + page < all.length) writingState.index += page; renderWriting(); });
-        addSwipe(container.querySelector('#writing-inner'),
-            function(){ writingState.index = Math.max(0, writingState.index - page); renderWriting(); },
-            function(){ if (writingState.index + page < all.length) { writingState.index += page; renderWriting(); } }
-        );
-        var wp = document.getElementById('writing-prev'); var wn = document.getElementById('writing-next');
-        if (wp) wp.style.display = 'none'; if (wn) wn.style.display = 'none';
+        container.innerHTML = cardsHtml;
     } else {
         if (isFew) container.classList.add('centered-few'); else container.classList.remove('centered-few');
         container.innerHTML = cardsHtml;
-        var wp = document.getElementById('writing-prev'); var wn = document.getElementById('writing-next');
-        if (wp) { wp.style.display = ''; wp.disabled = writingState.index === 0; }
-        if (wn) { wn.style.display = ''; wn.disabled = writingState.index + page >= all.length; }
     }
 }
 
-function parseMediumFeed(xmlText) {
-    try {
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(xmlText, 'text/xml');
-        var items = doc.querySelectorAll('item');
-        var articles = [];
-        items.forEach(function(item) {
-            var title = (item.querySelector('title') || {}).textContent || '';
-            var link  = (item.querySelector('link') || {}).textContent || '';
-            // Some parsers return link as next sibling text
-            if (!link) {
-                var linkEl = item.querySelector('link');
-                if (linkEl && linkEl.nextSibling) link = linkEl.nextSibling.nodeValue || '';
-            }
-            var pub   = (item.querySelector('pubDate') || {}).textContent || '';
-            var cats  = Array.from(item.querySelectorAll('category')).map(function(c){ return c.textContent; });
-            // Extract description from content:encoded or description
-            var contentEl = item.querySelector('encoded') || item.querySelector('description');
-            var rawHtml = contentEl ? contentEl.textContent : '';
-            // Strip HTML for plain text snippet
-            var tmp = document.createElement('div');
-            tmp.innerHTML = rawHtml;
-            var plain = (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim().slice(0, 180);
-            if (plain.length === 180) plain += '…';
-
-            var pubDate = '';
-            if (pub) {
-                try { pubDate = new Date(pub).toLocaleDateString('en-US', {year:'numeric',month:'short'}); } catch(e){}
-            }
-
-            var article = { title: title, link: link.trim(), description: plain, pubDate: pubDate, tags: cats.slice(0,4) };
-            article.tags = article.tags.length > 0 ? article.tags : inferWritingTags(article);
-            articles.push(article);
-        });
-        return articles;
-    } catch(e) { return []; }
-}
 
 (function initWriting() {
     var wp = document.getElementById('writing-prev');
     var wn = document.getElementById('writing-next');
-    if (wp) wp.addEventListener('click', function(){ writingState.index = Math.max(0, writingState.index - WRITING_PAGE); renderWriting(); });
-    if (wn) wn.addEventListener('click', function(){ if (writingState.index + WRITING_PAGE < writingState.articles.length) writingState.index += WRITING_PAGE; renderWriting(); });
 
-    // Show fallback immediately so section isn't blank
+    if (wp) wp.addEventListener('click', function(){
+        writingState.index = Math.max(0, writingState.index - WRITING_PAGE);
+        renderWriting();
+    });
+
+    if (wn) wn.addEventListener('click', function(){
+        if (writingState.index + WRITING_PAGE < writingState.articles.length) {
+            writingState.index += WRITING_PAGE;
+            renderWriting();
+        }
+    });
+
     writingState.articles = MEDIUM_FALLBACK.slice();
     renderWriting();
 
-    // Attempt live fetch via rss2json (free, no-auth proxy)
     var rssUrl = 'https://medium.com/feed/@dewanjee.swarup';
-    var proxyUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(rssUrl) + '&count=20';
 
-    fetch(proxyUrl)
-        .then(function(r){ return r.json(); })
-        .then(function(data) {
-            if (data.status !== 'ok' || !data.items || data.items.length === 0) throw new Error('no items');
-            var articles = data.items.map(function(item) {
-                var cats = (item.categories || []).slice(0, 4);
-                var tmp = document.createElement('div');
-                tmp.innerHTML = item.description || item.content || '';
-                var plain = (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim().slice(0, 180);
-                if (plain.length === 180) plain += '…';
-                var pubDate = '';
-                if (item.pubDate) {
-                    try { pubDate = new Date(item.pubDate).toLocaleDateString('en-US', {year:'numeric',month:'short'}); } catch(e){}
+    var proxies = [
+        'https://api.rss2json.com/v1/api.json?rss_url=',
+        'https://api.allorigins.win/raw?url='
+    ];
+
+    function fetchMedium(i = 0) {
+        if (i >= proxies.length) {
+            console.error("All proxies failed");
+            return;
+        }
+
+        var url = proxies[i] + encodeURIComponent(rssUrl) + '&_=' + Date.now();
+
+        fetch(url)
+            .then(r => r.json())
+            .then(data => {
+
+                var items = data.items || [];
+
+                if (!items.length && data.contents) {
+                    var parser = new DOMParser();
+                    var xml = parser.parseFromString(data.contents, "text/xml");
+
+                    items = Array.from(xml.querySelectorAll("item")).map(function (item) {
+                        return {
+                            title: item.querySelector("title")?.textContent,
+                            link: item.querySelector("link")?.textContent,
+                            pubDate: item.querySelector("pubDate")?.textContent,
+                            description: item.querySelector("description")?.textContent,
+                            categories: Array.from(item.querySelectorAll("category")).map(c => c.textContent)
+                        };
+                    });
                 }
-                var art = { title: item.title, link: item.link, description: plain, pubDate: pubDate, tags: cats };
-                art.tags = art.tags.length > 0 ? art.tags : inferWritingTags(art);
-                return art;
+
+                if (!items.length) throw new Error("No items");
+
+                var articles = items.map(function(item) {
+
+                    var tmp = document.createElement('div');
+                    tmp.innerHTML = item.description || '';
+
+                    var plain = (tmp.textContent || '')
+                        .replace(/\s+/g, ' ')
+                        .trim()
+                        .slice(0, 180);
+
+                    if (plain.length === 180) plain += '…';
+
+                    var pubDate = '';
+                    if (item.pubDate) {
+                        try {
+                            pubDate = new Date(item.pubDate).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short'
+                            });
+                        } catch(e){}
+                    }
+
+                    var art = {
+                        title: item.title,
+                        link: item.link,
+                        description: plain,
+                        pubDate: pubDate,
+                        tags: (item.categories || []).slice(0, 4)
+                    };
+
+                    if (!art.tags || art.tags.length === 0) {
+                        art.tags = inferWritingTags(art);
+                    }
+
+                    return art;
+                });
+
+                writingState.articles = articles;
+                writingState.index = 0;
+                renderWriting();
+            })
+            .catch(function(err) {
+                console.error("Proxy failed:", err);
+                fetchMedium(i + 1);
             });
-            writingState.articles = articles;
-            writingState.index = 0;
-            renderWriting();
-        })
-        .catch(function() {
-            // Fallback already shown, keep it
-        });
+    }
+
+    fetchMedium();
+
 })();
 
-// Re-render writing on theme change (patch existing theme toggle)
-var _origThemeClick = document.getElementById('theme-toggle') && document.getElementById('theme-toggle').onclick;
+
 (function patchThemeForWriting() {
     var btn = document.getElementById('theme-toggle');
     if (!btn) return;
+
     btn.addEventListener('click', function() {
         renderWriting();
     });
