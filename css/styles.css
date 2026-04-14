@@ -1283,3 +1283,46 @@ body.dark-theme .writing-card .btn-primary svg {
     stroke: var(--dark-btn-text) !important;
     fill:   none !important;
 }
+
+/* ── Writing nav arrows – shared base ── */
+#writing-prev,
+#writing-next {
+    cursor: pointer;
+    transition: opacity 0.25s ease, transform 0.25s ease, pointer-events 0s;
+    z-index: 2;
+}
+
+/* ── Desktop: vertically centered beside the carousel ── */
+.nav-arrow-desktop {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.nav-arrow-desktop#writing-prev {
+    left: -48px;          /* adjust to taste */
+}
+
+.nav-arrow-desktop#writing-next {
+    right: -48px;
+}
+
+/* ── Mobile: below the container, inline, centered ── */
+.nav-arrow-mobile {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    display: inline-flex;
+    margin-top: 1rem;
+}
+
+/* ── Disabled state ── */
+.nav-disabled,
+.nav-disabled:hover,
+.nav-disabled:active {
+    opacity: 0.25 !important;
+    cursor: default !important;
+    pointer-events: none !important;
+}
