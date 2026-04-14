@@ -1284,45 +1284,69 @@ body.dark-theme .writing-card .btn-primary svg {
     fill:   none !important;
 }
 
-/* ── Writing nav arrows – shared base ── */
-#writing-prev,
-#writing-next {
-    cursor: pointer;
-    transition: opacity 0.25s ease, transform 0.25s ease, pointer-events 0s;
-    z-index: 2;
+/* ══════════════════════════════════════════════
+   Desktop: arrows vertically centered on sides
+   ══════════════════════════════════════════════ */
+.writing-desktop-layout {
+    position: relative;
 }
 
-/* ── Desktop: vertically centered beside the carousel ── */
-.nav-arrow-desktop {
+.writing-desktop-layout #writing-prev {
     position: absolute;
+    left: -48px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-.nav-arrow-desktop#writing-prev {
-    left: -48px;          /* adjust to taste */
-}
-
-.nav-arrow-desktop#writing-next {
+.writing-desktop-layout #writing-next {
+    position: absolute;
     right: -48px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-/* ── Mobile: below the container, inline, centered ── */
-.nav-arrow-mobile {
-    position: relative !important;
+/* ══════════════════════════════════════════════
+   Mobile: arrows in a centered row BELOW the
+   carousel, above "View all on Medium"
+   ══════════════════════════════════════════════ */
+.writing-mobile-layout {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: static !important;
+}
+
+/* Carousel takes full width → forces its own row */
+.writing-mobile-layout #writing-carousel {
+    width: 100% !important;
+    order: 1 !important;
+    flex-shrink: 0;
+}
+
+/* Both arrows drop into the next row, side by side, centered */
+.writing-mobile-layout #writing-prev,
+.writing-mobile-layout #writing-next {
+    position: static !important;
     top: auto !important;
     left: auto !important;
     right: auto !important;
+    bottom: auto !important;
     transform: none !important;
-    display: inline-flex;
-    margin-top: 1rem;
+    order: 2 !important;
+    margin-top: 1.25rem !important;
+    margin-left: 0.5rem !important;
+    margin-right: 0.5rem !important;
 }
 
-/* ── Disabled state ── */
+/* ══════════════════════════════════════════════
+   Disabled state (both desktop & mobile)
+   ══════════════════════════════════════════════ */
 .nav-disabled,
 .nav-disabled:hover,
-.nav-disabled:active {
-    opacity: 0.25 !important;
+.nav-disabled:active,
+.nav-disabled:focus {
+    opacity: 0.2 !important;
     cursor: default !important;
     pointer-events: none !important;
 }

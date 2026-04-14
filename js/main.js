@@ -1061,56 +1061,43 @@ var MEDIUM_FALLBACK = [
 
 function writingPageSize() { return isMobile() ? MOB_WRITING_PAGE : WRITING_PAGE; }
 
+/* ── Nav state: disables arrows & toggles wrapper layout class ── */
 function updateWritingNav() {
     var wp = document.getElementById('writing-prev');
     var wn = document.getElementById('writing-next');
     if (!wp || !wn) return;
 
-    var all = writingState.articles;
+    // Find the parent that wraps the carousel + arrows
+    var wrapper = wp.parentElement;
     var mobile = isMobile();
 
-    // Toggle positioning classes
-    wp.classList.remove('nav-arrow-desktop', 'nav-arrow-mobile');
-    wn.classList.remove('nav-arrow-desktop', 'nav-arrow-mobile');
-
+    // Toggle layout class on the wrapper itself
     if (mobile) {
-        wp.classList.add('nav-arrow-mobile');
-        wn.classList.add('nav-arrow-mobile');
+        wrapper.classList.add('writing-mobile-layout');
+        wrapper.classList.remove('writing-desktop-layout');
     } else {
-        wp.classList.add('nav-arrow-desktop');
-        wn.classList.add('nav-arrow-desktop');
+        wrapper.classList.remove('writing-mobile-layout');
+        wrapper.classList.add('writing-desktop-layout');
     }
 
-    // Compute disabled states
+    var all = writingState.articles;
     var canGoPrev = writingState.index > 0;
     var canGoNext;
 
     if (mobile) {
         canGoNext = writingState.index + MOB_WRITING_PAGE < all.length;
     } else {
-        // Desktop: right arrow only works when there are at least 4 items
-        // AND there is actually a next page to show
+        // Desktop: right arrow only works when ≥4 items AND a next page exists
         canGoNext = all.length >= 4 && (writingState.index + WRITING_PAGE < all.length);
     }
 
     wp.disabled = !canGoPrev;
     wn.disabled = !canGoNext;
 
-    if (canGoPrev) {
-        wp.classList.remove('nav-disabled');
-        wp.removeAttribute('aria-disabled');
-    } else {
-        wp.classList.add('nav-disabled');
-        wp.setAttribute('aria-disabled', 'true');
-    }
-
-    if (canGoNext) {
-        wn.classList.remove('nav-disabled');
-        wn.removeAttribute('aria-disabled');
-    } else {
-        wn.classList.add('nav-disabled');
-        wn.setAttribute('aria-disabled', 'true');
-    }
+    wp.classList.toggle('nav-disabled', !canGoPrev);
+    wn.classList.toggle('nav-disabled', !canGoNext);
+    wp.setAttribute('aria-disabled', String(!canGoPrev));
+    wn.setAttribute('aria-disabled', String(!canGoNext));
 }
 
 function renderWriting() {
@@ -1177,16 +1164,6 @@ function initSwipeGestures() {
         swipeState.tracking = true;
     }, { passive: true });
 
-    container.addEventListener('touchmove', function(e) {
-        // Prevent vertical scroll takeover only when swipe is clearly horizontal
-        if (!swipeState.tracking) return;
-        var dx = Math.abs(e.touches[0].clientX - swipeState.startX);
-        var dy = Math.abs(e.touches[0].clientY - swipeState.startY);
-        if (dx > dy && dx > 15) {
-            // e.preventDefault(); // uncomment if you want to block scroll during horizontal swipe
-        }
-    }, { passive: true });
-
     container.addEventListener('touchend', function(e) {
         if (!swipeState.tracking) return;
         swipeState.tracking = false;
@@ -1202,16 +1179,14 @@ function initSwipeGestures() {
         if (Math.abs(diffX) < 50 || Math.abs(diffY) > Math.abs(diffX)) return;
 
         if (diffX > 0) {
-            // Swiped left → go next
-            writingNavigateNext();
+            writingNavigateNext();   // swiped left → next
         } else {
-            // Swiped right → go prev
-            writingNavigatePrev();
+            writingNavigatePrev();   // swiped right → prev
         }
     }, { passive: true });
 }
 
-/* ── Navigation helpers (used by both buttons and swipe) ── */
+/* ── Navigation helpers (shared by buttons & swipe) ── */
 function writingNavigateNext() {
     var canGoNext;
 
@@ -1229,7 +1204,6 @@ function writingNavigateNext() {
 
 function writingNavigatePrev() {
     if (writingState.index <= 0) return;
-
     var page = writingPageSize();
     writingState.index = Math.max(0, writingState.index - page);
     renderWriting();
@@ -1353,7 +1327,6 @@ function writingNavigatePrev() {
     });
 })();
 
-// Keep nav state correct on resize
 window.addEventListener('resize', function() {
     updateWritingNav();
 });
