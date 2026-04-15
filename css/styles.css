@@ -217,13 +217,6 @@ body.dark-theme .mobile-menu-btn:hover { background: var(--dark-btn-gradient); c
     align-items: center;
 }
 
-/*
-  INVISIBLE HOVER BRIDGE — this is the key fix.
-  Creates a rectangular zone below the trigger that catches
-  the mouse cursor so it never "falls into the gap" between
-  the nav item and the dropdown panel.
-  Has no background/border so it is completely invisible.
-*/
 .nav-dropdown-wrap::after {
     content: '';
     position: absolute;
@@ -263,9 +256,6 @@ body.dark-theme .mobile-menu-btn:hover { background: var(--dark-btn-gradient); c
     padding: 0.5rem 0.4rem 0.4rem;
     opacity: 0;
     pointer-events: none;
-    /* Only opacity transition — NO transform shift.
-       The old translateY(-6px) caused the panel to move
-       position during show/hide, making the cursor "fall off". */
     transition: opacity 0.2s ease;
     z-index: 2000;
 }
@@ -1195,8 +1185,38 @@ body.dark-theme .writing-card:hover { border-color: #fff; box-shadow: 0 20px 40p
 
 .writing-card-header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 0.75rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.writing-pub-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.22rem 0.6rem;
+    border-radius: 9999px;
+    letter-spacing: 0.02em;
+    border: 1px solid transparent;
+    background: transparent;
+}
+body:not(.dark-theme) .writing-pub-badge {
+    border-color: #e2e8f0;
+    color: #475569;
+}
+body.dark-theme .writing-pub-badge {
+    border-color: rgba(255,255,255,0.15);
+    color: #b4b4bc;
+}
+
+/* Medium icon inside pub badge and read btn inherits color */
+body.dark-theme .writing-pub-badge svg,
+body.dark-theme .writing-read-btn svg {
+    fill: currentColor;
 }
 
 .writing-topic-badge {

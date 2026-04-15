@@ -434,45 +434,61 @@ const portfolioData = {
     },
 
     experience: [
-        {
-            title: "Machine Learning & AI Researcher",
-            company: "Independent Researcher",
-            date: "Jan 2024 - Present",
-            location: "Chattagram, Bangladesh",
-            description: [
-        "Designed and developed multiple ML/DL models in healthcare and clinical domains, achieving up to 99.31% accuracy.",
-        "Conducted end-to-end research including literature review, methodology design, model development, and experimental evaluation.",
-        "Published 5 peer-reviewed papers (4 IEEE conferences, 1 Q3 journal), with additional Q1 (under review) and Q2 (in progress) manuscripts.",
-        "Worked with multimodal datasets including clinical, GPS, EEG, vocal, and textual data."
-             ],
-            scholarLink: "https://scholar.google.com/citations?user=nlgsBIIAAAAJ&hl=en"
-        },
-        {
-            title: "Data Science Virtual Internship Program",
-            company: "LetsGrowMore",
-            date: "Aug 2024 - Sep 2024",
-            location: "Jasra, Uttar Pradesh, India · Remote",
-            projects: [
-                { name: "Iris Species Classification", description: "Implemented a Decision Tree algorithm to classify iris species using a well-known dataset, achieving 91% accuracy in predictions.", image: "https://i.postimg.cc/cL6tCg6w/ifc.png" },
-                { name: "Stock Market Trend Forecasting", description: "Utilized a Stacked LSTM model to analyze GitHub stock data, successfully predicting market trends with 93% accuracy.", image: "https://i.postimg.cc/Nj9CXxwx/sma.jpg" }
-            ],
-            companyLogo: "https://i.postimg.cc/FFWrKPKC/letsgrowmore-logo.jpg",
-            offerLetterLink: "https://drive.google.com/file/d/1a8T21ifdQraAzcgY-5yL0OYllJzbQLL8/view"
-        },
-        {
-            title: "Artificial Intelligence Virtual Internship",
-            company: "CodSoft",
-            date: "Aug 2024 - Sep 2024",
-            location: "LB Garden Lane, Kolkata · Remote",
-            projects: [
-                { name: "Tic-Tac-Toe AI Agent", description: "Developed an AI-based Tic-Tac-Toe game using the Minimax algorithm with Alpha-Beta Pruning, achieving an optimal 99% success rate.", image: "https://i.postimg.cc/xTc4P54Z/artwork.png" },
-                { name: "Recommendation System", description: "Built a collaborative filtering-based recommendation system by analyzing user interactions across two datasets.", image: "https://i.postimg.cc/kMcVvFgW/MBRS.jpg" },
-                { name: "Image Captioning AI", description: "Engineered an image captioning model using ResNet and LSTM, enabling accurate caption generation with 95% accuracy.", image: "https://i.postimg.cc/rwdKTBC9/IC.jpg" }
-            ],
-            companyLogo: "https://i.postimg.cc/SxKC911X/CSl.jpg",
-            offerLetterLink: "https://drive.google.com/file/d/1V9R_EfSIzt1cObe1HKA335B7muaQCCzG/view?usp=sharing"
-        }
-    ],
+    {
+        title: "Machine Learning & AI Researcher",
+        company: "Independent Researcher",
+        date: "Jan 2024 - Present",
+        location: "Chattagram, Bangladesh",
+        tags: ["Predictive Modeling", "5 Publications", "ML/DL", "Healthcare AI"],
+        description: [
+            "Designed and developed multiple ML/DL models in healthcare and clinical domains, achieving up to 99.31% accuracy.",
+            "Conducted end-to-end research including literature review, methodology design, model development, and experimental evaluation.",
+            "Published 5 peer-reviewed papers (4 IEEE conferences, 1 Q3 journal), with additional Q1 (under review) and Q2 (in progress) manuscripts.",
+            "Worked with multimodal datasets including clinical, GPS, EEG, vocal, and textual data."
+        ],
+        scholarLink: "https://scholar.google.com/citations?user=nlgsBIIAAAAJ&hl=en"
+    },
+    {
+        title: "Technical Writer",
+        company: "Medium",
+        date: "Jan 2026 - Present",
+        location: "Chattagram, Bangladesh",
+        companyLogo: "https://i.postimg.cc/L61XTJMX/medium-logo.jpg",
+        tags: ["AI in Healthcare","3 Publications", "Explainable AI", "LLM Hallucination", "XAI Transparency"],
+        description: [
+            "Specialized in AI healthcare writing, focusing on reliability, interpretability, and real-world risk.",
+            "Authored and published articles on LLM hallucinations, confidence calibration, and XAI in healthcare.",
+            "Synthesized research into high-impact narratives; contributed to major Medium AI publications.",
+            "Translated complex AI concepts into concise, actionable insights."
+        ],
+        mediumLink: "https://medium.com/@dewanjee.swarup"
+    },
+    {
+        title: "Data Science Virtual Internship Program",
+        company: "LetsGrowMore",
+        date: "Aug 2024 - Sep 2024",
+        location: "Jasra, Uttar Pradesh, India · Remote",
+        projects: [
+            { name: "Iris Species Classification", description: "Implemented a Decision Tree algorithm to classify iris species using a well-known dataset, achieving 91% accuracy in predictions.", image: "https://i.postimg.cc/cL6tCg6w/ifc.png" },
+            { name: "Stock Market Trend Forecasting", description: "Utilized a Stacked LSTM model to analyze GitHub stock data, successfully predicting market trends with 93% accuracy.", image: "https://i.postimg.cc/Nj9CXxwx/sma.jpg" }
+        ],
+        companyLogo: "https://i.postimg.cc/FFWrKPKC/letsgrowmore-logo.jpg",
+        offerLetterLink: "https://drive.google.com/file/d/1a8T21ifdQraAzcgY-5yL0OYllJzbQLL8/view"
+    },
+    {
+        title: "Artificial Intelligence Virtual Internship",
+        company: "CodSoft",
+        date: "Aug 2024 - Sep 2024",
+        location: "LB Garden Lane, Kolkata · Remote",
+        projects: [
+            { name: "Tic-Tac-Toe AI Agent", description: "Developed an AI-based Tic-Tac-Toe game using the Minimax algorithm with Alpha-Beta Pruning, achieving an optimal 99% success rate.", image: "https://i.postimg.cc/xTc4P54Z/artwork.png" },
+            { name: "Recommendation System", description: "Built a collaborative filtering-based recommendation system by analyzing user interactions across two datasets.", image: "https://i.postimg.cc/kMcVvFgW/MBRS.jpg" },
+            { name: "Image Captioning AI", description: "Engineered an image captioning model using ResNet and LSTM, enabling accurate caption generation with 95% accuracy.", image: "https://i.postimg.cc/rwdKTBC9/IC.jpg" }
+        ],
+        companyLogo: "https://i.postimg.cc/SxKC911X/CSl.jpg",
+        offerLetterLink: "https://drive.google.com/file/d/1V9R_EfSIzt1cOmWGMj/view?usp=sharing"
+    }
+],
 
     cvLink: "https://drive.google.com/file/d/1keQp8E6SmcYVojAslxPVvs_M11shGD5_/view?usp=sharing"
 };

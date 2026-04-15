@@ -335,10 +335,8 @@ function renderExperience() {
                     exp.description
                         ? `
                         <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem">
-                            <span class="tag"> Predictive Modeling</span>
-                            <span class="tag"> 5 Publications</span>
-                            <span class="tag"> ML/DL</span>
-                            <span class="tag"> Healthcare AI</span>
+                            ${(exp.tags || ['Predictive Modeling','5 Publications','ML/DL','Healthcare AI'])
+                               .map(t => `<span class="tag">${t}</span>`).join('')}
                         </div>
                         `
                         : ''
@@ -386,6 +384,20 @@ function renderExperience() {
                                     <path d="M12 24L0 9l12-9 12 9-12 15z"/>
                                 </svg>
                                 Google Scholar
+                            </a>
+                            `
+                            : ''
+                    }
+                    ${
+                        exp.mediumLink
+                            ? `
+                            <a href="${exp.mediumLink}" target="_blank"
+                               class="btn btn-primary"
+                               style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem">
+                                <svg width="14" height="14" viewBox="0 0 1043.63 592.71" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                     <path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460.03 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36M911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.17-279 147.17 124.9 147.17 279M1043.63 296.36c0 138-23.17 249.94-51.76 249.94s-51.75-111.9-51.75-249.94 23.17-249.94 51.75-249.94 51.76 111.9 51.76 249.94"/>
+                                </svg>
+                                Medium
                             </a>
                             `
                             : ''
@@ -1029,6 +1041,7 @@ function inferWritingTags(item) {
     if (/deep learn|neural|cnn|rnn|lstm|transformer/.test(text))    tags.push('Deep Learning');
     if (/machine learn|ml|random forest|svm|classifier/.test(text)) tags.push('ML');
     if (/nlp|language model|llm|gpt|bert/.test(text))               tags.push('NLP');
+    if (/LLM/.test(text))               tags.push('LLM');
     if (/data scien|data analys|visualization/.test(text))          tags.push('Data Science');
     if (/python|tensorflow|pytorch|keras/.test(text))                tags.push('Python');
     if (tags.length === 0) tags.push('AI');
@@ -1042,6 +1055,7 @@ function inferTopicBadge(tags) {
     if (tags.indexOf('Deep Learning') !== -1) return 'Deep Learning';
     if (tags.indexOf('NLP') !== -1)          return 'NLP';
     if (tags.indexOf('ML') !== -1)           return 'ML';
+     if (tags.indexOf('ML') !== -1)           return 'ML';
     return 'AI';
 }
 
@@ -1052,7 +1066,9 @@ var MEDIUM_FALLBACK = [
         description: 'Exploring the promises and limitations of Explainable AI (XAI) in high-stakes clinical settings.',
         link: 'https://medium.com/@dewanjee.swarup/beyond-the-black-box-is-explainable-ai-enough-for-medical-diagnosis-d733c8c751af',
         pubDate: 'Apr 2025',
-        tags: ['XAI', 'Healthcare', 'ML', 'Deep Learning']
+        tags: ['XAI', 'Healthcare', 'ML', 'Deep Learning'],
+        publication: 'Towards AI'
+
     }
 ];
 
@@ -1080,6 +1096,8 @@ function inferTopicBadge(tags) {
     var t = tags.map(t => t.toLowerCase());
 
     if (t.includes('xai')) return 'XAI';
+    if (t.includes('llm')) return 'LLM';
+    if (t.includes('big-data')) return 'Big Data';
     if (t.includes('explainable-ai')) return 'XAI';
     if (t.includes('healthcare')) return 'Health';
     if (t.includes('deep-learning')) return 'DL';
@@ -1091,6 +1109,46 @@ function inferTopicBadge(tags) {
     return tags[0];
 }
 
+
+function inferPublication(article) {
+    // 1. Explicit field wins
+    if (article.publication) return article.publication;
+
+    // 2. Check article URL — Medium publication slugs appear before the post slug
+    // e.g. https://towardsdatascience.com/... or https://medium.com/towards-data-engineering/...
+    var url = article.link || '';
+    if (/towardsdatascience\.com/.test(url))          return 'Towards Data Science';
+    if (/towards-data-engineering/.test(url))          return 'Towards Data Engineering';
+    if (/towards-ai/.test(url) || /towardsai\.net/.test(url)) return 'Towards AI';
+    if (/medium\.com\/towards-data-science/.test(url)) return 'Towards Data Science';
+    if (/medium\.com\/[^/@]/.test(url)) {
+        // Extract the publication slug from medium.com/pub-name/article-slug
+        var match = url.match(/medium\.com\/([^/@][^/]+)\//);
+        if (match) {
+            // Convert slug to title case: "towards-data-engineering" → "Towards Data Engineering"
+            return match[1]
+                .split('-')
+                .map(function(w){ return w.charAt(0).toUpperCase() + w.slice(1); })
+                .join(' ');
+        }
+    }
+
+    // 3. Check tags for known publication names
+    var tagText = (article.tags || []).join(' ').toLowerCase();
+    if (/towards data engineering/.test(tagText)) return 'Towards Data Engineering';
+    if (/towards data science/.test(tagText))     return 'Towards Data Science';
+    if (/towards ai/.test(tagText))               return 'Towards AI';
+    if (/towards explainable ai/.test(tagText))       return 'Towards Explainable Ai';
+    if (/javascript in plain english/.test(tagText)) return 'JavaScript in Plain English';
+
+    // 4. Check title/description text
+    var bodyText = ((article.title || '') + ' ' + (article.description || '')).toLowerCase();
+    if (/towards data engineering/.test(bodyText)) return 'Towards Data Engineering';
+    if (/towards data science/.test(bodyText))     return 'Towards Data Science';
+
+    // 5. Default
+    return 'Medium';
+}
 
 function renderWriting() {
     var container = document.getElementById('writing-carousel');
@@ -1108,13 +1166,20 @@ function renderWriting() {
     var slice = all.slice(writingState.index, writingState.index + page);
     var isFew = !isMobile() && slice.length < 3;
 
+    // Medium SVG icon (inline, same M-dot as experience button)
+    var MEDIUM_ICON = '<svg width="13" height="13" viewBox="0 0 1043.63 592.71" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460.03 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36M911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.17-279 147.17 124.9 147.17 279M1043.63 296.36c0 138-23.17 249.94-51.76 249.94s-51.75-111.9-51.75-249.94 23.17-249.94 51.75-249.94 51.76 111.9 51.76 249.94"/></svg>';
+
     function cardHtml(a) {
         var tags = a.tags && a.tags.length ? a.tags : inferWritingTags(a);
         var badge = inferTopicBadge(tags);
 
+        // Detect publication name — check tags or fallback to Medium
+        var pubName = inferPublication(a);
+
         return '<div class="writing-card">' +
             '<div class="writing-card-content">' +
             '<div class="writing-card-header">' +
+            '<span class="writing-pub-badge">' + MEDIUM_ICON + pubName + '</span>' +
             '<span class="writing-topic-badge">' + badge + '</span>' +
             '</div>' +
             '<h3 class="card-title writing-card-title">' + a.title + '</h3>' +
@@ -1124,7 +1189,8 @@ function renderWriting() {
             '</div>' +
             '<div class="writing-card-footer">' +
             (a.pubDate ? '<span style="font-size:0.75rem;' + ac + '">' + a.pubDate + '</span>' : '') +
-            '<a href="' + a.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary writing-read-btn">Read More</a>' +
+            '<a href="' + a.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary writing-read-btn">' +
+            ARROW_RIGHT_SVG + ' View Details</a>' +
             '</div>' +
             '</div></div>';
     }
@@ -1138,7 +1204,6 @@ function renderWriting() {
         container.innerHTML = buildBottomCarousel(
             cardsHtml, atStart, atEnd, 'writing-carousel-inner', 'writing-inner'
         );
-
         var prevBtn = container.querySelector('.mob-prev-btn');
         var nextBtn = container.querySelector('.mob-next-btn');
         if (prevBtn) prevBtn.addEventListener('click', function(){
@@ -1154,17 +1219,13 @@ function renderWriting() {
             function(){ writingState.index = Math.max(0, writingState.index - page); renderWriting(); },
             function(){ if (writingState.index + page < all.length) { writingState.index += page; renderWriting(); } }
         );
-
-        // Hide the PC-level prev/next buttons
         var dp = document.getElementById('writing-prev');
         var dn = document.getElementById('writing-next');
         if (dp) dp.style.display = 'none';
         if (dn) dn.style.display = 'none';
-
     } else {
         if (isFew) container.classList.add('centered-few'); else container.classList.remove('centered-few');
         container.innerHTML = cardsHtml;
-
         var dp = document.getElementById('writing-prev');
         var dn = document.getElementById('writing-next');
         if (dp) { dp.style.display = ''; dp.disabled = writingState.index === 0; }
@@ -1253,10 +1314,11 @@ function renderWriting() {
 
                     var art = {
                         title: item.title,
-                        link: item.link,
+                        link: item.link || item.url || '', 
                         description: plain,
                         pubDate: pubDate,
-                        tags: (item.categories || []).slice(0, 4)
+                        tags: (item.categories || []).slice(0, 4),
+                        publication: null  
                     };
 
                     if (!art.tags || art.tags.length === 0) {
