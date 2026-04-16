@@ -454,7 +454,7 @@ const portfolioData = {
         date: "Jan 2026 - Present",
         location: "Chattagram, Bangladesh",
         companyLogo: "https://i.postimg.cc/L61XTJMX/medium-logo.jpg",
-        tags: ["AI in Healthcare","3 Publications", "Explainable AI", "LLM Hallucination", "XAI Transparency"],
+        tags: ["AI in Healthcare","5 Publications", "Explainable AI", "LLM Hallucination", "XAI Transparency"],
         description: [
             "Specialized in AI healthcare writing, focusing on reliability, interpretability, and real-world risk.",
             "Authored and published articles on LLM hallucinations, confidence calibration, and XAI in healthcare.",

@@ -407,21 +407,31 @@ body:not(.dark-theme) .nav-item:hover .nav-chevron {
         padding: 0 !important;
         background: transparent !important;
         backdrop-filter: none !important;
+        top: 0 !important;
     }
 
-    /* Mobile bar as a 3-column grid */
+    /* ═══════════════════════════════════════════════════
+       MOBILE NAV BAR — glass effect on site background colour
+       Light: rgba(248,250,252,0.75) + blur  →  glassy #f8fafc
+       Dark:  rgba(9,9,11,0.75)      + blur  →  glassy #09090b
+       ═══════════════════════════════════════════════════ */
     .mobile-nav-bar {
         display: grid !important;
         grid-template-columns: 1fr auto 1fr !important;
         align-items: center !important;
         width: 100% !important;
         padding: 0.6rem 1rem !important;
-        background: #f8fafc;
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        /* Glass: semi-transparent site background */
+        background: rgba(248, 250, 252, 0.75) !important;
+        backdrop-filter: blur(18px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     }
     body.dark-theme .mobile-nav-bar {
-        background: #09090b;
+        background: rgba(9, 9, 11, 0.75) !important;
+        backdrop-filter: blur(18px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     /* Logo – left column */
@@ -513,9 +523,7 @@ body:not(.dark-theme) .nav-item:hover .nav-chevron {
     .nav-menu.active { display: flex; animation: slideDown 0.3s ease; }
     @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
-    .floating-nav::before { content: ''; display: block; width: 100%; height: 3.5rem; backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); position: absolute; top: 0; left: 0; z-index: -1; }
-    body:not(.dark-theme) .floating-nav::before { background: rgba(255,255,255,0.8); }
-    body.dark-theme       .floating-nav::before { background: rgba(24,24,27,0.7); }
+    .floating-nav::before { display: none; } /* glass handled by .mobile-nav-bar directly */
     .nav-item { padding: 0.75rem 1rem; border-radius: 0.75rem; font-size: 0.95rem; }
     .nav-item svg { width: 18px; height: 18px; }
 }
@@ -708,7 +716,7 @@ body.dark-theme .timeline-content:hover { border-color: #fff; }
 
 /* Experience */
 .exp-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
-.exp-logo { flex-shrink: 0; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; border-radius: 0.5rem; overflow: hidden; background: #fff; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.exp-logo { flex-shrink: 0; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: justify; border-radius: 0.5rem; overflow: hidden; background: #fff; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 body.dark-theme .exp-logo { background: #2a2a30; }
 .exp-logo img { width: 100%; height: 100%; object-fit: contain; }
 .exp-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; justify-content: flex-end; margin-top: auto; padding-top: 0.75rem; }
@@ -1230,10 +1238,42 @@ body.dark-theme .writing-pub-badge {
     color: #b4b4bc;
 }
 
-/* Medium icon inside pub badge and read btn inherits color */
-body.dark-theme .writing-pub-badge svg,
-body.dark-theme .writing-read-btn svg {
-    fill: currentColor;
+/* ═══════════════════════════════════════════════════
+   FIX: Medium icon visibility in dark mode
+   The Medium SVG logo uses fill, not stroke. In dark mode
+   the icon was invisible because fill inherited the dark card
+   background. We explicitly force the fill to the secondary
+   text colour so it remains readable on dark cards.
+   ═══════════════════════════════════════════════════ */
+body:not(.dark-theme) .writing-pub-badge svg {
+    fill: #475569;
+    color: #475569;
+}
+body.dark-theme .writing-pub-badge svg {
+    fill: #b4b4bc !important;
+    color: #b4b4bc !important;
+}
+
+/* Also fix Medium icon inside the read/action button in dark mode */
+body.dark-theme .writing-read-btn svg,
+body.dark-theme .writing-card .btn-secondary svg {
+    fill: var(--dark-text) !important;
+    color: var(--dark-text) !important;
+    stroke: none !important;
+}
+
+/* Keep the primary btn icon dark (white gradient btn → dark icon) */
+body.dark-theme .writing-card .btn-primary svg {
+    color:  var(--dark-btn-text) !important;
+    stroke: var(--dark-btn-text) !important;
+    fill:   var(--dark-btn-text) !important;
+}
+
+/* On hover of secondary btn, icon should flip to dark */
+body.dark-theme .writing-card .btn-secondary:hover svg {
+    fill:   var(--dark-btn-text) !important;
+    color:  var(--dark-btn-text) !important;
+    stroke: none !important;
 }
 
 .writing-topic-badge {
@@ -1312,11 +1352,3 @@ body.dark-theme .writing-topic-badge {
 /* Dark mode text fixes for writing cards */
 body.dark-theme .writing-card-title  { color: var(--dark-text-bright) !important; }
 body.dark-theme .writing-card-desc   { color: var(--dark-text-secondary) !important; }
-
-/* Writing read btn dark mode icon fix */
-body.dark-theme .writing-read-btn svg,
-body.dark-theme .writing-card .btn-primary svg {
-    color:  var(--dark-btn-text) !important;
-    stroke: var(--dark-btn-text) !important;
-    fill:   none !important;
-}
