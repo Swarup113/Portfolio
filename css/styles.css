@@ -416,11 +416,12 @@ body:not(.dark-theme) .nav-item:hover .nav-chevron {
         align-items: center !important;
         width: 100% !important;
         padding: 0.6rem 1rem !important;
-        background: transparent;
-        backdrop-filter: none;
+        background: rgba(255,255,255,0.8);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
     }
     body.dark-theme .mobile-nav-bar {
-        background: transparent;
+        background: rgba(24,24,27,0.7);
     }
 
     /* Logo – left column */
@@ -512,9 +513,9 @@ body:not(.dark-theme) .nav-item:hover .nav-chevron {
     .nav-menu.active { display: flex; animation: slideDown 0.3s ease; }
     @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
-    .floating-nav::before { content: ''; display: block; width: 100%; height: 3.5rem; backdrop-filter: none; -webkit-backdrop-filter: none; position: absolute; top: 0; left: 0; z-index: -1; }
-    body:not(.dark-theme) .floating-nav::before { background: transparent; }
-    body.dark-theme       .floating-nav::before { background: transparent; }
+    .floating-nav::before { content: ''; display: block; width: 100%; height: 3.5rem; backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); position: absolute; top: 0; left: 0; z-index: -1; }
+    body:not(.dark-theme) .floating-nav::before { background: rgba(255,255,255,0.8); }
+    body.dark-theme       .floating-nav::before { background: rgba(24,24,27,0.7); }
     .nav-item { padding: 0.75rem 1rem; border-radius: 0.75rem; font-size: 0.95rem; }
     .nav-item svg { width: 18px; height: 18px; }
 }
@@ -1018,6 +1019,12 @@ body.dark-theme .timeline-content ul li {
 /* Dark mode: highlighted words inside experience */
 body.dark-theme .timeline-content ul li .highlight-text {
     color: #c5c2c2;
+}
+
+/* Activity List Icons — Force bright white like Timeline/Experience */
+body.dark-theme .activity-list svg {
+    color: var(--dark-text) !important;
+    stroke: var(--dark-text) !important;
 }
 
 /* ═══════════════════════════════════════════════════
