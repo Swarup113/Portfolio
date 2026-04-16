@@ -389,16 +389,16 @@ body:not(.dark-theme) .nav-item:hover .nav-chevron {
    ═══════════════════════════════════════════════════ */
 @media (max-width: 900px) {
     .nav-dropdown-wrap {
-        display: contents; /* dissolves wrapper, children flow inline in mobile nav */
+        display: contents; 
     }
     .nav-dropdown {
-        display: none !important; /* completely hidden on mobile */
+        display: none !important; 
     }
     .nav-chevron {
-        display: none !important; /* no chevron on mobile */
+        display: none !important; 
     }
     .nav-item--has-dropdown {
-        padding-right: 1rem; /* restore normal padding */
+        padding-right: 1rem; 
     }
 
     /* Override floating nav container */
@@ -416,11 +416,11 @@ body:not(.dark-theme) .nav-item:hover .nav-chevron {
         align-items: center !important;
         width: 100% !important;
         padding: 0.6rem 1rem !important;
-        background: #f8fafc;
-        backdrop-filter: blur(20px);
+        background: transparent;
+        backdrop-filter: none;
     }
     body.dark-theme .mobile-nav-bar {
-        background: #09090b;
+        background: transparent;
     }
 
     /* Logo – left column */
@@ -479,6 +479,16 @@ body:not(.dark-theme) .nav-item:hover .nav-chevron {
         display: flex;
         align-items: center;
     }
+    .nav-item--mobile-only {
+    display: none;
+}
+
+/* Shown only inside the open mobile menu */
+    @media (max-width: 900px) {
+        .nav-item--mobile-only {
+             display: flex;
+        }
+    }
     
     .nav-menu { 
         display: none; 
@@ -502,9 +512,9 @@ body:not(.dark-theme) .nav-item:hover .nav-chevron {
     .nav-menu.active { display: flex; animation: slideDown 0.3s ease; }
     @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
-    .floating-nav::before { content: ''; display: block; width: 100%; height: 3.5rem; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: absolute; top: 0; left: 0; z-index: -1; }
-    body:not(.dark-theme) .floating-nav::before { background: rgba(255,255,255,0.8); }
-    body.dark-theme       .floating-nav::before { background: rgba(9,9,11,0.8); }
+    .floating-nav::before { content: ''; display: block; width: 100%; height: 3.5rem; backdrop-filter: none; -webkit-backdrop-filter: none; position: absolute; top: 0; left: 0; z-index: -1; }
+    body:not(.dark-theme) .floating-nav::before { background: transparent; }
+    body.dark-theme       .floating-nav::before { background: transparent; }
     .nav-item { padding: 0.75rem 1rem; border-radius: 0.75rem; font-size: 0.95rem; }
     .nav-item svg { width: 18px; height: 18px; }
 }
@@ -603,7 +613,7 @@ body.dark-theme .expand-btn { background: var(--dark-btn-gradient); color: var(-
 .expand-btn.active svg { transform: rotate(180deg); }
 .expand-btn:hover { transform: scale(1.1); }
 
-/* 🔧 FIX: ensure downward arrow icon is black in dark mode */
+/*  FIX: ensure downward arrow icon is black in dark mode */
 body.dark-theme .expand-btn svg,
 body.dark-theme .expand-btn svg * {
     color: var(--dark-btn-text) !important;
@@ -1303,4 +1313,3 @@ body.dark-theme .writing-card .btn-primary svg {
     stroke: var(--dark-btn-text) !important;
     fill:   none !important;
 }
-

@@ -277,23 +277,27 @@ document.querySelectorAll('.tabs').forEach(function(tabGroup) {
 })();
 
 // ── Experience ──
+var expState = { index: 0 };
+var MOB_EXP_PAGE = 2;
+
 function renderExperience() {
     var container = document.querySelector('#experience .timeline');
     if (!container) return;
 
     var ac = accentStyle();
+    var isDark = document.body.classList.contains('dark-theme');
+    var all = portfolioData.experience || [];
 
-    container.innerHTML = portfolioData.experience.map(function(exp, i) {
+    function highlight(text) {
+        return text
+            .replace(/99\.31%/g, "<strong class='highlight-text'>99.31%</strong>")
+            .replace(/5 peer-reviewed papers|5 papers/g, "<strong class='highlight-text'>5 papers</strong>")
+            .replace(/IEEE/g, "<strong class='highlight-text'>IEEE</strong>")
+            .replace(/\b(Q1|Q2|Q3)\b/g, "<strong class='highlight-text'>$1</strong>")
+            .replace(/\b(clinical|GPS|EEG|vocal|textual)\b/g, "<strong class='highlight-text'>$1</strong>");
+    }
 
-        function highlight(text) {
-            return text
-                .replace(/99\.31%/g, "<strong class='highlight-text'>99.31%</strong>")
-                .replace(/5 peer-reviewed papers|5 papers/g, "<strong class='highlight-text'>5 papers</strong>")
-                .replace(/IEEE/g, "<strong class='highlight-text'>IEEE</strong>")
-                .replace(/\b(Q1|Q2|Q3)\b/g, "<strong class='highlight-text'>$1</strong>")
-                .replace(/\b(clinical|GPS|EEG|vocal|textual)\b/g, "<strong class='highlight-text'>$1</strong>");
-        }
-
+    function itemHtml(exp, i) {
         return `
         <div class="timeline-item">
             <div class="timeline-icon">
@@ -308,16 +312,14 @@ function renderExperience() {
                         ${
                             exp.companyLogo
                                 ? `<img src="${exp.companyLogo}" alt="${exp.company}">`
-                                : `
-                                <div class="logo-placeholder-white">
+                                : `<div class="logo-placeholder-white">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
                                         <path d="M9 3h6v2H9z"></path>
                                         <path d="M12 5v14"></path>
                                         <path d="M5 9h14"></path>
                                         <path d="M5 15h14"></path>
                                     </svg>
-                                </div>
-                                `
+                                   </div>`
                         }
                     </div>
                     <div>
@@ -333,122 +335,120 @@ function renderExperience() {
                 </p>
                 ${
                     exp.description
-                        ? `
-                        <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem">
-                            ${(exp.tags || ['Predictive Modeling','5 Publications','ML/DL','Healthcare AI'])
-                               .map(t => `<span class="tag">${t}</span>`).join('')}
-                        </div>
-                        `
+                        ? `<div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem">
+                               ${(exp.tags || ['Predictive Modeling','5 Publications','ML/DL','Healthcare AI'])
+                                   .map(t => `<span class="tag">${t}</span>`).join('')}
+                           </div>`
                         : ''
                 }
                 ${
                     exp.description
-                        ? `
-                        <ul style="list-style:none;padding:0;margin:0.3rem 0 0.75rem 0;font-size:0.75rem;line-height:1.45;" class="exp-desc">
-                            ${exp.description.slice(0, 4).map(item => `
-                                <li style="display:flex;gap:0.4rem;align-items:flex-start;margin-bottom:0.4rem">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${document.body.classList.contains('dark-theme') ? '#b4b4bc' : '#475569'}" stroke-width="2" style="flex-shrink:0;margin-top:2px">
-                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                    </svg>
-                                    <span>${highlight(item)}</span>
-                                </li>
-                            `).join('')}
-                        </ul>
-                        `
+                        ? `<ul style="list-style:none;padding:0;margin:0.3rem 0 0.75rem 0;font-size:0.75rem;line-height:1.45;" class="exp-desc">
+                               ${exp.description.slice(0, 4).map(item => `
+                                   <li style="display:flex;gap:0.4rem;align-items:flex-start;margin-bottom:0.4rem">
+                                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${isDark ? '#b4b4bc' : '#475569'}" stroke-width="2" style="flex-shrink:0;margin-top:2px">
+                                           <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                           <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                       </svg>
+                                       <span>${highlight(item)}</span>
+                                   </li>
+                               `).join('')}
+                           </ul>`
                         : ''
                 }
                 <div class="exp-actions">
                     ${
                         exp.offerLetterLink
-                            ? `
-                            <a href="${exp.offerLetterLink}" target="_blank"
-                               class="btn btn-secondary"
-                               style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem">
-                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> 
-                                     <path d="M17 3l4 4-7 7H10v-4l7-7z"/>
-                                     <path d="M4 20h16"/>
-                                 </svg>
-                                 Offer Letter
-                            </a>
-                            `
+                            ? `<a href="${exp.offerLetterLink}" target="_blank"
+                                  class="btn btn-secondary"
+                                  style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem">
+                                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                       <path d="M17 3l4 4-7 7H10v-4l7-7z"/>
+                                       <path d="M4 20h16"/>
+                                   </svg>
+                                   Offer Letter
+                               </a>`
                             : ''
                     }
                     ${
                         exp.scholarLink
-                            ? `
-                            <a href="${exp.scholarLink}" target="_blank"
-                               class="btn btn-primary"
-                               style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 24L0 9l12-9 12 9-12 15z"/>
-                                </svg>
-                                Google Scholar
-                            </a>
-                            `
+                            ? `<a href="${exp.scholarLink}" target="_blank"
+                                  class="btn btn-primary"
+                                  style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem">
+                                   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                       <path d="M12 24L0 9l12-9 12 9-12 15z"/>
+                                   </svg>
+                                   Google Scholar
+                               </a>`
                             : ''
                     }
                     ${
                         exp.mediumLink
-                            ? `
-                            <a href="${exp.mediumLink}" target="_blank"
-                               class="btn btn-primary"
-                               style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem">
-                                <svg width="14" height="14" viewBox="0 0 1043.63 592.71" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                     <path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460.03 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36M911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.17-279 147.17 124.9 147.17 279M1043.63 296.36c0 138-23.17 249.94-51.76 249.94s-51.75-111.9-51.75-249.94 23.17-249.94 51.75-249.94 51.76 111.9 51.76 249.94"/>
-                                </svg>
-                                Medium
-                            </a>
-                            `
+                            ? `<a href="${exp.mediumLink}" target="_blank"
+                                  class="btn btn-primary"
+                                  style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem">
+                                   <svg width="14" height="14" viewBox="0 0 1043.63 592.71" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                       <path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460.03 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36M911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.17-279 147.17 124.9 147.17 279M1043.63 296.36c0 138-23.17 249.94-51.76 249.94s-51.75-111.9-51.75-249.94 23.17-249.94 51.75-249.94 51.76 111.9 51.76 249.94"/>
+                                   </svg>
+                                   Medium
+                               </a>`
                             : ''
                     }
                     ${
                         (exp.projects && exp.projects.length > 0)
-                            ? `
-                            <button class="btn btn-primary"
-                                    style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem"
-                                    onclick="openExpModal(${i})">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                                View Details
-                            </button>
-                            `
+                            ? `<button class="btn btn-primary"
+                                       style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem"
+                                       onclick="openExpModal(${i})">
+                                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                                       <line x1="5" y1="12" x2="19" y2="12"></line>
+                                       <polyline points="12 5 19 12 12 19"></polyline>
+                                   </svg>
+                                   View Details
+                               </button>`
                             : ''
                     }
                 </div>
             </div>
-        </div>
-        `;
-    }).join('');
+        </div>`;
+    }
+
+    if (isMobile()) {
+        var page = MOB_EXP_PAGE;
+        var slice = all.slice(expState.index, expState.index + page);
+        var atStart = expState.index === 0;
+        var atEnd   = expState.index + page >= all.length;
+
+        // Pass real indices so openExpModal gets the correct global index
+        var cardsHtml = slice.map(function(exp, localIdx) {
+            return itemHtml(exp, expState.index + localIdx);
+        }).join('');
+
+        container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, '', 'exp-inner');
+
+        var prevBtn = container.querySelector('.mob-prev-btn');
+        var nextBtn = container.querySelector('.mob-next-btn');
+        if (prevBtn) prevBtn.addEventListener('click', function() {
+            expState.index = Math.max(0, expState.index - page);
+            renderExperience();
+        });
+        if (nextBtn) nextBtn.addEventListener('click', function() {
+            if (expState.index + page < all.length) expState.index += page;
+            renderExperience();
+        });
+        addSwipe(
+            container.querySelector('#exp-inner'),
+            function() { expState.index = Math.max(0, expState.index - page); renderExperience(); },
+            function() { if (expState.index + page < all.length) { expState.index += page; renderExperience(); } }
+        );
+
+    } else {
+        // Desktop: render all, unchanged
+        container.innerHTML = all.map(function(exp, i) {
+            return itemHtml(exp, i);
+        }).join('');
+    }
 }
 (function() { renderExperience(); })();
-
-// ── Experience Modal ──
-var expModalState = { expIdx: 0, projIdx: 0 };
-window.openExpModal = function(expIdx) { expModalState = { expIdx: expIdx, projIdx: 0 }; renderExpModal(); openModal(); };
-function renderExpModal() {
-    var exp = portfolioData.experience[expModalState.expIdx];
-    var proj = exp.projects[expModalState.projIdx];
-    document.getElementById('modal-body').innerHTML =
-        '<h3 class="card-title" style="font-size:1.4rem;margin-bottom:1.25rem">Projects</h3>' +
-        '<div><div style="width:100%;height:9rem;border-radius:0.5rem;overflow:hidden;margin-bottom:0.75rem">' +
-        '<img src="' + proj.image + '" alt="' + proj.name + '" style="width:100%;height:100%;object-fit:cover"></div>' +
-        '<h4 class="card-title" style="font-size:1rem;margin-bottom:0.35rem">' + proj.name + '</h4>' +
-        '<p class="card-description">' + proj.description + '</p>' +
-        '<div style="display:flex;justify-content:center;gap:0.75rem;margin-top:1.25rem">' +
-        '<button class="carousel-btn" ' + (expModalState.projIdx===0?'disabled':'') + ' onclick="stepExpProj(-1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>' +
-        '<button class="carousel-btn" ' + (expModalState.projIdx>=exp.projects.length-1?'disabled':'') + ' onclick="stepExpProj(1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div>' +
-        '<div style="display:flex;justify-content:center;gap:0.4rem;margin-top:0.75rem">' +
-        exp.projects.map(function(_,idx){ return '<div style="width:0.6rem;height:0.6rem;border-radius:50%;background:var(--emerald-400);opacity:' + (idx===expModalState.projIdx?1:0.25) + '"></div>'; }).join('') +
-        '</div></div>';
-}
-window.stepExpProj = function(dir) {
-    var max = portfolioData.experience[expModalState.expIdx].projects.length - 1;
-    expModalState.projIdx = Math.max(0, Math.min(max, expModalState.projIdx + dir));
-    renderExpModal();
-};
 
 // ── SVG constants ──
 var ARROW_RIGHT_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
@@ -1030,7 +1030,7 @@ document.getElementById('contact-form') && document.getElementById('contact-form
 // ── Writing / Medium Feed ──
 var writingState = { index: 0, articles: [] };
 var WRITING_PAGE = 3;
-var MOB_WRITING_PAGE = 1;
+var MOB_WRITING_PAGE = 2;
 
 // Tag inference from title/content
 function inferWritingTags(item) {
