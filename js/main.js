@@ -817,14 +817,14 @@ window.openResearchModal = function(title, tab) {
 
     var citeBadge = p.citations !== undefined
         ? '<span class="tag cite-badge" style="font-size:' + (mob ? '0.68rem' : '0.78rem') + ';padding:' + (mob ? '0.25rem 0.45rem' : '0.3rem 0.7rem') + ';white-space:nowrap;flex-shrink:0;">' + CITE_SVG + ' ' + (mob ? '' : 'Citations: ') + p.citations + '</span>'
-        : '';
+        : 'Citations"';
 
     var doiBtn = p.doi
         ? '<a href="' + p.doi + '" target="_blank" rel="noopener noreferrer" class="doi-btn" style="font-size:' + (mob ? '0.68rem' : '') + ';padding:' + (mob ? '0.25rem 0.45rem' : '') + ';white-space:nowrap;flex-shrink:0;">' + DOI_SVG + (mob ? '' : ' View DOI') + '</a>'
-        : '';
+        : 'DOI';
 
     var readBtn = (p.link && p.link !== '#')
-        ? '<a href="' + p.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:' + (mob ? '0.68rem' : '0.875rem') + ';padding:' + (mob ? '0.25rem 0.5rem' : '') + ';white-space:nowrap;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>' + (mob ? ' Paper' : ' Read Paper') + '</a>'
+        ? '<a href="' + p.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:' + (mob ? '0.68rem' : '0.875rem') + ';padding:' + (mob ? '0.25rem 0.5rem' : '') + ';white-space:nowrap;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>' + (mob ? 'Read Paper' : ' Read Paper') + '</a>'
         : '<span class="tag" style="font-size:' + (mob ? '0.68rem' : '0.8rem') + ';padding:' + (mob ? '0.25rem 0.45rem' : '0.4rem 0.8rem') + ';opacity:0.8;white-space:nowrap;flex-shrink:0;">Under Review</span>';
 
     document.getElementById('modal-body').innerHTML =
