@@ -375,7 +375,7 @@ function renderExperience() {
                             ? `<a href="${exp.scholarLink}" target="_blank"
                                   class="btn btn-primary"
                                   style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem">
-                                   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" class="icon-fill-current">
                                        <path d="M12 24L0 9l12-9 12 9-12 15z"/>
                                    </svg>
                                    Google Scholar
@@ -385,9 +385,9 @@ function renderExperience() {
                     ${
                         exp.mediumLink
                             ? `<a href="${exp.mediumLink}" target="_blank"
-                                  class="btn btn-primary"
+                                  class="btn btn-primary medium-btn"
                                   style="font-size:0.78rem;padding:0.35rem 0.9rem;display:flex;align-items:center;gap:0.35rem">
-                                   <svg width="14" height="14" viewBox="0 0 1043.63 592.71" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                   <svg width="14" height="14" viewBox="0 0 1043.63 592.71" class="medium-icon" xmlns="http://www.w3.org/2000/svg">
                                        <path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460.03 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36M911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.17-279 147.17 124.9 147.17 279M1043.63 296.36c0 138-23.17 249.94-51.76 249.94s-51.75-111.9-51.75-249.94 23.17-249.94 51.75-249.94 51.76 111.9 51.76 249.94"/>
                                    </svg>
                                    Medium
@@ -423,7 +423,30 @@ function renderExperience() {
             return itemHtml(exp, expState.index + localIdx);
         }).join('');
 
-        container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, '', 'exp-inner');
+        var prevDisabled = atStart ? 'disabled' : '';
+        var nextDisabled = atEnd   ? 'disabled' : '';
+
+        container.innerHTML = `
+            <div class="mob-bottom-wrap">
+                <div class="mob-cards-area" id="exp-inner">
+                    ${cardsHtml}
+                </div>
+                <div class="mob-bottom-btns">
+                    <button class="mob-nav-btn mob-prev-btn" ${prevDisabled} aria-label="Previous">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <span class="exp-page-indicator" style="font-size:0.78rem;opacity:0.55;">
+                        ${expState.index + 1}–${Math.min(expState.index + page, all.length)} / ${all.length}
+                    </span>
+                    <button class="mob-nav-btn mob-next-btn" ${nextDisabled} aria-label="Next">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+            </div>`;
 
         var prevBtn = container.querySelector('.mob-prev-btn');
         var nextBtn = container.querySelector('.mob-next-btn');

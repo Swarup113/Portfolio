@@ -1054,17 +1054,17 @@ body.dark-theme .modal-content svg[stroke] {
 /* ═══════════════════════════════════════════════════
    PRIMARY BUTTON ICON FIX — must come LAST
    ═══════════════════════════════════════════════════ */
-body.dark-theme .btn-primary svg,
-body.dark-theme .timeline-content .btn-primary svg,
-body.dark-theme .project-card .btn-primary svg,
-body.dark-theme .research-card .btn-primary svg,
-body.dark-theme .cert-card .btn-primary svg,
-body.dark-theme .activity-card .btn-primary svg,
-body.dark-theme .highlight-card .btn-primary svg,
-body.dark-theme .award-card .btn-primary svg,
-body.dark-theme .about-content .btn-primary svg,
-body.dark-theme .contact-info .btn-primary svg,
-body.dark-theme .modal-content .btn-primary svg {
+body.dark-theme .btn-primary svg:not(.medium-icon):not(.icon-fill-current),
+body.dark-theme .timeline-content .btn-primary svg:not(.medium-icon):not(.icon-fill-current),
+body.dark-theme .project-card .btn-primary svg:not(.medium-icon):not(.icon-fill-current),
+body.dark-theme .research-card .btn-primary svg:not(.medium-icon):not(.icon-fill-current),
+body.dark-theme .cert-card .btn-primary svg:not(.medium-icon):not(.icon-fill-current),
+body.dark-theme .activity-card .btn-primary svg:not(.medium-icon):not(.icon-fill-current),
+body.dark-theme .highlight-card .btn-primary svg:not(.medium-icon):not(.icon-fill-current),
+body.dark-theme .award-card .btn-primary svg:not(.medium-icon):not(.icon-fill-current),
+body.dark-theme .about-content .btn-primary svg:not(.medium-icon):not(.icon-fill-current),
+body.dark-theme .contact-info .btn-primary svg:not(.medium-icon):not(.icon-fill-current),
+body.dark-theme .modal-content .btn-primary svg:not(.medium-icon):not(.icon-fill-current) {
     color:  var(--dark-btn-text) !important;
     stroke: var(--dark-btn-text) !important;
     fill:   none !important;
@@ -1109,6 +1109,43 @@ body.dark-theme .modal-content .btn-secondary:hover svg {
     stroke: var(--dark-btn-text) !important;
     fill:   none !important;
 }
+
+/* Light mode: btn-primary is dark bg → white text/icons */
+body:not(.dark-theme) .medium-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+    stroke: none !important;
+}
+
+/* Dark mode: btn-primary */
+body.dark-theme .medium-icon {
+    fill: var(--dark-btn-text) !important;
+    color: var(--dark-btn-text) !important;
+    stroke: none !important;
+}
+
+/* Override the blanket "fill: none" that the btn-primary svg rule sets */
+body.dark-theme .btn-primary .medium-icon,
+body.dark-theme .timeline-content .btn-primary .medium-icon,
+body:not(.dark-theme) .btn-primary .medium-icon,
+body:not(.dark-theme) .timeline-content .btn-primary .medium-icon {
+    fill: currentColor !important;
+    stroke: none !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   EXP MOBILE PAGE INDICATOR
+   ═══════════════════════════════════════════════════ */
+.exp-page-indicator {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    min-width: 4rem;
+    text-align: center;
+    user-select: none;
+}
+body:not(.dark-theme) .exp-page-indicator { color: var(--light-text-secondary); }
+body.dark-theme       .exp-page-indicator { color: var(--dark-text-secondary); }
 
 /* ══════════════════════════════════════════════
    RESPONSIVE
@@ -1239,11 +1276,7 @@ body.dark-theme .writing-pub-badge {
 }
 
 /* ═══════════════════════════════════════════════════
-   FIX: Medium icon visibility in dark mode
-   The Medium SVG logo uses fill, not stroke. In dark mode
-   the icon was invisible because fill inherited the dark card
-   background. We explicitly force the fill to the secondary
-   text colour so it remains readable on dark cards.
+   FIX: Medium icon
    ═══════════════════════════════════════════════════ */
 body:not(.dark-theme) .writing-pub-badge svg {
     fill: #475569;
