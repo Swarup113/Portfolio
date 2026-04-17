@@ -279,6 +279,7 @@ document.querySelectorAll('.tabs').forEach(function(tabGroup) {
 // ── Experience ──
 var expState = { index: 0 };
 var MOB_EXP_PAGE = 2;
+var expModalState = { expIdx: 0, projIdx: 0 };
 
 function renderExperience() {
     var container = document.querySelector('#experience .timeline');
@@ -437,9 +438,7 @@ function renderExperience() {
                             <polyline points="15 18 9 12 15 6"></polyline>
                         </svg>
                     </button>
-                    <span class="exp-page-indicator" style="font-size:0.78rem;opacity:0.55;">
-                        ${expState.index + 1}–${Math.min(expState.index + page, all.length)} / ${all.length}
-                    </span>
+                    <!-- REMOVED PAGINATION TEXT HERE -->
                     <button class="mob-nav-btn mob-next-btn" ${nextDisabled} aria-label="Next">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="9 18 15 12 9 6"></polyline>
@@ -465,12 +464,43 @@ function renderExperience() {
         );
 
     } else {
-        // Desktop: render all, unchanged
+        // Desktop: render all
         container.innerHTML = all.map(function(exp, i) {
             return itemHtml(exp, i);
         }).join('');
     }
 }
+
+// ── Experience Modal ──
+window.openExpModal = function(expIdx) { 
+    expModalState = { expIdx: expIdx, projIdx: 0 }; 
+    renderExpModal(); 
+    openModal(); 
+};
+
+function renderExpModal() {
+    var exp = portfolioData.experience[expModalState.expIdx];
+    var proj = exp.projects[expModalState.projIdx];
+    document.getElementById('modal-body').innerHTML =
+        '<h3 class="card-title" style="font-size:1.4rem;margin-bottom:1.25rem">Projects</h3>' +
+        '<div><div style="width:100%;height:9rem;border-radius:0.5rem;overflow:hidden;margin-bottom:0.75rem">' +
+        '<img src="' + proj.image + '" alt="' + proj.name + '" style="width:100%;height:100%;object-fit:cover"></div>' +
+        '<h4 class="card-title" style="font-size:1rem;margin-bottom:0.35rem">' + proj.name + '</h4>' +
+        '<p class="card-description">' + proj.description + '</p>' +
+        '<div style="display:flex;justify-content:center;gap:0.75rem;margin-top:1.25rem">' +
+        '<button class="carousel-btn" ' + (expModalState.projIdx===0?'disabled':'') + ' onclick="stepExpProj(-1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>' +
+        '<button class="carousel-btn" ' + (expModalState.projIdx>=exp.projects.length-1?'disabled':'') + ' onclick="stepExpProj(1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div>' +
+        '<div style="display:flex;justify-content:center;gap:0.4rem;margin-top:0.75rem">' +
+        exp.projects.map(function(_,idx){ return '<div style="width:0.6rem;height:0.6rem;border-radius:50%;background:var(--emerald-400);opacity:' + (idx===expModalState.projIdx?1:0.25) + '"></div>'; }).join('') +
+        '</div></div>';
+}
+
+window.stepExpProj = function(dir) {
+    var max = portfolioData.experience[expModalState.expIdx].projects.length - 1;
+    expModalState.projIdx = Math.max(0, Math.min(max, expModalState.projIdx + dir));
+    renderExpModal();
+};
+
 (function() { renderExperience(); })();
 
 // ── SVG constants ──
