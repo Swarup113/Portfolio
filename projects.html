@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
-    <title>Projects — Swarup</title>
+    <title>Projects — Swarup Dewanjee</title>
     <meta name="description" content="A collection of projects by Swarup Dewanjee.">
 
     <!-- Favicon -->
@@ -63,8 +63,8 @@
         body:not(.dark-theme) { background-color: var(--light-bg); color: var(--light-text-body); }
         body.dark-theme       { background-color: var(--dark-bg);  color: var(--dark-text-bright); }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f8fafc; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #000000 0%, #4b5563 100%); border-radius: 9999px; transition: all 0.3s ease; }
         ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, #3a3a3f 0%, #b1b1b1 100%); }
@@ -72,101 +72,236 @@
         body.dark-theme::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #a5a5a5 0%, #ffffff 100%); border-radius: 9999px; }
         body.dark-theme::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, #1f2937 0%, #6b7280 100%); }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-        .section { padding: 3rem 0; position: relative; z-index: 10; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 1rem; }
+        .section { padding: 5rem 0; position: relative; z-index: 10; }
         body:not(.dark-theme) .section { background: var(--light-bg); }
         body.dark-theme       .section { background: var(--dark-bg); }
 
         /* ═══════════════════════════════════════════════════
-           PAGE HEADER
+           NAVIGATION (Matching index.html)
            ═══════════════════════════════════════════════════ */
-        .site-header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+        .floating-nav { 
+            position: fixed; 
+            top: 1rem; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            z-index: 1000; 
             padding: 0 1rem; 
             width: 100%; 
             max-width: 1400px; 
-            margin: 0 auto;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
             display: flex;
             align-items: center;
-            height: 3.5rem;
-            backdrop-filter: blur(20px) saturate(180%); 
-            -webkit-backdrop-filter: blur(20px) saturate(180%); 
+            justify-content: center;
         }
 
-        .site-header::after {
-            content: '';
+        /* PC Back Button */
+        .nav-back-pc {
             position: absolute;
-            inset: 0;
-            z-index: -1;
+            left: 1rem;
+            top: 63%;
+            transform: translateY(-50%);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.4rem 0.85rem;
             border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            color: var(--light-text);
+            background: transparent;
+            border: 1.5px solid var(--light-border);
+        }
+        body.dark-theme .nav-back-pc { color: var(--dark-text); border-color: var(--dark-border); }
+        .nav-back-pc svg { width: 14px; height: 14px; flex-shrink: 0; }
+        
+        body:not(.dark-theme) .nav-back-pc:hover { 
+            background: var(--gradient-main); 
+            color: #fff !important; 
+            border-color: transparent !important;
+            transform: translateY(-50%) scale(1.02); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+        }
+        body.dark-theme .nav-back-pc:hover { 
+            background: var(--dark-btn-gradient); 
+            color: var(--dark-btn-text) !important; 
+            border-color: transparent !important;
+            transform: translateY(-50%) scale(1.02); 
+            box-shadow: 0 4px 12px rgba(255,255,255,0.08); 
+        }
+        body.dark-theme .nav-back-pc:hover svg { stroke: var(--dark-btn-text) !important; }
+
+        .nav-menu { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.25rem; 
+            padding: 0.4rem 0.6rem; 
+            border-radius: 9999px; 
+            backdrop-filter: blur(20px) saturate(180%); 
+            -webkit-backdrop-filter: blur(20px) saturate(180%); 
             box-shadow: 0 4px 20px rgba(0,0,0,0.04); 
+            width: fit-content; 
+            margin: 0 auto; 
             border: 1px solid rgba(0,0,0,0.06); 
             background: rgba(255,255,255,0.8);
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-            width: calc(100% - 2rem);
-            left: 1rem;
         }
-        
-        body.dark-theme .site-header::after { 
+        body.dark-theme .nav-menu { 
             background: rgba(24,24,27,0.7); 
             border-color: rgba(255,255,255,0.08); 
             box-shadow: 0 4px 30px rgba(0,0,0,0.3); 
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            z-index: 2;
-            width: 100%;
-            padding: 0.25rem 1rem;
-        }
-
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--light-text-secondary);
-            text-decoration: none;
-            padding: 0.35rem 0.85rem;
-            border-radius: 9999px;
+        .nav-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.4rem; 
+            padding: 0.5rem 1rem; 
+            border-radius: 9999px; 
+            text-decoration: none; 
+            font-size: 0.85rem; 
+            font-weight: 500; 
+            white-space: nowrap; 
             transition: all 0.25s ease; 
-            white-space: nowrap;
+            color: var(--light-text-secondary); 
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-family: inherit;
         }
-        body.dark-theme .back-btn { color: var(--dark-text-secondary); }
-        .back-btn svg { width: 14px; height: 14px; }
+        /* Ensure nav item icons scale properly */
+        .nav-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+        body.dark-theme .nav-item { color: var(--dark-text-secondary); }
         
-        body:not(.dark-theme) .back-btn:hover { 
+        body:not(.dark-theme) .nav-item:hover, body:not(.dark-theme) .nav-item.active-nav { 
             background: var(--gradient-main); 
             color: #fff !important; 
             transform: scale(1.02); 
             box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
         }
-        body.dark-theme .back-btn:hover { 
+        body.dark-theme .nav-item:hover, body.dark-theme .nav-item.active-nav { 
             background: var(--dark-btn-gradient); 
             color: var(--dark-btn-text) !important; 
             transform: scale(1.02); 
             box-shadow: 0 4px 12px rgba(255,255,255,0.08); 
         }
+        body.dark-theme .nav-item:hover svg, body.dark-theme .nav-item.active-nav svg { stroke: var(--dark-btn-text) !important; }
 
-        .header-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--light-text);
-            margin-left: auto; 
-            margin-right: 1rem;
+        /* Mobile Navigation */
+        .mobile-nav-bar {
+            display: none;
+            grid-template-columns: 1fr auto 1fr !important;
+            align-items: center !important;
+            width: 100% !important;
+            padding: 0.6rem 1rem !important;
+            background: rgba(248, 250, 252, 0.75) !important;
+            backdrop-filter: blur(18px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
         }
-        body.dark-theme .header-title { color: var(--dark-text-bright); }
+        body.dark-theme .mobile-nav-bar {
+            background: rgba(9, 9, 11, 0.75) !important;
+            backdrop-filter: blur(18px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
 
-        /* Theme Toggle */
+        .nav-back-mobile {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--light-text);
+            text-decoration: none;
+            justify-self: start;
+            padding: 0.4rem 0.85rem;
+            border-radius: 9999px;
+            border: 1.5px solid var(--light-border);
+            transition: all 0.25s ease;
+        }
+        body.dark-theme .nav-back-mobile { color: var(--dark-text); border-color: var(--dark-border); }
+        .nav-back-mobile svg { width: 14px; height: 14px; }
+
+        body:not(.dark-theme) .nav-back-mobile:hover { 
+            background: var(--gradient-main); color: #fff !important; border-color: transparent !important; box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+        }
+        body.dark-theme .nav-back-mobile:hover { 
+            background: var(--dark-btn-gradient); color: var(--dark-btn-text) !important; border-color: transparent !important; box-shadow: 0 4px 12px rgba(255,255,255,0.08); 
+        }
+        body.dark-theme .nav-back-mobile:hover svg { stroke: var(--dark-btn-text) !important; }
+
+        .mobile-menu-btn { 
+            display: none; 
+            background: transparent; 
+            border: none; 
+            cursor: pointer; 
+            padding: 0.5rem; 
+            border-radius: 0.5rem; 
+            transition: all 0.2s; 
+            z-index: 10; 
+            justify-self: center;
+            color: var(--light-text);
+        } 
+        body.dark-theme .mobile-menu-btn { color: var(--dark-text-bright); }
+        body:not(.dark-theme) .mobile-menu-btn:hover { background: var(--gradient-main); color: #fff; }
+        body.dark-theme .mobile-menu-btn:hover { background: var(--dark-btn-gradient); color: var(--dark-btn-text); }
+        .mobile-menu-btn .close-icon { display: none; }
+        .mobile-menu-btn.active .menu-icon  { display: none; }
+        .mobile-menu-btn.active .close-icon { display: block; }
+
+        @media (max-width: 900px) {
+            .floating-nav {
+                justify-content: flex-start !important;
+                padding: 0 !important;
+                background: transparent !important;
+                backdrop-filter: none !important;
+                top: 0 !important;
+            }
+            .nav-back-pc { display: none; }
+            .mobile-nav-bar { display: grid !important; }
+            .mobile-menu-btn { display: flex !important; align-items: center; justify-content: center; }
+            
+            .nav-menu { 
+                display: none; 
+                position: absolute; 
+                top: 100%; 
+                left: 0; 
+                right: 0; 
+                width: 100%; 
+                flex-direction: column; 
+                align-items: stretch; 
+                border-radius: 0 0 1.5rem 1.5rem; 
+                padding: 1rem; 
+                gap: 0.5rem; 
+                margin: 0; 
+                max-height: 80vh; 
+                overflow-y: auto; 
+                border-top: 1px solid rgba(0,0,0,0.05); 
+            }
+            body:not(.dark-theme) .nav-menu { background: rgba(255,255,255,0.95); }
+            body.dark-theme       .nav-menu { background: rgba(9,9,11,0.95); border-color: rgba(255,255,255,0.1); }
+            
+            .nav-menu.active { display: flex; animation: slideDown 0.3s ease; }
+            @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+            
+            .nav-item { padding: 0.75rem 1rem; border-radius: 0.75rem; font-size: 0.95rem; justify-content: center; }
+            .nav-item svg { width: 16px; height: 16px; } /* Slightly larger icons for mobile menu */
+        }
+
+        /* ═══════════════════════════════════════════════════
+           THEME TOGGLE
+           ═══════════════════════════════════════════════════ */
         .theme-toggle { 
-            padding: 0.4rem; 
+            position: fixed; 
+            top: 1rem; 
+            right: 1rem; 
+            z-index: 1000; 
+            padding: 0.5rem; 
             border-radius: 9999px; 
             border: none; 
             cursor: pointer; 
@@ -179,107 +314,60 @@
         body.dark-theme .theme-toggle { background: var(--dark-btn-gradient); color: var(--dark-btn-text); box-shadow: 0 4px 15px rgba(255,255,255,0.08); }
         .theme-toggle:hover { transform: scale(1.1); }
         .theme-toggle .sun-icon  { display: none; }
-        .theme-toggle .moon-icon { display: block; width: 14px; height: 14px; }
-        body.dark-theme .theme-toggle .sun-icon  { display: block; width: 14px; height: 14px; }
+        .theme-toggle .moon-icon { display: block; width: 20px; height: 20px; }
+        body.dark-theme .theme-toggle .sun-icon  { display: block; width: 20px; height: 20px; }
         body.dark-theme .theme-toggle .moon-icon { display: none; }
-        
-        body.dark-theme .theme-toggle svg,
-        body.dark-theme .back-btn:hover svg {
-            stroke: var(--dark-btn-text) !important;
+        body.dark-theme .theme-toggle svg { stroke: var(--dark-btn-text) !important; }
+
+        @media (max-width: 900px) {
+            .theme-toggle { top: 0.75rem; right: 0.75rem; z-index: 1001; }
         }
 
         /* ═══════════════════════════════════════════════════
            MAIN CONTENT AREA
            ═══════════════════════════════════════════════════ */
-        .main-content {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0.5rem 1.5rem 3rem;
-        }
+        .projects-section { padding-top: 7rem; }
 
-        .page-headline {
+        .section-title { 
+            font-size: 2.5rem; 
+            font-weight: 700; 
+            text-align: center; 
+            margin-bottom: 3rem; 
+            letter-spacing: -0.02em; 
+        }
+        body:not(.dark-theme) .section-title { color: var(--light-text); }
+        body.dark-theme       .section-title { color: var(--dark-text-bright); }
+
+        .section-subtitle {
+            font-size: 0.875rem;
             text-align: center;
-            margin-bottom: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .page-headline h1 {
-            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-            font-weight: 800;
-            white-space: nowrap;
-            background: var(--gradient-main);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.03em;
-            display: inline-block;
-        }
-        
-        body.dark-theme .page-headline h1 {
-            background: linear-gradient(135deg, #ffffff 0%, #71717a 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-
-        .page-headline p {
-            font-size: 0.9rem;
-            font-weight: 500;
+            margin-top: -2rem;
+            margin-bottom: 3rem;
             color: var(--light-text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
         }
-        body.dark-theme .page-headline p { color: var(--dark-text-secondary); }
+        body.dark-theme .section-subtitle { color: var(--dark-text-secondary); }
 
         /* ═══════════════════════════════════════════════════
-           FILTERS
-           ═══════════════════════════════════════════════════ */
-        .filter-bar { 
-            display: flex; 
-            justify-content: center; 
-            gap: 0.5rem; 
-            flex-wrap: wrap; 
-            margin-bottom: 2rem; 
-        }
-
-        .filter-btn { 
-            padding: 0.35rem 0.9rem; 
-            border-radius: 9999px; 
-            font-size: 0.75rem; 
-            font-weight: 500; 
-            cursor: pointer; 
-            transition: all 0.25s; 
-            background: transparent; 
-            display: inline-flex;
-            align-items: center;
-        }
-        body:not(.dark-theme) .filter-btn { border: 1.5px solid var(--light-border); color: var(--light-text-secondary); }
-        body.dark-theme       .filter-btn { border: 1.5px solid var(--dark-border); color: var(--dark-text-secondary); }
-
-        body:not(.dark-theme) .filter-btn.active, body:not(.dark-theme) .filter-btn:hover { background: var(--gradient-main); color: #fff !important; border-color: transparent; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
-        body.dark-theme .filter-btn.active, body.dark-theme .filter-btn:hover { background: var(--dark-btn-gradient); color: var(--dark-btn-text) !important; border-color: transparent; box-shadow: 0 4px 15px rgba(255,255,255,0.08); }
-
-        /* ═══════════════════════════════════════════════════
-           CAROUSEL / GRID
+           CAROUSEL / GRID (Compact X & Y Axis)
            ═══════════════════════════════════════════════════ */
         .projects-grid { 
             display: grid; 
             grid-template-columns: repeat(3,1fr); 
-            gap: 1.25rem; 
+            gap: 1rem; 
         }
         
-        /* Centering Single Projects in Middle Column (Desktop Only) */
+        /* Alignment for few items */
         @media (min-width: 1025px) {
-            .projects-grid.center-single .project-card {
-                grid-column: 2 / 3;
+            .projects-grid.center-single .project-card { 
+                grid-column: 2 / 3; 
             }
         }
 
         @media (max-width: 1024px) { .projects-grid { grid-template-columns: repeat(2,1fr); } }
         @media (max-width: 768px)  { .projects-grid { grid-template-columns: 1fr; } }
 
-        .project-card, .research-card, .cert-card { 
-            border-radius: 0.8rem; 
+        .project-card { 
+            border-radius: 1rem; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.02); 
             overflow: hidden; 
             transition: all 0.3s; 
@@ -290,20 +378,20 @@
         body:not(.dark-theme) .project-card { background: var(--light-card); }
         body.dark-theme .project-card { background: var(--dark-card); box-shadow: 0 4px 6px rgba(0,0,0,0.15); }
 
-        .project-card:hover, .research-card:hover, .cert-card:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.08); 
+        .project-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08); 
             border-color: #000; 
         }
-        body.dark-theme .project-card:hover, body.dark-theme .research-card:hover, body.dark-theme .cert-card:hover { 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3); 
+        body.dark-theme .project-card:hover { 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
             border-color: #fff; 
         }
 
         .card-image { 
             position: relative; 
             width: 100%; 
-            height: 8rem; 
+            height: 7.5rem; 
             overflow: hidden; 
             flex-shrink: 0; 
         }
@@ -331,25 +419,26 @@
             opacity: 0.3; 
         }
 
+        /* Compact Card Content */
         .card-content { 
-            padding: 1rem; 
+            padding: 0.65rem; 
             flex: 1; 
             display: flex; 
             flex-direction: column; 
         }
         .card-title { 
-            font-size: 0.9rem; 
+            font-size: 0.85rem; 
             font-weight: 600; 
-            margin-bottom: 0.2rem; 
+            margin-bottom: 0.1rem; 
             line-height: 1.3;
         }
         body:not(.dark-theme) .card-title { color: var(--light-text); }
-        body.dark-theme       .card-title { color: var(--dark-text-bright); }
+        body.dark-theme       .card-title { color: var(--dark-text-bright) !important; }
 
         .card-subtitle { 
-            font-size: 0.7rem; 
+            font-size: 0.6rem; 
             font-weight: 500; 
-            margin-bottom: 0.4rem; 
+            margin-bottom: 0.2rem; 
             text-transform: uppercase; 
             letter-spacing: 0.05em; 
         }
@@ -357,52 +446,52 @@
         body.dark-theme       .card-subtitle { color: var(--dark-text-secondary); }
 
         .card-description { 
-            font-size: 0.78rem; 
-            line-height: 1.5; 
-            margin-bottom: 0.6rem; 
+            font-size: 0.7rem; 
+            line-height: 1.4; 
+            margin-bottom: 0.3rem; 
             flex: 1; 
         }
         body:not(.dark-theme) .card-description { color: var(--light-text-secondary); }
-        body.dark-theme       .card-description { color: var(--dark-text-secondary); }
+        body.dark-theme       .card-description { color: var(--dark-text-secondary) !important; }
 
         .card-tags { 
             display: flex; 
             flex-wrap: wrap; 
-            gap: 0.3rem; 
-            margin-bottom: 0.6rem; 
+            gap: 0.2rem; 
+            margin-bottom: 0.3rem; 
         }
         .tag { 
-            padding: 0.2rem 0.5rem; 
-            font-size: 0.65rem; 
+            padding: 0.1rem 0.4rem; 
+            font-size: 0.6rem; 
             border-radius: 9999px; 
             font-weight: 500; 
         }
         body:not(.dark-theme) .tag { background: var(--light-card-hover); color: var(--light-text); }
-        body.dark-theme       .tag { background: rgba(255,255,255,0.06); color: var(--dark-text); }
+        body.dark-theme       .tag { background: rgba(255,255,255,0.06); color: var(--dark-text) !important; }
 
         .card-actions { 
             display: flex; 
             justify-content: flex-end; 
-            gap: 0.4rem; 
+            gap: 0.25rem; 
             margin-top: auto; 
             flex-wrap: wrap; 
         }
 
         /* ═══════════════════════════════════════════════════
-           BUTTONS
+           BUTTONS (Super Compact)
            ═══════════════════════════════════════════════════ */
         .btn { 
             display: inline-flex; 
             align-items: center; 
-            gap: 0.4rem; 
-            padding: 0.4rem 1rem; 
+            gap: 0.2rem; 
+            padding: 0.2rem 0.55rem; 
             border-radius: 9999px; 
             font-weight: 600; 
             text-decoration: none; 
             transition: all 0.25s ease; 
             cursor: pointer; 
             white-space: nowrap; 
-            font-size: 0.75rem; 
+            font-size: 0.65rem; 
             letter-spacing: 0.01em; 
         }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
@@ -417,6 +506,11 @@
         body.dark-theme .btn-secondary { border: 1.5px solid var(--dark-border); color: var(--dark-text); }
         body:not(.dark-theme) .btn-secondary:hover { border-color: transparent !important; background: var(--gradient-main) !important; color: #fff !important; }
         body.dark-theme .btn-secondary:hover { border-color: transparent !important; background: var(--dark-btn-gradient) !important; color: var(--dark-btn-text) !important; }
+
+        /* Fix SVG icons inside buttons */
+        .btn svg { width: 9px; height: 9px; }
+        body.dark-theme .btn-primary svg { stroke: var(--dark-btn-text) !important; fill: none !important; }
+        body.dark-theme .btn-secondary:hover svg { stroke: var(--dark-btn-text) !important; fill: none !important; color: var(--dark-btn-text) !important; }
 
         /* ═══════════════════════════════════════════════════
            GO TO TOP BUTTON
@@ -443,14 +537,9 @@
             color: var(--dark-btn-text); 
             box-shadow: 0 4px 15px rgba(255,255,255,0.08); 
         }
-        .go-to-top.visible { 
-            opacity: 1; 
-            transform: scale(1); 
-            pointer-events: all; 
-        }
-        .go-to-top:hover { 
-            transform: scale(1.1); 
-        }
+        body.dark-theme .go-to-top svg { stroke: var(--dark-btn-text) !important; }
+        .go-to-top.visible { opacity: 1; transform: scale(1); pointer-events: all; }
+        .go-to-top:hover { transform: scale(1.1); }
 
         /* ═══════════════════════════════════════════════════
            UTILITY & RESPONSIVE
@@ -459,108 +548,126 @@
             grid-column: 1 / -1; 
             text-align: center; 
             padding: 3rem 2rem; 
-            color: var(--text-secondary); 
             font-size: 0.95rem; 
-            border: 1px dashed var(--border); 
+            border: 1px dashed var(--light-border); 
             border-radius: 1rem; 
+            color: var(--light-text-secondary);
         }
+        body.dark-theme .no-results { color: var(--dark-text-secondary); border-color: var(--dark-border); }
 
         @media (max-width: 768px) {
-            .site-header { 
-                justify-content: flex-start !important; 
-                padding: 0 !important; 
-                background: transparent !important; 
-                backdrop-filter: none !important; 
-                top: 0 !important; 
-                height: auto; 
-            }
-            .site-header::after {
-                background: rgba(248, 250, 252, 0.85) !important;
-                backdrop-filter: blur(18px) saturate(180%) !important;
-                -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-                border-radius: 0;
-                width: 100%;
-                left: 0;
-                margin: 0;
-                padding: 0.75rem 0;
-            }
-            body.dark-theme .site-header::after {
-                background: rgba(9, 9, 11, 0.85) !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            }
-            .header-left { 
-                padding: 0 1rem !important; 
-                width: 100%; 
-                justify-content: space-between;
-            }
-            .main-content { 
-                padding: 1rem 1rem 3rem; 
-                margin-top: 0;
-            }
+            .section { padding: 3rem 0; }
+            .projects-section { padding-top: 5rem; }
+            .section-title { font-size: 1.75rem; margin-bottom: 2rem; }
+            .section-subtitle { margin-top: -1.5rem; margin-bottom: 2rem; font-size: 0.85rem; }
             .projects-grid { grid-template-columns: 1fr; gap: 1rem; }
-            .page-headline h1 { white-space: normal; font-size: 1.8rem; }
+            .go-to-top { bottom: 1.5rem; right: 1.5rem; }
+            /* Restore slightly larger sizes for single-column mobile view */
             .card-image { height: 10rem; }
-            
-            /* Adjust Go To Top for mobile */
-            .go-to-top { 
-                bottom: 1.5rem; 
-                right: 1.5rem; 
-            }
+            .card-content { padding: 0.85rem; }
+            .card-title { font-size: 0.95rem; }
+            .card-subtitle { font-size: 0.7rem; }
+            .card-description { font-size: 0.8rem; }
+            .tag { font-size: 0.65rem; }
+            .btn { font-size: 0.75rem; padding: 0.3rem 0.75rem; }
+            .btn svg { width: 12px; height: 12px; }
         }
 
         @media (max-width: 480px) {
-            .page-headline h1 { font-size: 1.6rem; }
-            .card-content { padding: 0.85rem; }
+            .section-title { font-size: 1.5rem; }
+            .nav-back-mobile { font-size: 0.75rem; padding: 0.3rem 0.75rem; }
         }
-
-        .icon { width: 14px; height: 14px; display: inline-block; vertical-align: middle; }
     </style>
 </head>
 <body>
 
-<!-- Header -->
-<header class="site-header">
-    <div class="header-left">
-        <a href="https://swarup113.github.io/Portfolio/" class="back-btn">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
+<!-- Navigation -->
+<nav id="floating-nav" class="floating-nav">
+    <!-- PC Back Button (Left) -->
+    <a href="https://swarup113.github.io/Portfolio/" class="nav-back-pc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>Back</span>
+    </a>
+
+    <!-- Mobile Top Bar -->
+    <div class="mobile-nav-bar">
+        <a href="https://swarup113.github.io/Portfolio/" class="nav-back-mobile">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
             Back
         </a>
-        <span class="header-title">Projects</span>
-        
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-            <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+            <svg class="menu-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                <line x1="3" y1="7" x2="21" y2="7"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="17" x2="21" y2="17"></line>
             </svg>
-            <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            <svg class="close-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
         </button>
     </div>
-</header>
 
-<!-- Main -->
-<main class="main-content">
-    <div class="page-headline">
-        <h1>All Projects</h1>
-        <p>A collection of projects that I've built — ML, web, games, and more.</p>
+    <!-- Filter Menu (Pill for PC, Dropdown for Mobile) -->
+    <div class="nav-menu" id="nav-menu">
+        <button class="nav-item active-nav" data-filter="all">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            All
+        </button>
+        <button class="nav-item" data-filter="ml">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+            AI / ML
+        </button>
+        <button class="nav-item" data-filter="data-system">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+            Data System
+        </button>
+        <button class="nav-item" data-filter="web">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            Web Apps
+        </button>
+        <button class="nav-item" data-filter="game">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="12" x2="10" y2="12"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line><rect x="2" y="6" width="20" height="12" rx="2"></rect></svg>
+            Games
+        </button>
+        <button class="nav-item" data-filter="app">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            Mobile App
+        </button>
+        <button class="nav-item" data-filter="iot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+            IoT & Hardware
+        </button>
     </div>
+</nav>
 
-    <!-- Filters -->
-    <div class="filter-bar" id="filter-bar"></div>
+<!-- Theme Toggle (Positioned Absolute Top Right) -->
+<button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+    <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+    <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+</button>
 
-    <!-- Grid -->
-    <div class="projects-grid" id="projects-grid"></div>
+<!-- Main Content -->
+<main class="section projects-section">
+    <div class="container">
+        <h2 class="section-title">Project Archive</h2>
+        <p class="section-subtitle">A comprehensive collection of 20+ builds across machine learning, scalable data pipelines, IoT, and interactive web/mobile applications.</p>
+
+        <!-- Grid -->
+        <div class="projects-grid" id="projects-grid"></div>
+    </div>
 </main>
 
 <!-- Go to Top Button -->
@@ -572,18 +679,8 @@
 </button>
 
 <script>
-const GITHUB_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.463-1.11-1.463-.907-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>';
-const LIVE_SVG  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>';
-
-const FILTERS = [
-    { key: 'all',         label: 'All' },
-    { key: 'ml',          label: 'AI / ML' },
-    { key: 'data-system', label: 'Data System' },
-    { key: 'web',         label: 'Web Apps' },
-    { key: 'game',        label: 'Games' },
-    { key: 'app',         label: 'Mobile App' },
-    { key: 'iot',         label: 'IoT & Hardware' }
-];
+const GITHUB_SVG = '<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.463-1.11-1.463-.907-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>';
+const LIVE_SVG  = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>';
 
 const PROJECTS = [
     { title:"NeuroTab", category:"ml", date:"Apr 2025 – Sep 2025", description:"Primary Headache Classifier. Integrated NeuroTab into a web-based clinical decision support system, providing prediction with XAI insight for automated headache disorder diagnosis.", skills:["Deep Learning","XAI","Tabular Network","Python","Flask"], github:"https://github.com/Swarup113/NeuroTab", live:"https://huggingface.co/spaces/dewanjee/NeuroTab", image:"https://i.postimg.cc/sD1FGsDj/neurotab.png" },
@@ -635,7 +732,7 @@ function renderGrid() {
     const grid = document.getElementById('projects-grid');
     const list = filtered();
     
-    // Reset class name to base class
+    // Reset class
     grid.className = 'projects-grid';
 
     if (list.length === 0) {
@@ -643,7 +740,7 @@ function renderGrid() {
         return;
     }
 
-    // Add centering class if only 1 project exists
+    // Handle center layout for 1 item
     if (list.length === 1) {
         grid.classList.add('center-single');
     }
@@ -651,20 +748,36 @@ function renderGrid() {
     grid.innerHTML = list.map(cardHtml).join('');
 }
 
-function renderFilters() {
-    const bar = document.getElementById('filter-bar');
-    bar.innerHTML = FILTERS.map(f =>
-        `<button class="filter-btn${f.key === activeFilter ? ' active' : ''}" data-key="${f.key}">${f.label}</button>`
-    ).join('');
-    bar.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            activeFilter = btn.dataset.key;
-            renderGrid();
-        });
+/* ── Navigation Logic ── */
+const navItems = document.querySelectorAll('.nav-item[data-filter]');
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const navMenu = document.getElementById('nav-menu');
+
+navItems.forEach(item => {
+    item.addEventListener('click', () => {
+        // Update active state
+        navItems.forEach(i => i.classList.remove('active-nav'));
+        item.classList.add('active-nav');
+        
+        // Update filter and render
+        activeFilter = item.dataset.filter;
+        renderGrid();
+
+        // Close mobile menu if open
+        if (navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            mobileMenuBtn.classList.remove('active');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        }
     });
-}
+});
+
+// Mobile Menu Toggle
+mobileMenuBtn.addEventListener('click', () => {
+    const isActive = navMenu.classList.toggle('active');
+    mobileMenuBtn.classList.toggle('active');
+    mobileMenuBtn.setAttribute('aria-expanded', isActive);
+});
 
 /* ── Theme ── */
 const toggle = document.getElementById('theme-toggle');
@@ -703,7 +816,6 @@ goTopBtn.addEventListener('click', () => {
 });
 
 /* ── Init ── */
-renderFilters();
 renderGrid();
 </script>
 </body>
