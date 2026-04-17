@@ -808,18 +808,35 @@ window.openResearchModal = function(title, tab) {
     if (!p) return;
     var isJournal = tab === 'journal';
     var ac = accentStyle();
+    var mob = isMobile();
+
+    // ── Bottom action row: compact single row on mobile, relaxed on desktop ──
+    var actionsRowStyle = mob
+        ? 'display:flex;justify-content:flex-end;align-items:center;gap:0.4rem;flex-wrap:nowrap;overflow:hidden;'
+        : 'display:flex;justify-content:flex-end;align-items:center;gap:0.75rem;flex-wrap:wrap;';
+
+    var citeBadge = p.citations !== undefined
+        ? '<span class="tag cite-badge" style="font-size:' + (mob ? '0.68rem' : '0.78rem') + ';padding:' + (mob ? '0.25rem 0.45rem' : '0.3rem 0.7rem') + ';white-space:nowrap;flex-shrink:0;">' + CITE_SVG + ' ' + (mob ? '' : 'Citations: ') + p.citations + '</span>'
+        : '';
+
+    var doiBtn = p.doi
+        ? '<a href="' + p.doi + '" target="_blank" rel="noopener noreferrer" class="doi-btn" style="font-size:' + (mob ? '0.68rem' : '') + ';padding:' + (mob ? '0.25rem 0.45rem' : '') + ';white-space:nowrap;flex-shrink:0;">' + DOI_SVG + (mob ? '' : ' View DOI') + '</a>'
+        : '';
+
+    var readBtn = (p.link && p.link !== '#')
+        ? '<a href="' + p.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:' + (mob ? '0.68rem' : '0.875rem') + ';padding:' + (mob ? '0.25rem 0.5rem' : '') + ';white-space:nowrap;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>' + (mob ? ' Paper' : ' Read Paper') + '</a>'
+        : '<span class="tag" style="font-size:' + (mob ? '0.68rem' : '0.8rem') + ';padding:' + (mob ? '0.25rem 0.45rem' : '0.4rem 0.8rem') + ';opacity:0.8;white-space:nowrap;flex-shrink:0;">Under Review</span>';
+
     document.getElementById('modal-body').innerHTML =
-        '<h3 class="card-title" style="font-size:1.35rem;margin-bottom:1rem;padding-right:2rem">' + p.shortTitle + '</h3>' +
-        '<div style="width:100%;border-radius:0.5rem;overflow:hidden;margin-bottom:1rem;background:#f1f5f9">' +
+        '<h3 class="card-title" style="font-size:' + (mob ? '1.1rem' : '1.35rem') + ';margin-bottom:' + (mob ? '0.65rem' : '1rem') + ';padding-right:2rem">' + p.shortTitle + '</h3>' +
+        '<div style="width:100%;border-radius:0.5rem;overflow:hidden;margin-bottom:' + (mob ? '0.65rem' : '1rem') + ';background:#f1f5f9">' +
         '<img src="' + p.architecture + '" alt="Architecture" style="width:100%;height:auto;object-fit:contain"></div>' +
-        '<p style="font-size:0.8rem;' + ac + ';margin-bottom:0.35rem">' + (isJournal ? p.journal : p.conference) + '</p>' +
-        (p.dateLabel ? '<p style="font-size:0.8rem;' + ac + ';margin-bottom:1rem">Published: ' + p.dateLabel + '</p>' : '<br>') +
-        '<h4 class="card-title" style="font-size:0.95rem;margin-bottom:0.4rem">Abstract</h4>' +
-        '<p class="card-description" style="margin-bottom:1.25rem">' + p.abstract + '</p>' +
-        '<div style="display:flex;justify-content:flex-end;align-items:center;gap:0.75rem;flex-wrap:wrap">' +
-        (p.citations !== undefined ? '<span class="tag cite-badge" style="font-size:0.78rem;padding:0.3rem 0.7rem">' + CITE_SVG + ' Citations: ' + p.citations + '</span>' : '') +
-        (p.doi ? '<a href="' + p.doi + '" target="_blank" rel="noopener noreferrer" class="doi-btn">' + DOI_SVG + ' View DOI</a>' : '') +
-        (p.link && p.link !== '#' ? '<a href="' + p.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:0.875rem"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> Read Paper</a>' : '<span class="tag" style="font-size:0.8rem;padding:0.4rem 0.8rem;opacity:0.8">Under Review</span>') +
+        '<p style="font-size:' + (mob ? '0.74rem' : '0.8rem') + ';' + ac + ';margin-bottom:0.35rem">' + (isJournal ? p.journal : p.conference) + '</p>' +
+        (p.dateLabel ? '<p style="font-size:' + (mob ? '0.74rem' : '0.8rem') + ';' + ac + ';margin-bottom:' + (mob ? '0.65rem' : '1rem') + '">Published: ' + p.dateLabel + '</p>' : '<br>') +
+        '<h4 class="card-title" style="font-size:' + (mob ? '0.85rem' : '0.95rem') + ';margin-bottom:0.4rem">Abstract</h4>' +
+        '<p class="card-description" style="font-size:' + (mob ? '0.78rem' : '') + ';margin-bottom:' + (mob ? '0.75rem' : '1.25rem') + '">' + p.abstract + '</p>' +
+        '<div style="' + actionsRowStyle + '">' +
+        citeBadge + doiBtn + readBtn +
         '</div>';
     openModal();
 };
