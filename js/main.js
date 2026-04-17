@@ -762,7 +762,7 @@ function renderResearch() {
             '<div style="margin-bottom:0.6rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">' +
             '<span class="tag">' + p.status + '</span>' +
             (p.doi ? '<a href="' + p.doi + '" target="_blank" rel="noopener noreferrer" class="doi-btn" onclick="event.stopPropagation()">' + DOI_SVG + ' DOI</a>' : '') +
-            (p.citations !== undefined ? '<span class="tag cite-badge">' + CITE_SVG + ' ' + p.citations + '</span>' : '') +
+            (p.citations !== undefined ? '<span class="tag cite-badge">' + CITE_SVG + ' Citations: ' + p.citations + '</span>' : '')+
             '</div>' +
             '<div class="card-actions"><button class="btn btn-primary" style="font-size:0.75rem;padding:0.3rem 0.8rem" onclick="event.stopPropagation();openResearchModal(\'' + safeTitle + '\',\'' + currentResearchState.tab + '\')">' + ARROW_RIGHT_SVG + ' View Details</button></div>' +
             '</div></div>';
