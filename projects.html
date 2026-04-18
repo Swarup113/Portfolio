@@ -515,6 +515,59 @@
         body.dark-theme .btn-secondary:hover svg { stroke: var(--dark-btn-text) !important; fill: none !important; color: var(--dark-btn-text) !important; }
 
         /* ═══════════════════════════════════════════════════
+           FOOTER STYLES (matching main portfolio)
+           ═══════════════════════════════════════════════════ */
+        .footer {
+            margin-top: 2rem;
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--light-border);
+        }
+        body.dark-theme .footer {
+            border-top-color: var(--dark-border);
+        }
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 9999px;
+            transition: all 0.25s ease;
+            color: var(--light-text-secondary);
+            background: var(--light-card);
+            border: 1px solid var(--light-border);
+        }
+        body.dark-theme .footer-social a {
+            color: var(--dark-text-secondary);
+            background: var(--dark-card);
+            border-color: var(--dark-border);
+        }
+        .footer-social a:hover {
+            transform: translateY(-3px);
+            background: var(--gradient-main);
+            color: #fff;
+            border-color: transparent;
+        }
+        body.dark-theme .footer-social a:hover {
+            background: var(--dark-btn-gradient);
+            color: var(--dark-btn-text);
+        }
+        .footer-text {
+            font-size: 0.8rem;
+            color: var(--light-text-secondary);
+        }
+        body.dark-theme .footer-text {
+            color: var(--dark-text-secondary);
+        }
+
+        /* ═══════════════════════════════════════════════════
            GO TO TOP BUTTON
            ═══════════════════════════════════════════════════ */
         .go-to-top { 
@@ -671,6 +724,33 @@
         <div class="projects-grid" id="projects-grid"></div>
     </div>
 </main>
+
+<!-- FOOTER (matching main portfolio) -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-social">
+            <a href="mailto:dewanjee.swarup@gmail.com" id="footer-email-btn" aria-label="Email">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </a>
+            <a href="https://www.facebook.com/share/1AZVkcRF8S/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/swarup-dewanjee-a098741a1/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+        </div>
+        <p class="footer-text">© <span id="current-year"></span> Swarup Dewanjee. All rights reserved.</p>
+    </div>
+</footer>
 
 <!-- Go to Top Button -->
 <button id="go-to-top" class="go-to-top" aria-label="Go to top">
@@ -835,6 +915,9 @@ goTopBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+
+/* ── Set current year in footer ── */
+document.getElementById('current-year').textContent = new Date().getFullYear();
 
 /* ── Init ── */
 renderGrid();
