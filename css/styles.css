@@ -468,13 +468,12 @@ body:not(.dark-theme) .nav-item:hover .nav-chevron {
         z-index: 1001;
     }
 
-    /* ── Mobile dropdown: 50% width, left-aligned, fully rounded ── */
     .nav-menu {
         top: 100%;
         left: 0;
-        width: 50%;
-        min-width: 220px;
-        border-radius: 1.5rem;
+        right: 0;
+        width: 100%;
+        border-radius: 0 0 1.5rem 1.5rem;
     }
 }
 
@@ -502,50 +501,31 @@ body:not(.dark-theme) .nav-item:hover .nav-chevron {
         }
     }
     
-    /* ── Mobile dropdown panel: floating left, 50% width, fully rounded ── */
     .nav-menu { 
         display: none; 
         position: absolute; 
         top: 100%; 
         left: 0; 
-        width: 50%; 
-        min-width: 220px;
+        right: 0; 
+        width: 100%; 
         flex-direction: column; 
         align-items: stretch; 
-        border-radius: 1.5rem; 
+        border-radius: 0 0 1.5rem 1.5rem; 
         padding: 1rem; 
         gap: 0.5rem; 
         margin: 0; 
         max-height: 80vh; 
         overflow-y: auto; 
-        border: 1px solid rgba(0,0,0,0.08); 
+        border-top: 1px solid rgba(0,0,0,0.05); 
     }
-    body:not(.dark-theme) .nav-menu { 
-        background: rgba(255,255,255,0.95); 
-        box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-    }
-    body.dark-theme .nav-menu { 
-        background: rgba(9,9,11,0.95); 
-        border-color: rgba(255,255,255,0.1); 
-        box-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.3);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-    }
+    body:not(.dark-theme) .nav-menu { background: rgba(255,255,255,0.95); }
+    body.dark-theme       .nav-menu { background: rgba(9,9,11,0.95); border-color: rgba(255,255,255,0.1); }
     .nav-menu.active { display: flex; animation: slideDown 0.3s ease; }
     @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* ── Nav items inside mobile dropdown: left-aligned text ── */
-    .nav-item { 
-        padding: 0.75rem 1rem; 
-        border-radius: 0.75rem; 
-        font-size: 0.95rem; 
-        justify-content: flex-start;
-    }
-    .nav-item svg { width: 18px; height: 18px; }
     .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
     .floating-nav::before { display: none; } /* glass handled by .mobile-nav-bar directly */
+    .nav-item { padding: 0.75rem 1rem; border-radius: 0.75rem; font-size: 0.95rem; }
+    .nav-item svg { width: 18px; height: 18px; }
 }
 
 /* Theme Toggle */
@@ -1167,9 +1147,9 @@ body:not(.dark-theme) .timeline-content .btn-primary .medium-icon {
 body:not(.dark-theme) .exp-page-indicator { color: var(--light-text-secondary); }
 body.dark-theme       .exp-page-indicator { color: var(--dark-text-secondary); }
 
-/* ═══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    RESPONSIVE
-   ═══════════════════════════════════════════════════ */
+   ══════════════════════════════════════════════ */
 @media (max-width: 768px) {
     .section { padding: 3rem 0; }
     .section-title { font-size: 1.75rem; margin-bottom: 2rem; }
