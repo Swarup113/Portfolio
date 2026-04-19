@@ -495,8 +495,7 @@ body.dark-theme .nav-back-mobile:hover svg { stroke: var(--dark-btn-text) !impor
         padding: 1rem; 
         gap: 0.5rem; 
         margin: 0; 
-        max-height: 80vh; 
-        overflow-y: auto; 
+        overflow-y: visible; 
         border-top: 1px solid rgba(0,0,0,0.05);
         border-right: 1px solid rgba(0,0,0,0.05); 
     }

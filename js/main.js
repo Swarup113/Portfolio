@@ -1178,6 +1178,7 @@ function inferTopicBadge(tags) {
 
     if (t.includes('xai')) return 'XAI';
     if (t.includes('llm')) return 'LLM';
+    if (t.includes('generative-ai')) return 'Generative AI';
     if (t.includes('big-data')) return 'Big Data';
     if (t.includes('explainable-ai')) return 'XAI';
     if (t.includes('healthcare')) return 'Health';
@@ -1195,8 +1196,7 @@ function inferPublication(article) {
     // 1. Explicit field wins
     if (article.publication) return article.publication;
 
-    // 2. Check article URL — Medium publication slugs appear before the post slug
-    // e.g. https://towardsdatascience.com/... or https://medium.com/towards-data-engineering/...
+    // 2. Check article URL 
     var url = article.link || '';
     if (/towardsdatascience\.com/.test(url))          return 'Towards Data Science';
     if (/towards-data-engineering/.test(url))          return 'Towards Data Engineering';
@@ -1206,7 +1206,6 @@ function inferPublication(article) {
         // Extract the publication slug from medium.com/pub-name/article-slug
         var match = url.match(/medium\.com\/([^/@][^/]+)\//);
         if (match) {
-            // Convert slug to title case: "towards-data-engineering" → "Towards Data Engineering"
             return match[1]
                 .split('-')
                 .map(function(w){ return w.charAt(0).toUpperCase() + w.slice(1); })
@@ -1219,6 +1218,7 @@ function inferPublication(article) {
     if (/towards data engineering/.test(tagText)) return 'Towards Data Engineering';
     if (/towards data science/.test(tagText))     return 'Towards Data Science';
     if (/towards ai/.test(tagText))               return 'Towards AI';
+    if (/generative ai/.test(tagText))               return 'Generative AI';
     if (/towards explainable ai/.test(tagText))       return 'Towards Explainable Ai';
     if (/javascript in plain english/.test(tagText)) return 'JavaScript in Plain English';
 
