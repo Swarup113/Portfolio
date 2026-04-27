@@ -1198,11 +1198,11 @@ function inferPublication(article) {
 
     // 2. Check article URL 
     var url = article.link || '';
-    if (/towardsdatascience\.com/.test(url))          return 'Towards Data Science';
-    if (/towards-data-engineering/.test(url))          return 'Towards Data Engineering';
-    if (/towards-ai/.test(url) || /towardsai\.net/.test(url)) return 'Towards AI';
-    if (/generative-ai/.test(url) || /generativeai\.net/.test(url)) return 'Generative AI';
-    if (/medium\.com\/towards-data-science/.test(url)) return 'Towards Data Science';
+    if (/towardsdatascience\.com/.test(url))          return 'Published in Towards Data Science';
+    if (/towards-data-engineering/.test(url))          return 'Published in Towards Data Engineering';
+    if (/towards-ai/.test(url) || /towardsai\.net/.test(url)) return 'Published in Towards AI';
+    if (/generative-ai/.test(url) || /generativeai\.net/.test(url)) return 'Published in Generative AI';
+    if (/medium\.com\/towards-data-science/.test(url)) return 'Published in Towards Data Science';
     if (/medium\.com\/[^/@]/.test(url)) {
         // Extract the publication slug from medium.com/pub-name/article-slug
         var match = url.match(/medium\.com\/([^/@][^/]+)\//);
