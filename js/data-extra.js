@@ -21,19 +21,18 @@
             skills: ["Deep Learning", "XAI", "Tabular Network", "Python", "Flask"]
         },
         {
-            title: "TrafficGuard: Scalable Accident Data Pipeline for Severity Prediction",
-            shortTitle: "TrafficGuard: Accident Prediction",
+            title: "BDRoadRisk: Analysis of Large-Scale GPS Traffic Accident Severity Dataset in a Big Data Environment",
+            shortTitle: "BDRoadRisk: Severity Detection",
             status: "In Progress",
             badge: "Current Work",
             contribution: "Deployed 10 million Parquet records to HDFS in Oracle VirtualBox and executed distributed queries through Apache Drill to predict accident severity using deep learning models on big data infrastructure.",
-            architecture: archFrom(portfolioData.research.conference, ['trafficguard'], 'https://i.postimg.cc/nrQjRNYS/tg.png'),
+            architecture: archFrom(portfolioData.research.conference, ['BDRoadRisk'], 'https://i.postimg.cc/nrQjRNYS/tg.png'),
             skills: ["Big Data", "HDFS", "Apache Drill", "Python", "Deep Learning"]
         }
     ];
 
     // ── Conference papers — exact order in data.js ──
     var CONF_META = [
-        { date: 0,                                dateLabel: null,       citations: 0, status: 'Under Review' }, // [0] TrafficGuard
         { date: new Date('2025-06-10').getTime(), dateLabel: 'Jun 2025', citations: 3, status: 'Published'    }, // [1] PCOS
         { date: new Date('2025-06-10').getTime(), dateLabel: 'Jun 2025', citations: 2, status: 'Published'    }, // [2] Parkinson's
         { date: new Date('2025-04-01').getTime(), dateLabel: 'Apr 2025', citations: 5, status: 'Published'    }, // [3] Maternal-Fetal
@@ -52,15 +51,15 @@
 
     // ── Journal papers ──
     (portfolioData.research.journal || []).forEach(function (p) {
-        var t = (p.title || '').toLowerCase();
-        if (t.indexOf('neurotab') !== -1 || t.indexOf('headache') !== -1) {
+        if (p.status === 'Under Review') {
             p.citations = 0;
-            p.date      = 0;
+            p.date = 0;
+            p.dateLabel = '';
         } else {
-            p.citations = 4;
-            p.date      = new Date('2024-02-04').getTime();
-            p.dateLabel = 'Feb 2024';
-            p.status    = 'Published';
+        p.citations = 4;
+        p.date = new Date('2024-02-04').getTime();
+        p.dateLabel = 'Feb 2024';
+        p.status = 'Published';
         }
     });
 
