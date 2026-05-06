@@ -272,8 +272,8 @@
                             </svg>
                             <span>Download Resume</span>
                         </a>
-                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dewanjee.swarup@gmail.com" id="contact-me-btn"
-                            class="btn btn-secondary" aria-label="Contact Me" target="_blank" rel="noopener noreferrer">
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dewanjee.swarup@gmail.com&su=Hello&body=Hi%20Swarup,"
+                            id="contact-me-btn" class="btn btn-secondary" aria-label="Contact Me via Gmail" onclick="openGmailCompose(event)">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                                 <polyline points="22,6 12,13 2,6"></polyline>
@@ -281,6 +281,18 @@
                             <span>Contact Me</span>
                         </a>
                     </div>
+                        
+                        <script>
+                            function openGmailCompose(e) {
+                                e.preventDefault(); // stop normal link behavior
+                                const url = "https://mail.google.com/mail/?view=cm&fs=1&to=dewanjee.swarup@gmail.com&su=Hello&body=Hi%20Swarup,";
+                                const popup = window.open(url, "_blank", "width=800,height=700,noopener,noreferrer");
+                                if (!popup || popup.closed) {
+                                    // Fallback if popup blocked
+                                    window.location.href = url;
+                                }
+                            }
+                        </script>
                     </div>
                     <div class="hero-image">
                         <div class="image-wrapper">
