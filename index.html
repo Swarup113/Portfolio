@@ -289,58 +289,33 @@
                                 e.preventDefault();
 
                                 const to = "dewanjee.swarup@gmail.com";
-                                const subject = encodeURIComponent("Inquiry About");
-                                const body = encodeURIComponent("Hello, Swarup, I would like to");
+                                const subject = encodeURIComponent("Inquiry About ...");
+                                const body = encodeURIComponent("Hello, Swarup, I would like to ...");
 
                                 const isAndroid = /Android/i.test(navigator.userAgent);
                                 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-                                const isMobile = isAndroid || isIOS;
 
-                                if (!isMobile) {
+                                if (isAndroid) {
+                                    window.location.href =
+                                        `intent://compose?to=${to}&subject=${subject}&body=${body}` +
+                                        `#Intent;scheme=mailto;package=com.google.android.gmail;` +
+                                        `S.android.intent.extra.SUBJECT=${subject};` +
+                                        `S.android.intent.extra.TEXT=${body};end`;
+
+                                } else if (isIOS) {
+                                    window.location.href =
+                                        `googlegmail://co?to=${to}&subject=${subject}&body=${body}`;
+
+                                    setTimeout(() => {
+                                        window.location.href =
+                                            `mailto:${to}?subject=${subject}&body=${body}`;
+                                    }, 1500);
+
+                                } else {
                                     window.open(
                                         `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`,
                                         '_blank'
                                     );
-                                    return;
-                                }
-
-                                const gmailAppUrl = `googlegmail://co?to=${to}&subject=${subject}&body=${body}`;
-                                const mailtoUrl = `mailto:${to}?subject=${subject}&body=${body}`;
-
-                                if (isIOS) {
-                                    const fallbackTimer = setTimeout(() => {
-                                        window.location.href = mailtoUrl;
-                                    }, 1000);
-
-                                    window.addEventListener('visibilitychange', () => {
-                                        if (document.hidden) clearTimeout(fallbackTimer);
-                                    }, { once: true });
-
-                                    window.location.href = gmailAppUrl;
-
-                                } else {
-                                    const intentUrl =
-                                        `intent:#Intent;` +
-                                        `action=android.intent.action.SENDTO;` +
-                                        `data=mailto:${to};` +
-                                        `S.android.intent.extra.SUBJECT=${subject};` +
-                                        `S.android.intent.extra.TEXT=${body};` +
-                                        `package=com.google.android.gmail;` +
-                                        `end`;
-
-                                    const fallbackTimer = setTimeout(() => {
-                                        window.location.href = intentUrl;
-
-                                        setTimeout(() => {
-                                            window.location.href = mailtoUrl;
-                                        }, 1500);
-                                    }, 800);
-
-                                    window.addEventListener('visibilitychange', () => {
-                                        if (document.hidden) clearTimeout(fallbackTimer);
-                                    }, { once: true });
-
-                                    window.location.href = gmailAppUrl;
                                 }
                             }
                         </script>
