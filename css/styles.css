@@ -578,14 +578,13 @@ body.dark-theme       .hero-social svg { color: var(--dark-text); }
         flex-wrap: nowrap;
         width: 100%;
         justify-content: center;
-        gap: 0.75rem; /* Increased gap slightly for separation */
+        gap: 0.5rem; 
     }
 
     .hero-buttons .btn {
-        flex: 1;
-        font-size: 0.8rem !important; /* Bumped font slightly for readability */
-        /* UPDATED PADDING: More space before icon and after text */
-        padding: 0.75rem 1.4rem !important; 
+        flex: 0 1 auto;           
+        font-size: 0.8rem !important;
+        padding: 0.5rem 0.9rem !important; 
         justify-content: center;
         min-width: 0;
         white-space: nowrap;
@@ -596,8 +595,8 @@ body.dark-theme       .hero-social svg { color: var(--dark-text); }
        ═════════════════════════════════════════════ */
     .btn svg {
         flex-shrink: 0;
-        width: 18px;  /* Adjusted size for better mobile fit */
-        height: 18px;
+        width: 16px;   
+        height: 16px;
     }
 }
 /* Image */
