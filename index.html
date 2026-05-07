@@ -292,23 +292,16 @@
                                 const subject = encodeURIComponent("Inquiry About ...");
                                 const body = encodeURIComponent("Hello, Swarup, I would like to ...");
 
-                                const isAndroid = /Android/i.test(navigator.userAgent);
                                 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+                                const isAndroid = /Android/i.test(navigator.userAgent);
 
                                 if (isAndroid) {
-                                    window.location.href =
-                                        `intent://compose?to=${to}&subject=${subject}&body=${body}` +
-                                        `#Intent;scheme=mailto;package=com.google.android.gmail;` +
-                                        `S.android.intent.extra.SUBJECT=${subject};` +
-                                        `S.android.intent.extra.TEXT=${body};end`;
+                                    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
 
                                 } else if (isIOS) {
-                                    window.location.href =
-                                        `googlegmail://co?to=${to}&subject=${subject}&body=${body}`;
-
+                                    window.location.href = `googlegmail://co?to=${to}&subject=${subject}&body=${body}`;
                                     setTimeout(() => {
-                                        window.location.href =
-                                            `mailto:${to}?subject=${subject}&body=${body}`;
+                                        window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
                                     }, 1500);
 
                                 } else {
