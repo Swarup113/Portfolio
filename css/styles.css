@@ -573,8 +573,32 @@ body.dark-theme       .hero-social svg { color: var(--dark-text); }
 
 .hero-buttons { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 0.75rem; }
 @media (max-width: 900px) { .hero-buttons { justify-content: center; } }
-@media (max-width: 480px) { .hero-buttons { flex-wrap: nowrap; width: 100%; justify-content: center; gap: 0.5rem; } .hero-buttons .btn { flex: 1; font-size: 0.75rem !important; padding: 0.5rem 0.65rem !important; justify-content: center; min-width: 0; white-space: nowrap; } }
+@media (max-width: 480px) {
+    .hero-buttons {
+        flex-wrap: nowrap;
+        width: 100%;
+        justify-content: center;
+        gap: 0.5rem;
+    }
 
+    .hero-buttons .btn {
+        flex: 1;
+        font-size: 0.75rem !important;
+        padding: 0.5rem 0.65rem !important;
+        justify-content: center;
+        min-width: 0;
+        white-space: nowrap;
+    }
+
+    /* ═════════════════════════════════════════════
+       FIX: Prevents download icons from disappearing 
+       ═════════════════════════════════════════════ */
+    .btn svg {
+        flex-shrink: 0;
+        width: 18px;  /* Adjusted size for better mobile fit */
+        height: 18px;
+    }
+}
 /* Image */
 .image-wrapper { position: relative; width: 20rem; height: 20rem; }
 .image-glow { position: absolute; inset: 1rem; border-radius: 9999px; background: radial-gradient(circle, rgba(0,0,0,0.08), transparent 70%); filter: blur(2rem); }
@@ -1380,16 +1404,3 @@ body.dark-theme .writing-topic-badge {
     }
 }
 
-/* Dark mode text fixes for writing cards */
-body.dark-theme .writing-card-title  { color: var(--dark-text-bright) !important; }
-body.dark-theme .writing-card-desc   { color: var(--dark-text-secondary) !important; }
-
-/* Light mode: white icon on dark button */
-.btn-primary .download-icon {
-  stroke: #ffffff;
-}
-
-/* Dark mode: dark icon on light button */
-body.dark-theme .btn-primary .download-icon {
-  stroke: #18181b;   /* your --dark-btn-text */
-}
