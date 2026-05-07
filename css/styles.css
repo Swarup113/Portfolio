@@ -1383,3 +1383,13 @@ body.dark-theme .writing-topic-badge {
 /* Dark mode text fixes for writing cards */
 body.dark-theme .writing-card-title  { color: var(--dark-text-bright) !important; }
 body.dark-theme .writing-card-desc   { color: var(--dark-text-secondary) !important; }
+
+/* Light mode: white icon on dark button */
+.btn-primary .download-icon {
+  stroke: #ffffff;
+}
+
+/* Dark mode: dark icon on light button */
+body.dark-theme .btn-primary .download-icon {
+  stroke: #18181b;   /* your --dark-btn-text */
+}
