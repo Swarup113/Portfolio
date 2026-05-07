@@ -273,7 +273,7 @@
                             <span>Download CV</span>
                         </a>
                     
-                        <a href="javascript:void(0);" id="contact-me-btn" class="btn btn-secondary" aria-label="Contact Me via Gmail"
+                        <a href="#" id="contact-me-btn" class="btn btn-secondary" aria-label="Contact Me via Gmail"
                             onclick="openGmailCompose(event)">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
@@ -287,9 +287,15 @@
                             function openGmailCompose(e) {
                                 e.preventDefault();
 
-                                const url = "mailto:dewanjee.swarup@gmail.com?subject=Inquiry%20About&body=Hello,%20Swarup,%20I%20would%20like%20to";
+                                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-                                window.location.href = url;
+                                if (isMobile) {
+                                    const url = "mailto:dewanjee.swarup@gmail.com?subject=Inquiry%20About&body=Hello,%20Swarup,%20I%20would%20like%20to";
+                                    window.location.href = url;
+                                } else {
+                                    const url = "https://mail.google.com/mail/?view=cm&fs=1&to=dewanjee.swarup@gmail.com&su=Inquiry%20About&body=Hello,%20Swarup,%20I%20would%20like%20to";
+                                    window.open(url, '_blank');
+                                }
                             }
                         </script>
                     </div>
