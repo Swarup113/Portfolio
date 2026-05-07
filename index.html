@@ -296,7 +296,8 @@
                                 const isAndroid = /Android/i.test(navigator.userAgent);
 
                                 if (isAndroid) {
-                                    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+                                    window.location.href =
+                                        `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
 
                                 } else if (isIOS) {
                                     window.location.href = `googlegmail://co?to=${to}&subject=${subject}&body=${body}`;
