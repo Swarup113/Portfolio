@@ -166,6 +166,29 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 // ── Mobile helper ──
 function isMobile() { return window.innerWidth <= 768; }
 
+// ── Mobile carousel height lock helper ──
+// Call this BEFORE re-rendering a mobile carousel container.
+// It locks the container to its current height so content shrinkage
+// (fewer/shorter cards on later pages) cannot pull the user's viewport
+// down into the next section. After the new content renders we release
+// the lock via rAF so the container can still grow if needed.
+function lockAndRender(container, renderFn) {
+    if (!container || !isMobile()) { renderFn(); return; }
+    var currentH = container.offsetHeight;
+    if (currentH > 0) {
+        container.style.minHeight = currentH + 'px';
+    }
+    renderFn();
+    // Release the lock after the browser has painted the new content so
+    // the container can grow (but won't shrink below the locked size
+    // during the transition frame that would displace scroll position).
+    requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+            container.style.minHeight = '';
+        });
+    });
+}
+
 // ── Swipe gesture helper ──
 function addSwipe(el, onPrev, onNext) {
     if (!el) return;
@@ -419,7 +442,6 @@ function renderExperience() {
         var atStart = expState.index === 0;
         var atEnd   = expState.index + page >= all.length;
 
-        // Pass real indices so openExpModal gets the correct global index
         var cardsHtml = slice.map(function(exp, localIdx) {
             return itemHtml(exp, expState.index + localIdx);
         }).join('');
@@ -427,44 +449,44 @@ function renderExperience() {
         var prevDisabled = atStart ? 'disabled' : '';
         var nextDisabled = atEnd   ? 'disabled' : '';
 
-        container.innerHTML = `
-            <div class="mob-bottom-wrap">
-                <div class="mob-cards-area" id="exp-inner">
-                    ${cardsHtml}
-                </div>
-                <div class="mob-bottom-btns">
-                    <button class="mob-nav-btn mob-prev-btn" ${prevDisabled} aria-label="Previous">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="15 18 9 12 15 6"></polyline>
-                        </svg>
-                    </button>
-                    <!-- REMOVED PAGINATION TEXT HERE -->
-                    <button class="mob-nav-btn mob-next-btn" ${nextDisabled} aria-label="Next">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </button>
-                </div>
-            </div>`;
+        lockAndRender(container, function() {
+            container.innerHTML = `
+                <div class="mob-bottom-wrap">
+                    <div class="mob-cards-area" id="exp-inner">
+                        ${cardsHtml}
+                    </div>
+                    <div class="mob-bottom-btns">
+                        <button class="mob-nav-btn mob-prev-btn" ${prevDisabled} aria-label="Previous">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <button class="mob-nav-btn mob-next-btn" ${nextDisabled} aria-label="Next">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>`;
 
-        var prevBtn = container.querySelector('.mob-prev-btn');
-        var nextBtn = container.querySelector('.mob-next-btn');
-        if (prevBtn) prevBtn.addEventListener('click', function() {
-            expState.index = Math.max(0, expState.index - page);
-            renderExperience();
+            var prevBtn = container.querySelector('.mob-prev-btn');
+            var nextBtn = container.querySelector('.mob-next-btn');
+            if (prevBtn) prevBtn.addEventListener('click', function() {
+                expState.index = Math.max(0, expState.index - page);
+                renderExperience();
+            });
+            if (nextBtn) nextBtn.addEventListener('click', function() {
+                if (expState.index + page < all.length) expState.index += page;
+                renderExperience();
+            });
+            addSwipe(
+                container.querySelector('#exp-inner'),
+                function() { expState.index = Math.max(0, expState.index - page); renderExperience(); },
+                function() { if (expState.index + page < all.length) { expState.index += page; renderExperience(); } }
+            );
         });
-        if (nextBtn) nextBtn.addEventListener('click', function() {
-            if (expState.index + page < all.length) expState.index += page;
-            renderExperience();
-        });
-        addSwipe(
-            container.querySelector('#exp-inner'),
-            function() { expState.index = Math.max(0, expState.index - page); renderExperience(); },
-            function() { if (expState.index + page < all.length) { expState.index += page; renderExperience(); } }
-        );
 
     } else {
-        // Desktop: render all
         container.innerHTML = all.map(function(exp, i) {
             return itemHtml(exp, i);
         }).join('');
@@ -550,7 +572,6 @@ function projPageSize() { return PROJ_PAGE_ALL; }
         ];
         
         fc.innerHTML = FILTERS.map(function(f) {
-            // Added inline flex style to ensure icon and text align perfectly
             return '<button class="filter-btn ' + (f.key==='all'?'active':'') + '" data-filter="' + f.key + '" style="display:inline-flex;align-items:center;gap:0.4rem">' + f.icon + f.label + '</button>';
         }).join('');
         
@@ -611,12 +632,14 @@ function renderProjects() {
         var atStart = projState.index === 0;
         var atEnd   = projState.index + page >= all.length;
         container.className = 'projects-carousel';
-        container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, 'projects-carousel-inner', 'proj-inner');
-        var prevBtn = container.querySelector('.mob-prev-btn');
-        var nextBtn = container.querySelector('.mob-next-btn');
-        if (prevBtn) prevBtn.addEventListener('click', function(){ projState.index = Math.max(0, projState.index - page); renderProjects(); });
-        if (nextBtn) nextBtn.addEventListener('click', function(){ if (projState.index + page < all.length) projState.index += page; renderProjects(); });
-        addSwipe(container.querySelector('#proj-inner'), function(){ projState.index = Math.max(0, projState.index - page); renderProjects(); }, function(){ if (projState.index + page < all.length) projState.index += page; renderProjects(); });
+        lockAndRender(container, function() {
+            container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, 'projects-carousel-inner', 'proj-inner');
+            var prevBtn = container.querySelector('.mob-prev-btn');
+            var nextBtn = container.querySelector('.mob-next-btn');
+            if (prevBtn) prevBtn.addEventListener('click', function(){ projState.index = Math.max(0, projState.index - page); renderProjects(); });
+            if (nextBtn) nextBtn.addEventListener('click', function(){ if (projState.index + page < all.length) projState.index += page; renderProjects(); });
+            addSwipe(container.querySelector('#proj-inner'), function(){ projState.index = Math.max(0, projState.index - page); renderProjects(); }, function(){ if (projState.index + page < all.length) projState.index += page; renderProjects(); });
+        });
         var dp = document.getElementById('projects-prev'); var dn = document.getElementById('projects-next');
         if (dp) dp.style.display = 'none'; if (dn) dn.style.display = 'none';
     } else {
@@ -667,15 +690,17 @@ function renderHighlights() {
     var cardsHtml = slice.map(function(h, i) { return cardHtml(h, currentHighlightState.index + i); }).join('');
 
     if (isMobile()) {
-        container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, gridClass, 'hl-grid');
-        var hlPrev = container.querySelector('.mob-prev-btn');
-        var hlNext = container.querySelector('.mob-next-btn');
-        if (hlPrev) hlPrev.addEventListener('click', function(){ currentHighlightState.index = Math.max(0, currentHighlightState.index - page); renderHighlights(); });
-        if (hlNext) hlNext.addEventListener('click', function(){ if (currentHighlightState.index + page < highlights.length) currentHighlightState.index += page; renderHighlights(); });
-        addSwipe(document.getElementById('hl-grid'),
-            function(){ currentHighlightState.index = Math.max(0, currentHighlightState.index - page); renderHighlights(); },
-            function(){ if (currentHighlightState.index + page < highlights.length) { currentHighlightState.index += page; renderHighlights(); } }
-        );
+        lockAndRender(container, function() {
+            container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, gridClass, 'hl-grid');
+            var hlPrev = container.querySelector('.mob-prev-btn');
+            var hlNext = container.querySelector('.mob-next-btn');
+            if (hlPrev) hlPrev.addEventListener('click', function(){ currentHighlightState.index = Math.max(0, currentHighlightState.index - page); renderHighlights(); });
+            if (hlNext) hlNext.addEventListener('click', function(){ if (currentHighlightState.index + page < highlights.length) currentHighlightState.index += page; renderHighlights(); });
+            addSwipe(document.getElementById('hl-grid'),
+                function(){ currentHighlightState.index = Math.max(0, currentHighlightState.index - page); renderHighlights(); },
+                function(){ if (currentHighlightState.index + page < highlights.length) { currentHighlightState.index += page; renderHighlights(); } }
+            );
+        });
     } else {
         container.innerHTML =
             '<div class="carousel-container">' +
@@ -785,15 +810,17 @@ function renderResearch() {
         var atStart = currentResearchState.index === 0;
         var atEnd   = currentResearchState.index + page >= papers.length;
         container.className = 'research-carousel';
-        container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, 'research-carousel-inner', 'res-inner');
-        var prevBtn = container.querySelector('.mob-prev-btn');
-        var nextBtn = container.querySelector('.mob-next-btn');
-        if (prevBtn) prevBtn.addEventListener('click', function(){ currentResearchState.index = Math.max(0, currentResearchState.index - page); renderResearch(); updateResearchBtns(); });
-        if (nextBtn) nextBtn.addEventListener('click', function(){ if (currentResearchState.index + page < papers.length) currentResearchState.index += page; renderResearch(); updateResearchBtns(); });
-        addSwipe(container.querySelector('#res-inner'),
-            function(){ currentResearchState.index = Math.max(0, currentResearchState.index - page); renderResearch(); updateResearchBtns(); },
-            function(){ if (currentResearchState.index + page < papers.length) { currentResearchState.index += page; renderResearch(); updateResearchBtns(); } }
-        );
+        lockAndRender(container, function() {
+            container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, 'research-carousel-inner', 'res-inner');
+            var prevBtn = container.querySelector('.mob-prev-btn');
+            var nextBtn = container.querySelector('.mob-next-btn');
+            if (prevBtn) prevBtn.addEventListener('click', function(){ currentResearchState.index = Math.max(0, currentResearchState.index - page); renderResearch(); updateResearchBtns(); });
+            if (nextBtn) nextBtn.addEventListener('click', function(){ if (currentResearchState.index + page < papers.length) currentResearchState.index += page; renderResearch(); updateResearchBtns(); });
+            addSwipe(container.querySelector('#res-inner'),
+                function(){ currentResearchState.index = Math.max(0, currentResearchState.index - page); renderResearch(); updateResearchBtns(); },
+                function(){ if (currentResearchState.index + page < papers.length) { currentResearchState.index += page; renderResearch(); updateResearchBtns(); } }
+            );
+        });
         var dp = document.getElementById('research-prev'); var dn = document.getElementById('research-next');
         if (dp) dp.style.display = 'none'; if (dn) dn.style.display = 'none';
     } else {
@@ -821,7 +848,6 @@ window.openResearchModal = function(title, tab) {
     var ac = accentStyle();
     var mob = isMobile();
 
-    // ── Bottom action row: compact single row on mobile, relaxed on desktop ──
     var actionsRowStyle = mob
         ? 'display:flex;justify-content:flex-end;align-items:center;gap:0.4rem;flex-wrap:nowrap;overflow:hidden;'
         : 'display:flex;justify-content:flex-end;align-items:center;gap:0.75rem;flex-wrap:wrap;';
@@ -871,20 +897,22 @@ function renderTools(tab) {
         var slice = all.slice(toolState.index, toolState.index + page);
         var atStart = toolState.index === 0;
         var atEnd   = toolState.index + page >= all.length;
-        container.innerHTML =
-            '<div class="mob-carousel-wrap">' +
-            '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
-            '<div class="tools-mob-grid" id="tools-inner">' + slice.map(cardHtml).join('') + '</div>' +
-            '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
-            '</div>';
-        var prevBtn = container.querySelector('.mob-prev-btn');
-        var nextBtn = container.querySelector('.mob-next-btn');
-        if (prevBtn) prevBtn.addEventListener('click', function(){ toolState.index = Math.max(0, toolState.index - page); renderTools(); });
-        if (nextBtn) nextBtn.addEventListener('click', function(){ if (toolState.index + page < all.length) toolState.index += page; renderTools(); });
-        addSwipe(container.querySelector('#tools-inner'),
-            function(){ toolState.index = Math.max(0, toolState.index - page); renderTools(); },
-            function(){ if (toolState.index + page < all.length) { toolState.index += page; renderTools(); } }
-        );
+        lockAndRender(container, function() {
+            container.innerHTML =
+                '<div class="mob-carousel-wrap">' +
+                '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
+                '<div class="tools-mob-grid" id="tools-inner">' + slice.map(cardHtml).join('') + '</div>' +
+                '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
+                '</div>';
+            var prevBtn = container.querySelector('.mob-prev-btn');
+            var nextBtn = container.querySelector('.mob-next-btn');
+            if (prevBtn) prevBtn.addEventListener('click', function(){ toolState.index = Math.max(0, toolState.index - page); renderTools(); });
+            if (nextBtn) nextBtn.addEventListener('click', function(){ if (toolState.index + page < all.length) toolState.index += page; renderTools(); });
+            addSwipe(container.querySelector('#tools-inner'),
+                function(){ toolState.index = Math.max(0, toolState.index - page); renderTools(); },
+                function(){ if (toolState.index + page < all.length) { toolState.index += page; renderTools(); } }
+            );
+        });
     } else {
         container.innerHTML = all.map(cardHtml).join('');
     }
@@ -903,7 +931,6 @@ function renderEducation() {
     var all = portfolioData.education || [];
 
     function itemHtml(edu) {
-        // Build courses HTML if course array exists
         var coursesHtml = '';
         if (edu.course && edu.course.length) {
             coursesHtml = '<div class="card-tags" style="margin:0.5rem 0 0.75rem 0; gap:0.4rem; display:flex; flex-wrap:wrap;">' +
@@ -935,15 +962,17 @@ function renderEducation() {
         var slice = all.slice(eduState.index, eduState.index + page);
         var atStart = eduState.index === 0;
         var atEnd   = eduState.index + page >= all.length;
-        container.innerHTML = buildBottomCarousel(slice.map(itemHtml).join(''), atStart, atEnd, '', 'edu-inner');
-        var prevBtn = container.querySelector('.mob-prev-btn');
-        var nextBtn = container.querySelector('.mob-next-btn');
-        if (prevBtn) prevBtn.addEventListener('click', function(){ eduState.index = Math.max(0, eduState.index - page); renderEducation(); });
-        if (nextBtn) nextBtn.addEventListener('click', function(){ if (eduState.index + page < all.length) eduState.index += page; renderEducation(); });
-        addSwipe(container.querySelector('#edu-inner'),
-            function(){ eduState.index = Math.max(0, eduState.index - page); renderEducation(); },
-            function(){ if (eduState.index + page < all.length) { eduState.index += page; renderEducation(); } }
-        );
+        lockAndRender(container, function() {
+            container.innerHTML = buildBottomCarousel(slice.map(itemHtml).join(''), atStart, atEnd, '', 'edu-inner');
+            var prevBtn = container.querySelector('.mob-prev-btn');
+            var nextBtn = container.querySelector('.mob-next-btn');
+            if (prevBtn) prevBtn.addEventListener('click', function(){ eduState.index = Math.max(0, eduState.index - page); renderEducation(); });
+            if (nextBtn) nextBtn.addEventListener('click', function(){ if (eduState.index + page < all.length) eduState.index += page; renderEducation(); });
+            addSwipe(container.querySelector('#edu-inner'),
+                function(){ eduState.index = Math.max(0, eduState.index - page); renderEducation(); },
+                function(){ if (eduState.index + page < all.length) { eduState.index += page; renderEducation(); } }
+            );
+        });
     } else {
         container.innerHTML = all.map(itemHtml).join('');
     }
@@ -976,18 +1005,20 @@ function renderAwards() {
         var slice = all.slice(awardState.index, awardState.index + page);
         var atStart = awardState.index === 0;
         var atEnd   = awardState.index + page >= all.length;
-        container.innerHTML = buildBottomCarousel(
-            slice.map(function(a, i) { return cardHtml(a, awardState.index + i); }).join(''),
-            atStart, atEnd, '', 'award-inner'
-        );
-        var prevBtn = container.querySelector('.mob-prev-btn');
-        var nextBtn = container.querySelector('.mob-next-btn');
-        if (prevBtn) prevBtn.addEventListener('click', function(){ awardState.index = Math.max(0, awardState.index - page); renderAwards(); });
-        if (nextBtn) nextBtn.addEventListener('click', function(){ if (awardState.index + page < all.length) awardState.index += page; renderAwards(); });
-        addSwipe(container.querySelector('#award-inner'),
-            function(){ awardState.index = Math.max(0, awardState.index - page); renderAwards(); },
-            function(){ if (awardState.index + page < all.length) { awardState.index += page; renderAwards(); } }
-        );
+        lockAndRender(container, function() {
+            container.innerHTML = buildBottomCarousel(
+                slice.map(function(a, i) { return cardHtml(a, awardState.index + i); }).join(''),
+                atStart, atEnd, '', 'award-inner'
+            );
+            var prevBtn = container.querySelector('.mob-prev-btn');
+            var nextBtn = container.querySelector('.mob-next-btn');
+            if (prevBtn) prevBtn.addEventListener('click', function(){ awardState.index = Math.max(0, awardState.index - page); renderAwards(); });
+            if (nextBtn) nextBtn.addEventListener('click', function(){ if (awardState.index + page < all.length) awardState.index += page; renderAwards(); });
+            addSwipe(container.querySelector('#award-inner'),
+                function(){ awardState.index = Math.max(0, awardState.index - page); renderAwards(); },
+                function(){ if (awardState.index + page < all.length) { awardState.index += page; renderAwards(); } }
+            );
+        });
     } else {
         container.innerHTML = all.map(cardHtml).join('');
     }
@@ -1031,15 +1062,17 @@ function renderCerts() {
         var atStart = currentCertState.index === 0;
         var atEnd   = currentCertState.index + page >= all.length;
         container.className = 'certifications-carousel';
-        container.innerHTML = buildBottomCarousel(slice.map(cardHtml).join(''), atStart, atEnd, 'certifications-carousel-inner', 'cert-inner');
-        var prevBtn = container.querySelector('.mob-prev-btn');
-        var nextBtn = container.querySelector('.mob-next-btn');
-        if (prevBtn) prevBtn.addEventListener('click', function(){ currentCertState.index = Math.max(0, currentCertState.index - page); renderCerts(); updateCertBtns(); });
-        if (nextBtn) nextBtn.addEventListener('click', function(){ if (currentCertState.index + page < all.length) currentCertState.index += page; renderCerts(); updateCertBtns(); });
-        addSwipe(container.querySelector('#cert-inner'),
-            function(){ currentCertState.index = Math.max(0, currentCertState.index - page); renderCerts(); updateCertBtns(); },
-            function(){ if (currentCertState.index + page < all.length) { currentCertState.index += page; renderCerts(); updateCertBtns(); } }
-        );
+        lockAndRender(container, function() {
+            container.innerHTML = buildBottomCarousel(slice.map(cardHtml).join(''), atStart, atEnd, 'certifications-carousel-inner', 'cert-inner');
+            var prevBtn = container.querySelector('.mob-prev-btn');
+            var nextBtn = container.querySelector('.mob-next-btn');
+            if (prevBtn) prevBtn.addEventListener('click', function(){ currentCertState.index = Math.max(0, currentCertState.index - page); renderCerts(); updateCertBtns(); });
+            if (nextBtn) nextBtn.addEventListener('click', function(){ if (currentCertState.index + page < all.length) currentCertState.index += page; renderCerts(); updateCertBtns(); });
+            addSwipe(container.querySelector('#cert-inner'),
+                function(){ currentCertState.index = Math.max(0, currentCertState.index - page); renderCerts(); updateCertBtns(); },
+                function(){ if (currentCertState.index + page < all.length) { currentCertState.index += page; renderCerts(); updateCertBtns(); } }
+            );
+        });
         var dp = document.getElementById('certifications-prev'); var dn = document.getElementById('certifications-next');
         if (dp) dp.style.display = 'none'; if (dn) dn.style.display = 'none';
     } else {
@@ -1108,12 +1141,12 @@ document.getElementById('contact-form') && document.getElementById('contact-form
     }, { rootMargin: '-35% 0px -55% 0px' });
     document.querySelectorAll('section[id]').forEach(function(s) { observer.observe(s); });
 })();
+
 // ── Writing / Medium Feed ──
 var writingState = { index: 0, articles: [] };
 var WRITING_PAGE = 3;
 var MOB_WRITING_PAGE = 2;
 
-// Tag inference from title/content
 function inferWritingTags(item) {
     var text = ((item.title || '') + ' ' + (item.description || '') + ' ' + (item.tags || []).join(' ')).toLowerCase();
     var tags = [];
@@ -1129,18 +1162,23 @@ function inferWritingTags(item) {
     return tags.slice(0, 4);
 }
 
-// Topic label badge from tags
 function inferTopicBadge(tags) {
-    if (tags.indexOf('XAI') !== -1)         return 'XAI';
-    if (tags.indexOf('Healthcare') !== -1)   return 'Healthcare';
-    if (tags.indexOf('Deep Learning') !== -1) return 'Deep Learning';
-    if (tags.indexOf('NLP') !== -1)          return 'NLP';
-    if (tags.indexOf('ML') !== -1)           return 'ML';
-     if (tags.indexOf('ML') !== -1)           return 'ML';
-    return 'AI';
+    if (!tags || tags.length === 0) return 'AI';
+    var t = tags.map(function(x){ return x.toLowerCase(); });
+    if (t.indexOf('xai') !== -1)                   return 'XAI';
+    if (t.indexOf('llm') !== -1)                   return 'LLM';
+    if (t.indexOf('generative-ai') !== -1)         return 'Generative AI';
+    if (t.indexOf('big-data') !== -1)              return 'Big Data';
+    if (t.indexOf('explainable-ai') !== -1)        return 'XAI';
+    if (t.indexOf('healthcare') !== -1)            return 'Health';
+    if (t.indexOf('deep-learning') !== -1)         return 'DL';
+    if (t.indexOf('machine-learning') !== -1)      return 'ML';
+    if (t.indexOf('data-analysis') !== -1)         return 'Data Analysis';
+    if (t.indexOf('ai') !== -1)                    return 'AI';
+    if (t.indexOf('artificial-intelligence') !== -1) return 'AI';
+    return tags[0];
 }
 
-// Hardcoded fallback article matching the requested URL
 var MEDIUM_FALLBACK = [
     {
         title: 'Beyond the Black Box: Is Explainable AI Enough for Medical Diagnosis?',
@@ -1149,54 +1187,13 @@ var MEDIUM_FALLBACK = [
         pubDate: 'Apr 2025',
         tags: ['XAI', 'Healthcare', 'ML', 'Deep Learning'],
         publication: 'Towards AI'
-
     }
 ];
 
 function writingPageSize() { return isMobile() ? MOB_WRITING_PAGE : WRITING_PAGE; }
 
-
-function inferWritingTags(article) {
-    var text = ((article.title || '') + ' ' + (article.description || '')).toLowerCase();
-    var tags = [];
-
-    if (text.includes('explainable') || text.includes('xai')) tags.push('XAI');
-    if (text.includes('health') || text.includes('medical') || text.includes('clinical')) tags.push('Healthcare');
-    if (text.includes('deep learning') || text.includes('neural')) tags.push('Deep Learning');
-    if (text.includes('machine learning') || text.includes('ml')) tags.push('ML');
-    if (text.includes('data')) tags.push('Data');
-    if (text.includes('ai') || text.includes('artificial intelligence')) tags.push('AI');
-
-    return tags.length ? tags.slice(0, 4) : ['AI'];
-}
-
-
-function inferTopicBadge(tags) {
-    if (!tags || tags.length === 0) return 'AI';
-
-    var t = tags.map(t => t.toLowerCase());
-
-    if (t.includes('xai')) return 'XAI';
-    if (t.includes('llm')) return 'LLM';
-    if (t.includes('generative-ai')) return 'Generative AI';
-    if (t.includes('big-data')) return 'Big Data';
-    if (t.includes('explainable-ai')) return 'XAI';
-    if (t.includes('healthcare')) return 'Health';
-    if (t.includes('deep-learning')) return 'DL';
-    if (t.includes('machine-learning')) return 'ML';
-    if (t.includes('data-analysis')) return 'Data Analysis';
-    if (t.includes('ai')) return 'AI';
-     if (t.includes('artificial-intelligence')) return 'AI';
-
-    return tags[0];
-}
-
-
 function inferPublication(article) {
-    // 1. Explicit field wins
     if (article.publication) return article.publication;
-
-    // 2. Check article URL 
     var url = article.link || '';
     if (/towardsdatascience\.com/.test(url))          return 'Published in Towards Data Science';
     if (/towards-data-engineering/.test(url))          return 'Published in Towards Data Engineering';
@@ -1205,7 +1202,6 @@ function inferPublication(article) {
     if (/generative-ai/.test(url) || /generativeai\.net/.test(url)) return 'Published in Generative AI';
     if (/medium\.com\/towards-data-science/.test(url)) return 'Published in Towards Data Science';
     if (/medium\.com\/[^/@]/.test(url)) {
-        // Extract the publication slug from medium.com/pub-name/article-slug
         var match = url.match(/medium\.com\/([^/@][^/]+)\//);
         if (match) {
             return match[1]
@@ -1214,22 +1210,16 @@ function inferPublication(article) {
                 .join(' ');
         }
     }
-
-    // 3. Check tags for known publication names
     var tagText = (article.tags || []).join(' ').toLowerCase();
     if (/towards data engineering/.test(tagText)) return 'Towards Data Engineering';
     if (/towards data science/.test(tagText))     return 'Towards Data Science';
     if (/towards ai/.test(tagText))               return 'Towards AI';
-    if (/generative ai/.test(tagText))               return 'Generative AI';
-    if (/towards explainable ai/.test(tagText))       return 'Towards Explainable Ai';
+    if (/generative ai/.test(tagText))            return 'Generative AI';
+    if (/towards explainable ai/.test(tagText))   return 'Towards Explainable Ai';
     if (/artificial intelligence in plain english/.test(tagText)) return 'Artificial Intelligence in Plain English';
-
-    // 4. Check title/description text
     var bodyText = ((article.title || '') + ' ' + (article.description || '')).toLowerCase();
     if (/towards data engineering/.test(bodyText)) return 'Towards Data Engineering';
     if (/towards data science/.test(bodyText))     return 'Towards Data Science';
-
-    // 5. Default
     return 'Medium';
 }
 
@@ -1249,14 +1239,11 @@ function renderWriting() {
     var slice = all.slice(writingState.index, writingState.index + page);
     var isFew = !isMobile() && slice.length < 3;
 
-    // Medium SVG icon (inline, same M-dot as experience button)
     var MEDIUM_ICON = '<svg width="13" height="13" viewBox="0 0 1043.63 592.71" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460.03 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36M911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.17-279 147.17 124.9 147.17 279M1043.63 296.36c0 138-23.17 249.94-51.76 249.94s-51.75-111.9-51.75-249.94 23.17-249.94 51.75-249.94 51.76 111.9 51.76 249.94"/></svg>';
 
     function cardHtml(a) {
         var tags = a.tags && a.tags.length ? a.tags : inferWritingTags(a);
         var badge = inferTopicBadge(tags);
-
-        // Detect publication name — check tags or fallback to Medium
         var pubName = inferPublication(a);
 
         return '<div class="writing-card">' +
@@ -1284,24 +1271,26 @@ function renderWriting() {
         var atStart = writingState.index === 0;
         var atEnd   = writingState.index + page >= all.length;
         container.className = 'writing-carousel';
-        container.innerHTML = buildBottomCarousel(
-            cardsHtml, atStart, atEnd, 'writing-carousel-inner', 'writing-inner'
-        );
-        var prevBtn = container.querySelector('.mob-prev-btn');
-        var nextBtn = container.querySelector('.mob-next-btn');
-        if (prevBtn) prevBtn.addEventListener('click', function(){
-            writingState.index = Math.max(0, writingState.index - page);
-            renderWriting();
+        lockAndRender(container, function() {
+            container.innerHTML = buildBottomCarousel(
+                cardsHtml, atStart, atEnd, 'writing-carousel-inner', 'writing-inner'
+            );
+            var prevBtn = container.querySelector('.mob-prev-btn');
+            var nextBtn = container.querySelector('.mob-next-btn');
+            if (prevBtn) prevBtn.addEventListener('click', function(){
+                writingState.index = Math.max(0, writingState.index - page);
+                renderWriting();
+            });
+            if (nextBtn) nextBtn.addEventListener('click', function(){
+                if (writingState.index + page < all.length) writingState.index += page;
+                renderWriting();
+            });
+            addSwipe(
+                container.querySelector('#writing-inner'),
+                function(){ writingState.index = Math.max(0, writingState.index - page); renderWriting(); },
+                function(){ if (writingState.index + page < all.length) { writingState.index += page; renderWriting(); } }
+            );
         });
-        if (nextBtn) nextBtn.addEventListener('click', function(){
-            if (writingState.index + page < all.length) writingState.index += page;
-            renderWriting();
-        });
-        addSwipe(
-            container.querySelector('#writing-inner'),
-            function(){ writingState.index = Math.max(0, writingState.index - page); renderWriting(); },
-            function(){ if (writingState.index + page < all.length) { writingState.index += page; renderWriting(); } }
-        );
         var dp = document.getElementById('writing-prev');
         var dn = document.getElementById('writing-next');
         if (dp) dp.style.display = 'none';
@@ -1342,7 +1331,8 @@ function renderWriting() {
         'https://api.allorigins.win/raw?url='
     ];
 
-    function fetchMedium(i = 0) {
+    function fetchMedium(i) {
+        i = i || 0;
         if (i >= proxies.length) {
             console.error("All proxies failed");
             return;
@@ -1351,22 +1341,21 @@ function renderWriting() {
         var url = proxies[i] + encodeURIComponent(rssUrl) + '&_=' + Date.now();
 
         fetch(url)
-            .then(r => r.json())
-            .then(data => {
-
+            .then(function(r){ return r.json(); })
+            .then(function(data) {
                 var items = data.items || [];
 
                 if (!items.length && data.contents) {
                     var parser = new DOMParser();
                     var xml = parser.parseFromString(data.contents, "text/xml");
 
-                    items = Array.from(xml.querySelectorAll("item")).map(function (item) {
+                    items = Array.from(xml.querySelectorAll("item")).map(function(item) {
                         return {
-                            title: item.querySelector("title")?.textContent,
-                            link: item.querySelector("link")?.textContent,
-                            pubDate: item.querySelector("pubDate")?.textContent,
-                            description: item.querySelector("description")?.textContent,
-                            categories: Array.from(item.querySelectorAll("category")).map(c => c.textContent)
+                            title: item.querySelector("title") ? item.querySelector("title").textContent : '',
+                            link: item.querySelector("link") ? item.querySelector("link").textContent : '',
+                            pubDate: item.querySelector("pubDate") ? item.querySelector("pubDate").textContent : '',
+                            description: item.querySelector("description") ? item.querySelector("description").textContent : '',
+                            categories: Array.from(item.querySelectorAll("category")).map(function(c){ return c.textContent; })
                         };
                     });
                 }
@@ -1374,7 +1363,6 @@ function renderWriting() {
                 if (!items.length) throw new Error("No items");
 
                 var articles = items.map(function(item) {
-
                     var tmp = document.createElement('div');
                     tmp.innerHTML = item.description || '';
 
@@ -1397,11 +1385,11 @@ function renderWriting() {
 
                     var art = {
                         title: item.title,
-                        link: item.link || item.url || '', 
+                        link: item.link || item.url || '',
                         description: plain,
                         pubDate: pubDate,
                         tags: (item.categories || []).slice(0, 4),
-                        publication: null  
+                        publication: null
                     };
 
                     if (!art.tags || art.tags.length === 0) {
@@ -1421,15 +1409,13 @@ function renderWriting() {
             });
     }
 
-    fetchMedium();
+    fetchMedium(0);
 
 })();
-
 
 (function patchThemeForWriting() {
     var btn = document.getElementById('theme-toggle');
     if (!btn) return;
-
     btn.addEventListener('click', function() {
         renderWriting();
     });
