@@ -43,15 +43,15 @@ const portfolioData = {
             image: "https://i.postimg.cc/fbPZzkG3/Medi-Qo.png"
         },
         {
-    "title": "WatchSync",
-    "category": "web",
-    "date": "Apr 2026",
-    "description": "Real-time YouTube watch party app. Create rooms, invite friends via shareable links, and watch videos in perfect sync with live chat. Only host controls playback.",
-    "skills": ["Node.js", "Express", "Socket.io", "JavaScript", "HTML", "CSS", "YouTube API"],
-    "github": "https://github.com/Swarup113/WatchSync",
-    "live": "https://watchsync.up.railway.app",
-    "image": "https://i.postimg.cc/G2D0fS3D/WS.png"
-},
+            title: "WatchSync",
+            category: "web",
+            date: "Apr 2026",
+            description: "Real-time YouTube watch party app. Create rooms, invite friends via shareable links, and watch videos in perfect sync with live chat. Only host controls playback.",
+            skills: ["Node.js", "Express", "Socket.io", "JavaScript", "HTML", "CSS", "YouTube API"],
+            github: "https://github.com/Swarup113/WatchSync",
+            live: "https://watchsync.up.railway.app",
+            image: "https://i.postimg.cc/G2D0fS3D/WS.png"
+        },
         {
             title: "Nudge",
             category: "web",
@@ -62,7 +62,17 @@ const portfolioData = {
             live: "https://swarup113.github.io/Nudge/",
             image: "https://i.postimg.cc/XJZH77kp/nudge.png"
         },
-                {
+        {
+            title: "Sage",
+            category: "web",
+            date: "May 2026",
+            description: "A wise browser extension that automatically sorts every browser download into type‑based folders. Features a modern dark‑theme popup, one‑click toggle, and a companion Python script to clean up existing messes.",
+            skills: ["JavaScript", "Chrome Extensions API", "Manifest V3", "HTML", "CSS", "Python"],
+            github: "https://github.com/Swarup113/Sage",
+            live: null,
+            image: "https://i.postimg.cc/D0PGqMvM/1.png"
+        },
+        {
             title: "kover",
             category: "web",
             date: "March 2026",
@@ -439,7 +449,7 @@ const portfolioData = {
         company: "Independent Researcher",
         date: "Jan 2024 - Present",
         location: "Chattagram, Bangladesh",
-        tags: ["Predictive Modeling", "5 Publications", "ML/DL", "Healthcare AI"],
+        tags: ["Predictive Modeling", "5+ Publications", "ML/DL", "Healthcare AI"],
         description: [
             "Designed and developed multiple ML/DL models in healthcare and clinical domains, achieving up to 99.31% accuracy.",
             "Conducted end-to-end research including literature review, methodology design, model development, and experimental evaluation.",
@@ -454,7 +464,7 @@ const portfolioData = {
         date: "Jan 2026 - Present",
         location: "Chattagram, Bangladesh",
         companyLogo: "https://i.postimg.cc/L61XTJMX/medium-logo.jpg",
-        tags: ["AI in Healthcare","5 Publications", "Explainable AI", "LLM Hallucination", "XAI Transparency"],
+        tags: ["AI in Healthcare","5+ Publications", "Explainable AI", "LLM Hallucination", "XAI Transparency"],
         description: [
             "Specialized in AI healthcare writing, focusing on reliability, interpretability, and real-world risk.",
             "Authored and published articles on LLM hallucinations, confidence calibration, and XAI in healthcare.",
