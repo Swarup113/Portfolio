@@ -1201,6 +1201,7 @@ function inferPublication(article) {
     if (/towardsdatascience\.com/.test(url))          return 'Published in Towards Data Science';
     if (/towards-data-engineering/.test(url))          return 'Published in Towards Data Engineering';
     if (/towards-ai/.test(url) || /towardsai\.net/.test(url)) return 'Published in Towards AI';
+    if (/artificial-intelligence-in-plain-english/.test(url) || /ai.plainenglish\.io/.test(url)) return 'Published in AI in Plain English';
     if (/generative-ai/.test(url) || /generativeai\.net/.test(url)) return 'Published in Generative AI';
     if (/medium\.com\/towards-data-science/.test(url)) return 'Published in Towards Data Science';
     if (/medium\.com\/[^/@]/.test(url)) {
@@ -1221,7 +1222,7 @@ function inferPublication(article) {
     if (/towards ai/.test(tagText))               return 'Towards AI';
     if (/generative ai/.test(tagText))               return 'Generative AI';
     if (/towards explainable ai/.test(tagText))       return 'Towards Explainable Ai';
-    if (/javascript in plain english/.test(tagText)) return 'JavaScript in Plain English';
+    if (/artificial intelligence in plain english/.test(tagText)) return 'Artificial Intelligence in Plain English';
 
     // 4. Check title/description text
     var bodyText = ((article.title || '') + ' ' + (article.description || '')).toLowerCase();
