@@ -25,9 +25,18 @@
             shortTitle: "BDRoadRisk: Severity Detection",
             status: "In Progress",
             badge: "Current Work",
-            contribution: "Deployed 10 million Parquet records to HDFS in Oracle VirtualBox and executed distributed queries through Apache Drill to predict accident severity using deep learning models on big data infrastructure.",
-            architecture: archFrom(portfolioData.research.conference, ['BDRoadRisk'], 'https://i.postimg.cc/nrQjRNYS/tg.png'),
-            skills: ["Big Data", "HDFS", "Apache Drill", "Python", "Deep Learning"]
+            contribution: "Deployed 10 million Parquet records to HDFS in Oracle VirtualBox and executed distributed queries through Apache Drill to predict accident severity using ML/DL on big data infrastructure.",
+            architecture: archFrom(portfolioData.research.conference, ['BDRoadRisk'], 'https://i.postimg.cc/pXf7FLcG/Fig-7.png'),
+            skills: ["Big Data", "HDFS", "Apache Drill", "Python", "ML","DL"]
+        },
+        {
+            title: "CreditTransAct: A Profile-Driven Credit Card Transaction Dataset for Scalable Fraud Detection in Big Data Settings",
+            shortTitle: "CreditTransAct: Fraud Detection",
+            status: "In Progress",
+            badge: "Current Work",
+            contribution: "Deployed 15 million Parquet records to HDFS in Oracle VirtualBox and executed distributed queries through Trino & HiveQL to detect credit fraud using ML/DL models.",
+            architecture: archFrom(portfolioData.research.conference, ['CreditTransAct'], 'https://i.postimg.cc/CKCLrq71/ccfd.png'),
+            skills: ["Big Data", "HDFS", "Trino", "HiveQL", "Python", "ML", "DL"]
         }
     ];
 

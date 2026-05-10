@@ -1329,11 +1329,11 @@ body.dark-theme .writing-card .btn-secondary:hover svg {
 }
 
 .writing-topic-badge {
-    font-size: 0.68rem;
+    font-size: 0.25rem;      
     font-weight: 700;
-    padding: 0.25rem 0.65rem;
+    padding: 0.12rem 0.35rem; 
     border-radius: 9999px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
     background: var(--gradient-main);
     color: #fff;
