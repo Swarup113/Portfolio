@@ -166,25 +166,48 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 // ── Mobile helper ──
 function isMobile() { return window.innerWidth <= 768; }
 
-// ── Mobile carousel height lock helper ──
-// Call this BEFORE re-rendering a mobile carousel container.
-// It locks the container to its current height so content shrinkage
-// (fewer/shorter cards on later pages) cannot pull the user's viewport
-// down into the next section. After the new content renders we release
-// the lock via rAF so the container can still grow if needed.
+// ── Mobile carousel persistent min-height helper ──
+// Tracks the tallest height ever seen for each container (keyed by id or
+// a generated index) so the container never shrinks smaller than its
+// largest page. This prevents the user's scroll position from dropping
+// below the container when navigating to a page with fewer/shorter cards.
+var _carouselMaxH = {};
 function lockAndRender(container, renderFn) {
     if (!container || !isMobile()) { renderFn(); return; }
-    var currentH = container.offsetHeight;
-    if (currentH > 0) {
-        container.style.minHeight = currentH + 'px';
+
+    // Snapshot height BEFORE we replace the innerHTML
+    var beforeH = container.offsetHeight;
+
+    // Use the element's id as key; fall back to generating one
+    if (!container._carouselKey) {
+        container._carouselKey = 'ck_' + Math.random().toString(36).slice(2);
     }
+    var key = container._carouselKey;
+
+    // Update the stored max with whatever the container is right now
+    if (beforeH > 0) {
+        _carouselMaxH[key] = Math.max(_carouselMaxH[key] || 0, beforeH);
+    }
+
+    // Apply the max as min-height BEFORE rendering so the container
+    // never visually collapses during the DOM swap
+    if (_carouselMaxH[key]) {
+        container.style.minHeight = _carouselMaxH[key] + 'px';
+    }
+
+    // Render new content
     renderFn();
-    // Release the lock after the browser has painted the new content so
-    // the container can grow (but won't shrink below the locked size
-    // during the transition frame that would displace scroll position).
+
+    // After the browser has painted the new content, check if it grew
+    // taller than our stored max and update accordingly.
     requestAnimationFrame(function() {
         requestAnimationFrame(function() {
-            container.style.minHeight = '';
+            var afterH = container.offsetHeight;
+            if (afterH > (_carouselMaxH[key] || 0)) {
+                _carouselMaxH[key] = afterH;
+            }
+            // Keep min-height set to the max — never clear it
+            container.style.minHeight = _carouselMaxH[key] + 'px';
         });
     });
 }
