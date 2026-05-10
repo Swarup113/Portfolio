@@ -1329,14 +1329,22 @@ body.dark-theme .writing-card .btn-secondary:hover svg {
 }
 
 .writing-topic-badge {
-    font-size: 0.25rem;      
+    font-size: 0.25rem;
     font-weight: 700;
-    padding: 0.12rem 0.35rem; 
+    padding: 0.12rem 0.35rem;
     border-radius: 9999px;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     background: var(--gradient-main);
     color: #fff;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .writing-topic-badge {
+        font-size: 0.6rem;
+        padding: 0.3rem 0.6rem;
+    }
 }
 body.dark-theme .writing-topic-badge {
     background: var(--dark-btn-gradient);
