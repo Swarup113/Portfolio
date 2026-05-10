@@ -166,16 +166,11 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 // ── Mobile helper ──
 function isMobile() { return window.innerWidth <= 768; }
 
-// ── Mobile carousel persistent min-height helper ──
-// Tracks the tallest height ever seen for each container (keyed by id or
-// a generated index) so the container never shrinks smaller than its
-// largest page. This prevents the user's scroll position from dropping
-// below the container when navigating to a page with fewer/shorter cards.
 function lockAndRender(container, renderFn) {
     if (!container || !isMobile()) { renderFn(); return; }
     renderFn();
-    // After rendering, scroll the top of the container into view
-    // so the user always sees the new cards from the top.
+    
+    if (window.scrollY === 0) return;
     requestAnimationFrame(function() {
         var offset = window.innerWidth <= 900 ? 52 : 0;
         var top = container.getBoundingClientRect().top + window.scrollY - offset - 12;
