@@ -171,44 +171,15 @@ function isMobile() { return window.innerWidth <= 768; }
 // a generated index) so the container never shrinks smaller than its
 // largest page. This prevents the user's scroll position from dropping
 // below the container when navigating to a page with fewer/shorter cards.
-var _carouselMaxH = {};
 function lockAndRender(container, renderFn) {
     if (!container || !isMobile()) { renderFn(); return; }
-
-    // Snapshot height BEFORE we replace the innerHTML
-    var beforeH = container.offsetHeight;
-
-    // Use the element's id as key; fall back to generating one
-    if (!container._carouselKey) {
-        container._carouselKey = 'ck_' + Math.random().toString(36).slice(2);
-    }
-    var key = container._carouselKey;
-
-    // Update the stored max with whatever the container is right now
-    if (beforeH > 0) {
-        _carouselMaxH[key] = Math.max(_carouselMaxH[key] || 0, beforeH);
-    }
-
-    // Apply the max as min-height BEFORE rendering so the container
-    // never visually collapses during the DOM swap
-    if (_carouselMaxH[key]) {
-        container.style.minHeight = _carouselMaxH[key] + 'px';
-    }
-
-    // Render new content
     renderFn();
-
-    // After the browser has painted the new content, check if it grew
-    // taller than our stored max and update accordingly.
+    // After rendering, scroll the top of the container into view
+    // so the user always sees the new cards from the top.
     requestAnimationFrame(function() {
-        requestAnimationFrame(function() {
-            var afterH = container.offsetHeight;
-            if (afterH > (_carouselMaxH[key] || 0)) {
-                _carouselMaxH[key] = afterH;
-            }
-            // Keep min-height set to the max — never clear it
-            container.style.minHeight = _carouselMaxH[key] + 'px';
-        });
+        var offset = window.innerWidth <= 900 ? 52 : 0;
+        var top = container.getBoundingClientRect().top + window.scrollY - offset - 12;
+        window.scrollTo({ top: top, behavior: 'smooth' });
     });
 }
 
