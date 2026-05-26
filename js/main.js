@@ -1168,6 +1168,7 @@ function inferTopicBadge(tags) {
     return tags[0];
 }
 
+// Updated Fallback with a dummy image to match layout
 var MEDIUM_FALLBACK = [
     {
         title: 'Beyond the Black Box: Is Explainable AI Enough for Medical Diagnosis?',
@@ -1175,7 +1176,8 @@ var MEDIUM_FALLBACK = [
         link: 'https://medium.com/@dewanjee.swarup/beyond-the-black-box-is-explainable-ai-enough-for-medical-diagnosis-d733c8c751af',
         pubDate: 'Apr 2025',
         tags: ['XAI', 'Healthcare', 'ML', 'Deep Learning'],
-        publication: 'Towards AI'
+        publication: 'Towards AI',
+        image: 'https://picsum.photos/seed/ai-medical/800/600' // Placeholder for fallback
     }
 ];
 
@@ -1234,9 +1236,15 @@ function renderWriting() {
         var tags = a.tags && a.tags.length ? a.tags : inferWritingTags(a);
         var badge = inferTopicBadge(tags);
         var pubName = inferPublication(a);
+        
+        // Image Container: Matches Research/Projects styling (height:8rem, object-fit:cover)
+        var imageHtml = a.image 
+            ? '<div class="card-image" style="height:8rem"><img src="' + a.image + '" alt="' + a.title + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>' 
+            : '';
 
         return '<div class="writing-card">' +
-            '<div class="writing-card-content">' +
+            imageHtml + // Insert image at the top
+            '<div class="card-content">' +
             '<div class="writing-card-header">' +
             '<span class="writing-pub-badge">' + MEDIUM_ICON + pubName + '</span>' +
             '<span class="writing-topic-badge">' + badge + '</span>' +
@@ -1355,6 +1363,11 @@ function renderWriting() {
                     var tmp = document.createElement('div');
                     tmp.innerHTML = item.description || '';
 
+                    // --- IMAGE EXTRACTION LOGIC ---
+                    // Find the first image in the description
+                    var imgEl = tmp.querySelector('img');
+                    var imageUrl = imgEl ? imgEl.src : '';
+
                     var plain = (tmp.textContent || '')
                         .replace(/\s+/g, ' ')
                         .trim()
@@ -1378,7 +1391,8 @@ function renderWriting() {
                         description: plain,
                         pubDate: pubDate,
                         tags: (item.categories || []).slice(0, 4),
-                        publication: null
+                        publication: null,
+                        image: imageUrl // Store the extracted image URL
                     };
 
                     if (!art.tags || art.tags.length === 0) {
