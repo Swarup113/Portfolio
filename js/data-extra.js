@@ -21,6 +21,15 @@
             skills: ["Deep Learning", "XAI", "Tabular Network", "Python", "Flask"]
         },
         {
+            title: "DiaResFormer-A Hybrid TabResNet-FTTransformer Framework for Explainable Diabetes Prediction in Women",
+            shortTitle: "DiaResFormer: Diabetes Prediction in Women",
+            status: "In Progress",
+            badge: "Current Work",
+            contribution: "Introduced DiaResFormer, a hybrid TabResNet–FTTransformer framework for explainable diabetes prediction using clinical tabular data, delivering strong cross-domain generalization with XAI-driven interpretability.",
+            architecture: archFrom(portfolioData.research.journal, ['DiaResFormer'], 'https://i.postimg.cc/xC30JVs0/workflow.png'),
+            skills: ["Hybrid Deep Learning", "XAI", "Tabular Network", "Python", "Flask"]
+        },
+        {
             title: "BDRoadRisk: Analysis of Large-Scale GPS Traffic Accident Severity Dataset in a Big Data Environment",
             shortTitle: "BDRoadRisk: Severity Detection",
             status: "In Progress",
