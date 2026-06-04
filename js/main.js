@@ -48,6 +48,9 @@ function updateProfileImage(theme) {
     updateLogo(saved);
     if (btn) btn.addEventListener('click', function() {
         var next = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+        // ── FIX: save scroll position and suppress lockAndRender scrolling ──
+        var savedScrollY = window.scrollY;
+        isThemeToggling = true;
         applyTheme(next);
         localStorage.setItem('theme', next);
         updateProfileImage(next);
@@ -61,6 +64,11 @@ function updateProfileImage(theme) {
         renderAwards();
         renderCerts();
         renderTools(toolState.tab);
+        // Restore scroll position on mobile and reset flag
+        requestAnimationFrame(function() {
+            if (isMobile()) { window.scrollTo(0, savedScrollY); }
+            isThemeToggling = false;
+        });
     });
     function applyTheme(t) { document.body.classList.toggle('dark-theme', t === 'dark'); }
 })();
@@ -166,8 +174,12 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 // ── Mobile helper ──
 function isMobile() { return window.innerWidth <= 768; }
 
+// ── FIX: flag to suppress lockAndRender scroll during theme toggle ──
+var isThemeToggling = false;
+
 function lockAndRender(container, renderFn) {
-    if (!container || !isMobile()) { renderFn(); return; }
+    // ── FIX: skip scroll logic entirely when toggling theme ──
+    if (!container || !isMobile() || isThemeToggling) { renderFn(); return; }
     renderFn();
     
     if (window.scrollY === 0) return;
@@ -1177,7 +1189,7 @@ var MEDIUM_FALLBACK = [
         pubDate: 'Apr 2025',
         tags: ['XAI', 'Healthcare', 'ML', 'Deep Learning'],
         publication: 'Towards AI',
-        image: 'https://picsum.photos/seed/ai-medical/800/600' // Placeholder for fallback
+        image: 'https://picsum.photos/seed/ai-medical/800/600' 
     }
 ];
 
@@ -1243,7 +1255,7 @@ function renderWriting() {
             : '';
 
         return '<div class="writing-card">' +
-            imageHtml + // Insert image at the top
+            imageHtml + 
             '<div class="card-content">' +
             '<div class="writing-card-header">' +
             '<span class="writing-pub-badge">' + MEDIUM_ICON + pubName + '</span>' +
@@ -1364,7 +1376,6 @@ function renderWriting() {
                     tmp.innerHTML = item.description || '';
 
                     // --- IMAGE EXTRACTION LOGIC ---
-                    // Find the first image in the description
                     var imgEl = tmp.querySelector('img');
                     var imageUrl = imgEl ? imgEl.src : '';
 
@@ -1392,7 +1403,7 @@ function renderWriting() {
                         pubDate: pubDate,
                         tags: (item.categories || []).slice(0, 4),
                         publication: null,
-                        image: imageUrl // Store the extracted image URL
+                        image: imageUrl // 
                     };
 
                     if (!art.tags || art.tags.length === 0) {

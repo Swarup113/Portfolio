@@ -21,7 +21,7 @@
     --dark-card-hover:       #1f1f24;
     --dark-text:             #e2e2e8;
     --dark-text-secondary:   #b8b8c4;
-    --dark-text-muted:       #848492;   /* FIX: was #8484920 (invalid 7-digit hex) */
+    --dark-text-muted:       #848492;
     --dark-text-bright:      #f2f2f5;
     --dark-border:           #2a2a30;
     --dark-border-subtle:    #1e1e24;
@@ -73,17 +73,14 @@ body.dark-theme::-webkit-scrollbar-thumb {
 body.dark-theme::-webkit-scrollbar-thumb:hover { background: #6a6a78; }
 
 /* ─── RESET ─────────────────────────────────────────────────────── */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; overflow-anchor: none; }
 
 /* ─────────────────────────────────────────────────────────────────
-   FIX #2 — THEME-TOGGLE AUTO-SCROLL
-   overflow-anchor: none on BOTH html AND body prevents the browser
-   from adjusting scroll position when classes are toggled on body.
-   The original only set it on body; html is the real scroll root.
+    THEME-TOGGLE AUTO-SCROLL.
    ───────────────────────────────────────────────────────────────── */
 html {
     scroll-behavior: smooth;
-    overflow-anchor: none; /* FIX: added — prevents auto-scroll on theme toggle */
+    overflow-anchor: none;
 }
 
 body {
@@ -95,7 +92,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.5s var(--ease-in-out),
                 color 0.5s var(--ease-in-out);
-    overflow-anchor: none; /* already here — keep */
+    overflow-anchor: none;
 }
 body:not(.dark-theme) {
     background-color: var(--light-bg);
@@ -155,7 +152,8 @@ body.dark-theme .background-gradient::after {
 /* ─── LAYOUT ────────────────────────────────────────────────────── */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
 
-.section { padding: 5.5rem 0; position: relative; z-index: 10; }
+/* FIX: overflow-anchor:none prevents browser scroll anchoring on theme toggle */
+.section { padding: 5.5rem 0; position: relative; z-index: 10; overflow-anchor: none; }
 body:not(.dark-theme) .section { background: var(--light-bg); }
 body.dark-theme       .section { background: var(--dark-bg); }
 
@@ -163,6 +161,7 @@ body.dark-theme       .section { background: var(--dark-bg); }
     min-height: 100vh;
     display: flex; align-items: center;
     position: relative; z-index: 10; overflow: hidden;
+    overflow-anchor: none; /* FIX: added */
 }
 body:not(.dark-theme) .hero-section { background: var(--light-bg); }
 body.dark-theme       .hero-section { background: var(--dark-bg); }
@@ -995,27 +994,16 @@ body.dark-theme       .stat-label { color: var(--dark-text-secondary); }
 .cite-badge { display: inline-flex !important; align-items: center; gap: 0.28rem; }
 
 /* ═══════════════════════════════════════════════════════════════════
-   FIX #1 — MOBILE TOOLS CAROUSEL
-   Root causes of the left-shift + small cards:
-     a) justify-items: center caused each card to shrink-wrap to content
-        width instead of filling its grid column.
-     b) width: 100% on tool-card was correct but min-height was missing,
-        making cards appear shorter than expected.
-     c) mob-carousel-wrap lacked justify-content: center, so when the
-        grid was narrow (flex: 1 but constrained) the whole row sat left.
-     d) The .tools-mob-grid :last-child:nth-child(odd) used a fixed px
-        width (108px / 96px) instead of a relative width, breaking
-        centering on different screen sizes.
-   Swipe gesture support added via touch-action + will-change + transition.
+   MOBILE TOOLS CAROUSEL
    ═══════════════════════════════════════════════════════════════════ */
 
 /* Mobile carousel helpers */
 .mob-carousel-wrap {
     display: flex;
     align-items: center;
-    gap: 0.6rem;          /* was 0.45rem — slightly more breathing room */
+    gap: 0.5rem;
     width: 100%;
-    justify-content: center; /* FIX: centres the whole row */
+    justify-content: center;
 }
 .mob-carousel-wrap > .mob-nav-btn { flex-shrink: 0; }
 
@@ -1023,36 +1011,35 @@ body.dark-theme       .stat-label { color: var(--dark-text-secondary); }
 .tools-mob-grid {
     flex: 1;
     min-width: 0;
-    width: 100%;           /* FIX: explicit 100% so flex: 1 expands fully */
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.85rem;          /* was 0.7rem */
-    justify-items: stretch; /* FIX: was "center" — stretch fills each column */
+    gap: 1rem;
+    justify-items: stretch;
     align-items: stretch;
 
     /* ── Swipe gesture CSS support ── */
-    touch-action: pan-y;               /* lets browser scroll vertically;
-                                          JS can intercept horizontal drag */
+    touch-action: pan-y;
     user-select: none;
     -webkit-user-select: none;
     -webkit-tap-highlight-color: transparent;
-    will-change: transform;            /* GPU layer ready for JS swipe animation */
-    transition: transform 0.3s var(--ease-out);
+    will-change: transform;
+    transition: transform 0.35s var(--ease-out);
     overflow: hidden;
     cursor: grab;
 }
 .tools-mob-grid:active { cursor: grabbing; }
 
 .tools-mob-grid .tool-card {
-    width: 100%;
+    width: 100% !important;
     flex-shrink: 1;
-    min-height: 112px;  /* FIX: prevents cards from being too short */
+    min-height: 130px; 
 }
 
 /* Centre a lone last-row item */
 .tools-mob-grid .tool-card:last-child:nth-child(odd) {
     grid-column: 1 / -1;
-    width: 50%;         /* FIX: was a fixed px — relative keeps it centred */
+    width: 50%;
     margin: 0 auto;
 }
 
@@ -1221,7 +1208,8 @@ body.dark-theme .form-group input::placeholder, body.dark-theme .form-group text
 .contact-form .btn { margin: 0 auto; }
 
 /* ─── FOOTER ────────────────────────────────────────────────────── */
-.footer { padding: 2.2rem 0; position: relative; z-index: 10; border-top: 1px solid transparent; }
+/* FIX: overflow-anchor:none prevents scroll anchoring on theme toggle */
+.footer { padding: 2.2rem 0; position: relative; z-index: 10; border-top: 1px solid transparent; overflow-anchor: none; }
 body:not(.dark-theme) .footer { background: var(--light-bg); border-color: var(--light-border); }
 body.dark-theme       .footer { background: var(--dark-bg); border-color: var(--dark-border); }
 .footer-social { display: flex; justify-content: center; gap: 1.4rem; margin-bottom: 1rem; }
@@ -1451,7 +1439,7 @@ body.dark-theme .writing-card-desc { color: var(--dark-text) !important; }
     .writing-carousel.centered-few > .writing-card { flex: 0 0 calc(50% - 0.7rem); max-width: calc(50% - 0.7rem); }
 }
 
-/* ─── RESPONSIVE ────────────────────────────────────────────────── */
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
 @media (max-width: 768px) {
     .section { padding: 3.2rem 0; }
     .section-title { font-size: 1.75rem; margin-bottom: 2rem; }
@@ -1459,28 +1447,21 @@ body.dark-theme .writing-card-desc { color: var(--dark-text) !important; }
     .research-grid { grid-template-columns: repeat(2,1fr); }
     .skills-grid { grid-template-columns: repeat(2,1fr); gap: 0.72rem; }
 
-    /* ──────────────────────────────────────────────────────────────
-       FIX #1 (mobile) — Tools section layout
-       justify-items: stretch (was center) makes each card fill its
-       column fully. min-height keeps cards tall enough to look good.
-       The odd :last-child width is now 50% (relative) so it centres
-       correctly at every viewport width.
-       ────────────────────────────────────────────────────────────── */
+    /* ═══════════════════════════════════════════════════════════════
+       FIX — TOOLS SECTION MOBILE LAYOUT
+       ═══════════════════════════════════════════════════════════════ */
     .tools-content {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.85rem;              /* was 0.75rem */
-        justify-items: stretch;   /* FIX: was center */
+        display: block;   /* was: grid — this caused the 50%-width bug */
         width: 100%;
     }
     .tools-content .tool-card {
-        width: 100%;
-        min-height: 112px;        /* FIX: added */
+        width: 100% !important;
+        min-height: 130px;         
     }
-    .tools-content .tool-card:last-child:nth-child(odd) {
-        grid-column: 1 / -1;
-        width: 50%;               /* FIX: was 128px */
-        margin: 0 auto;
+    /* Smaller nav arrows free up ~0.8rem more for the card grid */
+    .mob-carousel-wrap .mob-nav-btn {
+        width: 2rem;
+        height: 2rem;
     }
 
     /* ── Tabs: compact on mobile ── */
@@ -1512,23 +1493,23 @@ body.dark-theme .writing-card-desc { color: var(--dark-text) !important; }
     .section-title { font-size: 1.5rem; }
     .skills-grid { grid-template-columns: repeat(2,1fr); gap: 0.6rem; }
 
-    /* Tools: tighten gap at very small screens, keep 2-col grid */
-    .tools-content { gap: 0.65rem; }  /* was 0.55rem */
+    /* Tools: updated sizes for very small screens */
+    .tools-content { gap: 0; }
     .tools-content .tool-card {
-        width: 100%;
-        padding: 0.88rem 0.7rem;   /* was 0.78rem */
-        min-height: 100px;          /* FIX: added */
+        width: 100% !important;
+        padding: 1rem 0.8rem;
+        min-height: 110px;  
     }
-    .tools-mob-grid { gap: 0.65rem; }  /* was 0.55rem */
+    .tool-card img { width: 2.2rem; height: 2.2rem; }  
+    .tools-mob-grid { gap: 0.68rem; }                  
     .tools-mob-grid .tool-card {
-        padding: 0.88rem 0.7rem;   /* was 0.78rem */
-        min-height: 100px;          /* FIX: added */
+        padding: 1rem 0.8rem;
+        min-height: 110px;   
     }
-    .tool-card img { width: 2.2rem; height: 2.2rem; }
 
     /* Lone last-row item — relative width */
-    .tools-content .tool-card:last-child:nth-child(odd)  { width: 50%; }  /* was 108px */
-    .tools-mob-grid .tool-card:last-child:nth-child(odd) { width: 50%; }  /* was 96px  */
+    .tools-content .tool-card:last-child:nth-child(odd)  { width: 50%; }
+    .tools-mob-grid .tool-card:last-child:nth-child(odd) { width: 50%; }
 
     .card-content { padding: 0.72rem; }
     .card-title { font-size: 0.92rem; }
