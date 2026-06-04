@@ -506,7 +506,7 @@ const portfolioData = {
         date: "Jan 2026 - Present",
         location: "Remote",
         companyLogo: "https://i.postimg.cc/L61XTJMX/medium-logo.jpg",
-        tags: ["AI in Healthcare","5+ Publications", "Explainable AI", "LLM Hallucination", "XAI Transparency"],
+        tags: ["AI in Healthcare","10+ Publications", "Explainable AI", "LLM Hallucination", "XAI Transparency"],
         description: [
             "Specialized in AI healthcare writing, focusing on reliability, interpretability, and real-world risk.",
             "Authored and published articles on LLM hallucinations, confidence calibration, and XAI in healthcare.",
@@ -521,7 +521,7 @@ const portfolioData = {
         date: "April 2026 - Present",
         location: "Remote",
         companyLogo: "https://i.postimg.cc/SNGPzNLP/tde.webp",
-        tags: ["AI","5+ Articles Reviewed", "XAI", "LLM", "Big Data", "RAG System"],
+        tags: ["AI","15+ Articles Reviewed", "XAI", "LLM", "Big Data", "RAG System"],
         description: [
             "Edited and curated technical content on AI systems, data engineering, cloud data platforms, and distributed architectures.",
             "Reviewed articles for technical accuracy, content quality, and audience engagement before publication.",
