@@ -19,8 +19,8 @@
 :root {
     /* Brand */
     --primary-500: #18181b;
-
-    /* ── LIGHT PALETTE ── */
+    
+        /* ── LIGHT PALETTE ── */
     --light-bg:              #f8fafc;
     --light-bg-2:            #eceae4;
     --light-card:            #ffffff;
@@ -37,10 +37,11 @@
     --dark-card:             #131316;
     --dark-card-2:           #18181c;
     --dark-card-hover:       #1f1f24;
-    --dark-text:             #e2e2e8;         
-    --dark-text-secondary:   #b8b8c4;         
-    --dark-text-muted:       #8484920;        
-    --dark-text-bright:      #f2f2f5;          
+    /* ↓ THE KEY FIX: much brighter secondary text in dark mode */
+    --dark-text:             #e2e2e8;          /* body text — near-white */
+    --dark-text-secondary:   #b8b8c4;          /* subtext — clearly readable */
+    --dark-text-muted:       #8484920;         /* meta / placeholders */
+    --dark-text-bright:      #f2f2f5;          /* headings */
     --dark-border:           #2a2a30;
     --dark-border-subtle:    #1e1e24;
 
@@ -1178,75 +1179,20 @@ body.dark-theme .form-group input::placeholder, body.dark-theme .form-group text
 .contact-form .btn { margin: 0 auto; }
 
 /* ─── FOOTER ────────────────────────────────────────────────────── */
-.footer {
-    margin-top: 2.5rem;
-    padding: 2rem 0;
-    text-align: center;
-    position: relative;
-    z-index: 10;
-    border-top: 1px solid transparent;
-}
-
-body:not(.dark-theme) .footer {
-    border-color: var(--light-border);
-}
-
-body.dark-theme .footer {
-    border-color: var(--dark-border);
-}
-
-.footer-social {
-    display: flex;
-    justify-content: center;
-    gap: 1.2rem;
-    margin-bottom: 1rem;
-}
-
-.footer-social a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: var(--radius-pill);
-    transition: all 0.28s var(--ease-spring);
-    border: 1px solid var(--light-border);
-    color: var(--light-text-secondary);
-    background: var(--light-card);
-}
-
-body.dark-theme .footer-social a {
-    color: var(--dark-text-secondary);
-    background: var(--dark-card);
-    border-color: var(--dark-border);
-}
-
-.footer-social a:hover {
-    transform: translateY(-3px) scale(1.08);
-    background: var(--gradient-main);
-    color: #fff;
-    border-color: transparent;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.14);
-}
-
-body.dark-theme .footer-social a:hover {
-    background: var(--dark-btn-gradient);
-    color: var(--dark-btn-text);
-    box-shadow: 0 6px 16px rgba(255,255,255,0.08);
-}
-
-.footer-text {
-    font-family: var(--font-body);
-    font-size: 0.82rem;
-}
-
-body:not(.dark-theme) .footer-text {
-    color: var(--light-text-secondary);
-}
-
-body.dark-theme .footer-text {
-    color: var(--dark-text-secondary);
-}
+.footer { padding: 2.2rem 0; position: relative; z-index: 10; border-top: 1px solid transparent; }
+body:not(.dark-theme) .footer { background: var(--light-bg); border-color: var(--light-border); }
+body.dark-theme       .footer { background: var(--dark-bg); border-color: var(--dark-border); }
+.footer-social { display: flex; justify-content: center; gap: 1.4rem; margin-bottom: 1rem; }
+.footer-social a { transition: all 0.25s var(--ease-spring); opacity: 0.7; }
+body:not(.dark-theme) .footer-social a { color: #0a0a0c; }
+body.dark-theme       .footer-social a { color: #f2f2f5; }
+.footer-social a:hover { opacity: 1; transform: translateY(-3px) scale(1.1); }
+.footer-social img { filter: grayscale(100%) contrast(1.5); transition: filter 0.3s; }
+body.dark-theme .footer-social img { filter: grayscale(100%) brightness(2) contrast(1.2); }
+.footer-social a:hover img { filter: none !important; }
+.footer-text { text-align: center; font-size: 0.84rem; }
+body:not(.dark-theme) .footer-text { color: var(--light-text-secondary); }
+body.dark-theme       .footer-text { color: var(--dark-text-secondary); }
 
 /* ─── MODAL ─────────────────────────────────────────────────────── */
 .modal {
@@ -1473,7 +1419,26 @@ body.dark-theme .writing-card-desc { color: var(--dark-text) !important; }
     .about-content { padding: 1.25rem; }
     .research-grid { grid-template-columns: repeat(2,1fr); }
     .skills-grid { grid-template-columns: repeat(2,1fr); gap: 0.72rem; }
-    .tools-content { gap: 0.95rem; }
+
+    /* ── Tools: always 2-column grid on mobile ── */
+    .tools-content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    .tool-card { width: 100%; }
+    /* Center a lone item that sits by itself on the last row */
+    .tools-content .tool-card:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        width: 128px;
+        margin: 0 auto;
+    }
+
+    /* ── Tabs: compact on mobile ── */
+    .tabs { gap: 0.25rem; margin-bottom: 1.6rem; }
+    .tab-btn { padding: 0.32rem 0.6rem; font-size: 0.73rem; gap: 0.2rem; }
+    .tab-btn svg { width: 11px !important; height: 11px !important; }
+
     .awards-grid { grid-template-columns: 1fr; }
     .research-stats { gap: 0.45rem; }
     .stat-card { padding: 0.75rem 0.45rem; }
@@ -1496,14 +1461,19 @@ body.dark-theme .writing-card-desc { color: var(--dark-text) !important; }
     .image-wrapper { width: 13.5rem; height: 13.5rem; }
     .section-title { font-size: 1.5rem; }
     .skills-grid { grid-template-columns: repeat(2,1fr); gap: 0.6rem; }
-    .tools-content { gap: 0.7rem; }
-    .tool-card { width: 98px; padding: 0.82rem; }
-    .tool-card img { width: 1.9rem; height: 1.9rem; }
+    /* Tools: tighten gap at very small screens, keep 2-col grid */
+    .tools-content { gap: 0.55rem; }
+    .tool-card { width: 100%; padding: 0.78rem; }
+    .tool-card img { width: 1.85rem; height: 1.85rem; }
+    /* Lone last-row item: fixed width stays centred */
+    .tools-content .tool-card:last-child:nth-child(odd) { width: 108px; }
+
     .card-content { padding: 0.72rem; }
     .card-title { font-size: 0.92rem; }
     .card-description { font-size: 0.8rem; }
-    .tabs { gap: 0.38rem; }
-    .tab-btn { padding: 0.38rem 0.72rem; font-size: 0.78rem; }
+    /* Tabs: even tighter at 480 px */
+    .tabs { gap: 0.2rem; margin-bottom: 1.4rem; }
+    .tab-btn { padding: 0.28rem 0.5rem; font-size: 0.68rem; }
     .filter-btn { padding: 0.28rem 0.62rem; font-size: 0.72rem; }
     .btn { font-size: 0.78rem; padding: 0.48rem 0.88rem; }
     .research-grid { grid-template-columns: 1fr; }
