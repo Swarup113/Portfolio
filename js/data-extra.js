@@ -25,7 +25,7 @@
             shortTitle: "DiaResFormer: Diabetes Prediction in Women",
             status: "In Progress",
             badge: "Current Work",
-            contribution: "Introduced DiaResFormer, a hybrid TabResNet–FTTransformer framework for explainable diabetes prediction using clinical tabular data, delivering strong cross-domain generalization with XAI-driven interpretability.",
+            contribution: "Introduced DiaResFormer, a hybrid TabResNet–FTTransformer framework for explainable diabetes prediction using clinical tabular data, delivering strong cross-domain generalization with 99% accracy and XAI-driven interpretability.",
             architecture: archFrom(portfolioData.research.journal, ['DiaResFormer'], 'https://i.postimg.cc/xC30JVs0/workflow.png'),
             skills: ["Hybrid Deep Learning", "XAI", "Tabular Network", "Python", "Flask"]
         },

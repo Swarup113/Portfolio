@@ -251,11 +251,11 @@ const portfolioData = {
                 shortTitle: "DiaResFormer: Diabetes Prediction in Women",
                 journal: "Biomedical Signal Processing and Control | Under Review",
                 location: "",
-                summary: "Introduced DiaResFormer, a hybrid TabResNet–FTTransformer framework for explainable diabetes prediction using clinical tabular data, delivering strong cross-domain generalization with XAI-driven interpretability.",
+                summary: "Introduced DiaResFormer, a hybrid TabResNet–FTTransformer framework for explainable diabetes prediction using clinical tabular data,with 99% accuracy",
                 abstract: "This paper presents DiaResFormer, a hybrid TabResNet–FTTransformer framework designed for explainable diabetes prediction using clinical tabular data collected from three distinct sources. The proposed framework achieved up to 99% accuracy while demonstrating strong performance in cross-domain testing and external validation across diverse populations. The proposed model was further deployed as an explainable web-based clinical decision support system for practical diabetes risk assessment.",
                 status: "Under Review",
                 link: "#",
-                architecture: "https://i.postimg.cc/xC30JVs0/workflow.png"
+                architecture: "https://i.postimg.cc/dVq0C3tx/System-Architecture-Dia-Res-Former.png"
             },
             {
                 title: "BDRoadRisk: Analysis of Large-Scale GPS Traffic Accident Severity Dataset in a Big Data Environment",
