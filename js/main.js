@@ -11,6 +11,20 @@ function citeBadgeStyle() {
         : 'background:#f1f5f9;color:#0f172a;';
 }
 
+(function () {
+    const themeToggle = document.getElementById('theme-toggle');
+    const goToTopBtn  = document.getElementById('go-to-top');
+    let lastScrollY   = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+        const y           = window.scrollY;
+        const scrollingDown = y > lastScrollY && y > 80;
+        themeToggle.classList.toggle('hidden', scrollingDown);
+        goToTopBtn.classList.toggle('hidden', scrollingDown);
+        lastScrollY = y;
+    }, { passive: true });
+})();
+
 // ── Loading Screen ──
 (function initLoadingScreen() {
     var screen = document.getElementById('loading-screen');
