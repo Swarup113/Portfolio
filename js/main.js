@@ -162,7 +162,7 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 (function initTyped() {
     var el = document.getElementById('typed-text');
     if (!el) return;
-    var words = ['Researcher','Data Analyst','Data Scientist','Web Developer','UI/UX Designer'];
+    var words = ['Medical AI Researcher','Healthcare AI Developer','Peer Reviewer','Technical Writer & Editor','Data Scientist','Web Developer'];
     var wi = 0, ci = 0, deleting = false;
     function tick() {
         var word = words[wi];

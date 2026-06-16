@@ -583,7 +583,7 @@ body.dark-theme       .info-item a:hover { color: var(--dark-text-bright); }
 
 .hero-social a.icon-glyph svg { width: 54%; height: 54%; }
 
-body:not(.dark-theme) .hero-social a { color: #242429; }
+body:not(.dark-theme) .hero-social a { color: #393940; }
 body.dark-theme       .hero-social a { color: var(--dark-text-muted); }
 
 .hero-social a:hover,
@@ -602,7 +602,7 @@ body.dark-theme       .hero-social a { color: var(--dark-text-muted); }
 
 body:not(.dark-theme) .hero-social a.social-github:hover,
 body:not(.dark-theme) .hero-social a.social-github:active,
-body:not(.dark-theme) .hero-social a.social-github:focus-visible { color: #181717; }
+body:not(.dark-theme) .hero-social a.social-github:focus-visible { color: #3b0c40; }
 body.dark-theme .hero-social a.social-github:hover,
 body.dark-theme .hero-social a.social-github:active,
 body.dark-theme .hero-social a.social-github:focus-visible { color: #f0f6fc; }
@@ -612,7 +612,7 @@ body:not(.dark-theme) .hero-social a.social-medium:active,
 body:not(.dark-theme) .hero-social a.social-medium:focus-visible { color: #000000; }
 body.dark-theme .hero-social a.social-medium:hover,
 body.dark-theme .hero-social a.social-medium:active,
-body.dark-theme .hero-social a.social-medium:focus-visible { color: #f2f2f5; }
+body.dark-theme .hero-social a.social-medium:focus-visible { color: #ffffff; }
 
 .hero-buttons { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 0.7rem; }
 @media (max-width: 900px) { .hero-buttons { justify-content: center; } }
