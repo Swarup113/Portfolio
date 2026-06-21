@@ -70,6 +70,8 @@ function updateProfileImage(theme) {
         updateProfileImage(next);
         updateLogo(next);
         // Re-render sections that depend on theme-based inline styles
+        renderSkills('technical');
+        renderSkills('personal');
         renderExperience();
         renderResearch();
         renderHighlights();
@@ -179,6 +181,8 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
     var btn = document.getElementById('expand-research');
     var content = document.getElementById('research-content');
     if (!btn || !content) return;
+    // ── FIX: more breathing room between the bio text and the expand arrow ──
+    btn.style.marginTop = '1.75rem';
     btn.addEventListener('click', function() {
         btn.classList.toggle('active');
         content.classList.toggle('expanded');
@@ -260,89 +264,85 @@ document.querySelectorAll('.tabs').forEach(function(tabGroup) {
 });
 
 // ── SKILLS ──
-(function initSkills() {
-    var TECH_ICONS  = [
-      // 1. Research & Experimentation
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>',
-      // 2. ML DL
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="2"></circle><circle cx="5" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle><path d="M10.5 6.5 6.5 10.5"></path><path d="M13.5 6.5 17.5 10.5"></path><path d="M10.5 17.5 6.5 13.5"></path><path d="M13.5 17.5 17.5 13.5"></path></svg>',
-      // 3. Explainable AI
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2Z"></path><circle cx="12" cy="9" r="2"></circle></svg>',
-      // 4. Data Engineering
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16"></path><path d="M4 7h10"></path><path d="M4 17h10"></path><polyline points="17 9 20 12 17 15"></polyline></svg>',
-      // 5. Deployment
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>',
-      // 6. Data Analysis
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>',
-      // 7. Data Visualization
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>',
-      // 8. Web Development
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>',
-      // 9. Databases
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>',
-    ];
+var SKILLS_TECH_ICONS  = [
+  // 1. Research & Experimentation
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>',
+  // 2. ML DL
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="2"></circle><circle cx="5" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle><path d="M10.5 6.5 6.5 10.5"></path><path d="M13.5 6.5 17.5 10.5"></path><path d="M10.5 17.5 6.5 13.5"></path><path d="M13.5 17.5 17.5 13.5"></path></svg>',
+  // 3. Explainable AI
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2Z"></path><circle cx="12" cy="9" r="2"></circle></svg>',
+  // 4. Data Engineering
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16"></path><path d="M4 7h10"></path><path d="M4 17h10"></path><polyline points="17 9 20 12 17 15"></polyline></svg>',
+  // 5. Deployment
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>',
+  // 6. Data Analysis
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>',
+  // 7. Data Visualization
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>',
+  // 8. Web Development
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>',
+  // 9. Databases
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>',
+];
 
-    var PERSONAL_ICONS = [
-      // Results-Oriented
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>',
-      // Attention to Detail (bullseye)
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>',
-      // Time Management
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
-      // Adaptability
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path><path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path></svg>',
-      // Problem Solving
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="7" y="3" width="10" height="5"></rect><line x1="12" y1="12" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>',
-      // LaTeX
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19h16"></path><path d="M7 4h10l3 5-8 11-8-11 3-5z"></path></svg>',
-    ];
+var SKILLS_PERSONAL_ICONS = [
+  // Results-Oriented
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>',
+  // Attention to Detail (bullseye)
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>',
+  // Time Management
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
+  // Adaptability
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path><path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path></svg>',
+  // Problem Solving
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="7" y="3" width="10" height="5"></rect><line x1="12" y1="12" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>',
+  // LaTeX
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19h16"></path><path d="M7 4h10l3 5-8 11-8-11 3-5z"></path></svg>',
+];
 
-    var ICONS; // ← will hold whichever icon set is active for the current section
+var skillsState = { technical: { index: 0 }, personal: { index: 0 } };
+var MOB_SKILLS_PAGE = 3;
 
-    function buildSkillCard(s, i) {
-        return '<div class="skill-card" style="flex-direction:column;gap:0.4rem">' +
-            '<div class="skill-header" style="display:flex;align-items:center;gap:0.5rem">' +
-            '<div class="skill-icon" style="display:flex;align-items:center;flex-shrink:0">' + ICONS[i % ICONS.length] + '</div>' +
-            '<h3 style="margin:0;font-size:0.95rem;font-weight:600">' + s.title + '</h3></div>' +
-            '<p style="font-size:0.8rem;margin:0">' + s.desc + '</p></div>';
+function buildSkillCard(s, i, icons) {
+    return '<div class="skill-card" style="flex-direction:column;gap:0.4rem">' +
+        '<div class="skill-header" style="display:flex;align-items:center;gap:0.5rem">' +
+        '<div class="skill-icon" style="display:flex;align-items:center;flex-shrink:0">' + icons[i % icons.length] + '</div>' +
+        '<h3 style="margin:0;font-size:0.95rem;font-weight:600">' + s.title + '</h3></div>' +
+        '<p style="font-size:0.8rem;margin:0">' + s.desc + '</p></div>';
+}
+
+function renderSkills(type) {
+    var grid = document.querySelector('#' + type + ' .skills-grid');
+    if (!grid || !portfolioData.skills) return;
+    var all = portfolioData.skills[type] || [];
+    var icons = (type === 'technical') ? SKILLS_TECH_ICONS : SKILLS_PERSONAL_ICONS;
+    var state = skillsState[type];
+
+    if (isMobile()) {
+        var page = MOB_SKILLS_PAGE;
+        var slice = all.slice(state.index, state.index + page);
+        var cardsHtml = slice.map(function(s, localIdx) {
+            return buildSkillCard(s, state.index + localIdx, icons);
+        }).join('');
+        var gridId = 'skills-inner-' + type;
+
+        lockAndRender(grid, function() {
+            grid.innerHTML = buildBottomCarousel(cardsHtml, all.length, page, state.index, '', gridId);
+        });
+
+        attachBubbleNav(grid, page, state, function() { renderSkills(type); });
+        addSwipe(grid.querySelector('#' + gridId),
+            function() { state.index = Math.max(0, state.index - page); renderSkills(type); },
+            function() { if (state.index + page < all.length) { state.index += page; renderSkills(type); } }
+        );
+    } else {
+        grid.innerHTML = all.map(function(s, i) { return buildSkillCard(s, i, icons); }).join('');
     }
+}
 
-    ['technical','personal'].forEach(function(type) {
-        var grid = document.querySelector('#' + type + ' .skills-grid');
-        if (!grid || !portfolioData.skills) return;
-        var all = portfolioData.skills[type] || [];
-
-        ICONS = (type === 'technical') ? TECH_ICONS : PERSONAL_ICONS; // ← the fix
-
-        if (isMobile()) {
-            var visible = all.slice(0, 3);
-            var hidden  = all.slice(3);
-            grid.innerHTML = visible.map(buildSkillCard).join('');
-
-            if (hidden.length > 0) {
-                var expandBtn = document.createElement('button');
-                expandBtn.className = 'expand-btn skill-expand-btn';
-                expandBtn.style.cssText = 'margin:0.75rem auto 0;';
-                expandBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"></polyline></svg>';
-                var expanded = false;
-                expandBtn.addEventListener('click', function() {
-                    expanded = !expanded;
-                    if (expanded) {
-                        grid.innerHTML = all.map(buildSkillCard).join('');
-                        grid.parentNode.insertBefore(expandBtn, grid.nextSibling);
-                        expandBtn.classList.add('active');
-                    } else {
-                        grid.innerHTML = visible.map(buildSkillCard).join('');
-                        grid.parentNode.insertBefore(expandBtn, grid.nextSibling);
-                        expandBtn.classList.remove('active');
-                    }
-                });
-                grid.parentNode.insertBefore(expandBtn, grid.nextSibling);
-            }
-        } else {
-            grid.innerHTML = all.map(buildSkillCard).join('');
-        }
-    });
+(function initSkills() {
+    renderSkills('technical');
+    renderSkills('personal');
 })();
 
 // ── Experience ──
@@ -485,46 +485,15 @@ function renderExperience() {
     if (isMobile()) {
         var page = MOB_EXP_PAGE;
         var slice = all.slice(expState.index, expState.index + page);
-        var atStart = expState.index === 0;
-        var atEnd   = expState.index + page >= all.length;
 
         var cardsHtml = slice.map(function(exp, localIdx) {
             return itemHtml(exp, expState.index + localIdx);
         }).join('');
 
-        var prevDisabled = atStart ? 'disabled' : '';
-        var nextDisabled = atEnd   ? 'disabled' : '';
-
         lockAndRender(container, function() {
-            container.innerHTML = `
-                <div class="mob-bottom-wrap">
-                    <div class="mob-cards-area" id="exp-inner">
-                        ${cardsHtml}
-                    </div>
-                    <div class="mob-bottom-btns">
-                        <button class="mob-nav-btn mob-prev-btn" ${prevDisabled} aria-label="Previous">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="15 18 9 12 15 6"></polyline>
-                            </svg>
-                        </button>
-                        <button class="mob-nav-btn mob-next-btn" ${nextDisabled} aria-label="Next">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </button>
-                    </div>
-                </div>`;
+            container.innerHTML = buildBottomCarousel(cardsHtml, all.length, page, expState.index, '', 'exp-inner');
 
-            var prevBtn = container.querySelector('.mob-prev-btn');
-            var nextBtn = container.querySelector('.mob-next-btn');
-            if (prevBtn) prevBtn.addEventListener('click', function() {
-                expState.index = Math.max(0, expState.index - page);
-                renderExperience();
-            });
-            if (nextBtn) nextBtn.addEventListener('click', function() {
-                if (expState.index + page < all.length) expState.index += page;
-                renderExperience();
-            });
+            attachBubbleNav(container, page, expState, renderExperience);
             addSwipe(
                 container.querySelector('#exp-inner'),
                 function() { expState.index = Math.max(0, expState.index - page); renderExperience(); },
@@ -581,21 +550,59 @@ var GITHUB_SVG      = '<svg width="13" height="13" viewBox="0 0 24 24" fill="non
 var LIVE_SVG        = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
 var DOI_SVG         = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>';
 
-// ── Mobile carousel builders ──
-function buildMobileCarousel(gridClass, cardsHtml, atStart, atEnd, gridId) {
-    return '<div class="mob-carousel-wrap">' +
-        '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
-        '<div class="' + gridClass + '" id="' + gridId + '">' + cardsHtml + '</div>' +
-        '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
-        '</div>';
+// ── Mobile carousel bubble indicators ──
+// Builds N bubbles (N = number of swipe "batches"). Active bubble = bigger + full color,
+// others = smaller + dimmed. When there are many bubbles, ones further from the
+// current page progressively shrink (like modern app pagination dots).
+function buildBubbles(totalItems, page, currentIndex) {
+    var totalPages = Math.ceil(totalItems / page);
+    if (totalPages <= 1) return '';
+    var currentPage = Math.min(totalPages - 1, Math.max(0, Math.floor(currentIndex / page)));
+
+    var isDark = document.body.classList.contains('dark-theme');
+    // Light mode: blackish dot, dimmed down to a greyish tone when inactive.
+    // Dark mode: whitish dot, dimmed down to a light-whitish/greyish tone when inactive.
+    var rgb = isDark ? '248,250,252' : '7,7,8';
+    var inactiveOpacity = isDark ? 0.38 : 0.28;
+
+    var SIZE_ACTIVE = '0.56rem';
+    var SIZE_NEAR    = '0.42rem'; // distance 1 from active
+    var SIZE_FAR     = '0.3rem';  // distance 2
+    var SIZE_FARTHEST= '0.2rem';  // distance 3+
+
+    var dots = '';
+    for (var i = 0; i < totalPages; i++) {
+        var distance = Math.abs(i - currentPage);
+        var active = distance === 0;
+        var size = active ? SIZE_ACTIVE : (distance === 1 ? SIZE_NEAR : (distance === 2 ? SIZE_FAR : SIZE_FARTHEST));
+        var opacity = active ? 1 : inactiveOpacity;
+        dots +=
+            '<button type="button" class="carousel-bubble' + (active ? ' active' : '') + '" data-page="' + i + '" aria-label="Go to slide ' + (i + 1) + '" ' +
+            'style="border:none;background:none;padding:0;margin:0;cursor:pointer;flex-shrink:0;width:0.9rem;height:0.9rem;display:flex;align-items:center;justify-content:center;">' +
+            '<span style="display:block;border-radius:50%;width:' + size + ';height:' + size + ';background:rgba(' + rgb + ',' + opacity + ');transition:all 0.25s ease;"></span>' +
+            '</button>';
+    }
+    return '<div class="carousel-bubbles" style="display:flex;justify-content:center;align-items:center;gap:0.1rem;margin-top:0.6rem;">' + dots + '</div>';
 }
-function buildBottomCarousel(cardsHtml, atStart, atEnd, innerClass, gridId) {
+
+// Wires up click-to-jump on bubbles rendered inside `container`.
+function attachBubbleNav(container, page, stateObj, renderFn) {
+    if (!container) return;
+    container.querySelectorAll('.carousel-bubble').forEach(function(bubble) {
+        bubble.addEventListener('click', function() {
+            var pageIdx = parseInt(bubble.getAttribute('data-page'), 10);
+            if (isNaN(pageIdx)) return;
+            stateObj.index = pageIdx * page;
+            renderFn();
+        });
+    });
+}
+
+function buildBottomCarousel(cardsHtml, totalItems, page, currentIndex, innerClass, gridId, innerStyle) {
     return '<div class="mob-bottom-wrap">' +
-        '<div class="mob-cards-area ' + (innerClass || '') + '" id="' + gridId + '">' + cardsHtml + '</div>' +
-        '<div class="mob-bottom-btns">' +
-        '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
-        '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
-        '</div></div>';
+        '<div class="mob-cards-area ' + (innerClass || '') + '" id="' + gridId + '"' + (innerStyle ? ' style="' + innerStyle + '"' : '') + '>' + cardsHtml + '</div>' +
+        buildBubbles(totalItems, page, currentIndex) +
+        '</div>';
 }
 
 // ── Projects ──
@@ -675,15 +682,10 @@ function renderProjects() {
         : slice.map(cardHtml).join('');
 
     if (isMobile()) {
-        var atStart = projState.index === 0;
-        var atEnd   = projState.index + page >= all.length;
         container.className = 'projects-carousel';
         lockAndRender(container, function() {
-            container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, 'projects-carousel-inner', 'proj-inner');
-            var prevBtn = container.querySelector('.mob-prev-btn');
-            var nextBtn = container.querySelector('.mob-next-btn');
-            if (prevBtn) prevBtn.addEventListener('click', function(){ projState.index = Math.max(0, projState.index - page); renderProjects(); });
-            if (nextBtn) nextBtn.addEventListener('click', function(){ if (projState.index + page < all.length) projState.index += page; renderProjects(); });
+            container.innerHTML = buildBottomCarousel(cardsHtml, all.length, page, projState.index, 'projects-carousel-inner', 'proj-inner');
+            attachBubbleNav(container, page, projState, renderProjects);
             addSwipe(container.querySelector('#proj-inner'), function(){ projState.index = Math.max(0, projState.index - page); renderProjects(); }, function(){ if (projState.index + page < all.length) projState.index += page; renderProjects(); });
         });
         var dp = document.getElementById('projects-prev'); var dn = document.getElementById('projects-next');
@@ -737,11 +739,8 @@ function renderHighlights() {
 
     if (isMobile()) {
         lockAndRender(container, function() {
-            container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, gridClass, 'hl-grid');
-            var hlPrev = container.querySelector('.mob-prev-btn');
-            var hlNext = container.querySelector('.mob-next-btn');
-            if (hlPrev) hlPrev.addEventListener('click', function(){ currentHighlightState.index = Math.max(0, currentHighlightState.index - page); renderHighlights(); });
-            if (hlNext) hlNext.addEventListener('click', function(){ if (currentHighlightState.index + page < highlights.length) currentHighlightState.index += page; renderHighlights(); });
+            container.innerHTML = buildBottomCarousel(cardsHtml, highlights.length, page, currentHighlightState.index, gridClass, 'hl-grid');
+            attachBubbleNav(container, page, currentHighlightState, renderHighlights);
             addSwipe(document.getElementById('hl-grid'),
                 function(){ currentHighlightState.index = Math.max(0, currentHighlightState.index - page); renderHighlights(); },
                 function(){ if (currentHighlightState.index + page < highlights.length) { currentHighlightState.index += page; renderHighlights(); } }
@@ -853,15 +852,10 @@ function renderResearch() {
     var cardsHtml = slice.map(cardHtml).join('');
 
     if (isMobile()) {
-        var atStart = currentResearchState.index === 0;
-        var atEnd   = currentResearchState.index + page >= papers.length;
         container.className = 'research-carousel';
         lockAndRender(container, function() {
-            container.innerHTML = buildBottomCarousel(cardsHtml, atStart, atEnd, 'research-carousel-inner', 'res-inner');
-            var prevBtn = container.querySelector('.mob-prev-btn');
-            var nextBtn = container.querySelector('.mob-next-btn');
-            if (prevBtn) prevBtn.addEventListener('click', function(){ currentResearchState.index = Math.max(0, currentResearchState.index - page); renderResearch(); updateResearchBtns(); });
-            if (nextBtn) nextBtn.addEventListener('click', function(){ if (currentResearchState.index + page < papers.length) currentResearchState.index += page; renderResearch(); updateResearchBtns(); });
+            container.innerHTML = buildBottomCarousel(cardsHtml, papers.length, page, currentResearchState.index, 'research-carousel-inner', 'res-inner');
+            attachBubbleNav(container, page, currentResearchState, function(){ renderResearch(); updateResearchBtns(); });
             addSwipe(container.querySelector('#res-inner'),
                 function(){ currentResearchState.index = Math.max(0, currentResearchState.index - page); renderResearch(); updateResearchBtns(); },
                 function(){ if (currentResearchState.index + page < papers.length) { currentResearchState.index += page; renderResearch(); updateResearchBtns(); } }
@@ -941,19 +935,13 @@ function renderTools(tab) {
     if (isMobile()) {
         var page = MOB_TOOLS_PAGE;
         var slice = all.slice(toolState.index, toolState.index + page);
-        var atStart = toolState.index === 0;
-        var atEnd   = toolState.index + page >= all.length;
         lockAndRender(container, function() {
-            container.innerHTML =
-                '<div class="mob-carousel-wrap">' +
-                '<button class="mob-nav-btn mob-prev-btn"' + (atStart ? ' disabled' : '') + '>' + ARROW_LEFT_SVG + '</button>' +
-                '<div class="tools-mob-grid" id="tools-inner">' + slice.map(cardHtml).join('') + '</div>' +
-                '<button class="mob-nav-btn mob-next-btn"' + (atEnd ? ' disabled' : '') + '>' + ARROW_NEXT_SVG + '</button>' +
-                '</div>';
-            var prevBtn = container.querySelector('.mob-prev-btn');
-            var nextBtn = container.querySelector('.mob-next-btn');
-            if (prevBtn) prevBtn.addEventListener('click', function(){ toolState.index = Math.max(0, toolState.index - page); renderTools(); });
-            if (nextBtn) nextBtn.addEventListener('click', function(){ if (toolState.index + page < all.length) toolState.index += page; renderTools(); });
+            container.innerHTML = buildBottomCarousel(
+                slice.map(cardHtml).join(''), all.length, page, toolState.index,
+                'tools-mob-grid', 'tools-inner',
+                'display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,auto);gap:0.6rem;'
+            );
+            attachBubbleNav(container, page, toolState, renderTools);
             addSwipe(container.querySelector('#tools-inner'),
                 function(){ toolState.index = Math.max(0, toolState.index - page); renderTools(); },
                 function(){ if (toolState.index + page < all.length) { toolState.index += page; renderTools(); } }
@@ -1006,14 +994,9 @@ function renderEducation() {
     if (isMobile()) {
         var page = MOB_EDU_PAGE;
         var slice = all.slice(eduState.index, eduState.index + page);
-        var atStart = eduState.index === 0;
-        var atEnd   = eduState.index + page >= all.length;
         lockAndRender(container, function() {
-            container.innerHTML = buildBottomCarousel(slice.map(itemHtml).join(''), atStart, atEnd, '', 'edu-inner');
-            var prevBtn = container.querySelector('.mob-prev-btn');
-            var nextBtn = container.querySelector('.mob-next-btn');
-            if (prevBtn) prevBtn.addEventListener('click', function(){ eduState.index = Math.max(0, eduState.index - page); renderEducation(); });
-            if (nextBtn) nextBtn.addEventListener('click', function(){ if (eduState.index + page < all.length) eduState.index += page; renderEducation(); });
+            container.innerHTML = buildBottomCarousel(slice.map(itemHtml).join(''), all.length, page, eduState.index, '', 'edu-inner');
+            attachBubbleNav(container, page, eduState, renderEducation);
             addSwipe(container.querySelector('#edu-inner'),
                 function(){ eduState.index = Math.max(0, eduState.index - page); renderEducation(); },
                 function(){ if (eduState.index + page < all.length) { eduState.index += page; renderEducation(); } }
@@ -1049,17 +1032,12 @@ function renderAwards() {
     if (isMobile()) {
         var page = MOB_AWARD_PAGE;
         var slice = all.slice(awardState.index, awardState.index + page);
-        var atStart = awardState.index === 0;
-        var atEnd   = awardState.index + page >= all.length;
         lockAndRender(container, function() {
             container.innerHTML = buildBottomCarousel(
                 slice.map(function(a, i) { return cardHtml(a, awardState.index + i); }).join(''),
-                atStart, atEnd, '', 'award-inner'
+                all.length, page, awardState.index, '', 'award-inner'
             );
-            var prevBtn = container.querySelector('.mob-prev-btn');
-            var nextBtn = container.querySelector('.mob-next-btn');
-            if (prevBtn) prevBtn.addEventListener('click', function(){ awardState.index = Math.max(0, awardState.index - page); renderAwards(); });
-            if (nextBtn) nextBtn.addEventListener('click', function(){ if (awardState.index + page < all.length) awardState.index += page; renderAwards(); });
+            attachBubbleNav(container, page, awardState, renderAwards);
             addSwipe(container.querySelector('#award-inner'),
                 function(){ awardState.index = Math.max(0, awardState.index - page); renderAwards(); },
                 function(){ if (awardState.index + page < all.length) { awardState.index += page; renderAwards(); } }
@@ -1105,15 +1083,10 @@ function renderCerts() {
     var isFew = !isMobile() && slice.length < 3;
 
     if (isMobile()) {
-        var atStart = currentCertState.index === 0;
-        var atEnd   = currentCertState.index + page >= all.length;
         container.className = 'certifications-carousel';
         lockAndRender(container, function() {
-            container.innerHTML = buildBottomCarousel(slice.map(cardHtml).join(''), atStart, atEnd, 'certifications-carousel-inner', 'cert-inner');
-            var prevBtn = container.querySelector('.mob-prev-btn');
-            var nextBtn = container.querySelector('.mob-next-btn');
-            if (prevBtn) prevBtn.addEventListener('click', function(){ currentCertState.index = Math.max(0, currentCertState.index - page); renderCerts(); updateCertBtns(); });
-            if (nextBtn) nextBtn.addEventListener('click', function(){ if (currentCertState.index + page < all.length) currentCertState.index += page; renderCerts(); updateCertBtns(); });
+            container.innerHTML = buildBottomCarousel(slice.map(cardHtml).join(''), all.length, page, currentCertState.index, 'certifications-carousel-inner', 'cert-inner');
+            attachBubbleNav(container, page, currentCertState, function(){ renderCerts(); updateCertBtns(); });
             addSwipe(container.querySelector('#cert-inner'),
                 function(){ currentCertState.index = Math.max(0, currentCertState.index - page); renderCerts(); updateCertBtns(); },
                 function(){ if (currentCertState.index + page < all.length) { currentCertState.index += page; renderCerts(); updateCertBtns(); } }
@@ -1322,23 +1295,12 @@ function renderWriting() {
     var cardsHtml = slice.map(cardHtml).join('');
 
     if (isMobile()) {
-        var atStart = writingState.index === 0;
-        var atEnd   = writingState.index + page >= all.length;
         container.className = 'writing-carousel';
         lockAndRender(container, function() {
             container.innerHTML = buildBottomCarousel(
-                cardsHtml, atStart, atEnd, 'writing-carousel-inner', 'writing-inner'
+                cardsHtml, all.length, page, writingState.index, 'writing-carousel-inner', 'writing-inner'
             );
-            var prevBtn = container.querySelector('.mob-prev-btn');
-            var nextBtn = container.querySelector('.mob-next-btn');
-            if (prevBtn) prevBtn.addEventListener('click', function(){
-                writingState.index = Math.max(0, writingState.index - page);
-                renderWriting();
-            });
-            if (nextBtn) nextBtn.addEventListener('click', function(){
-                if (writingState.index + page < all.length) writingState.index += page;
-                renderWriting();
-            });
+            attachBubbleNav(container, page, writingState, renderWriting);
             addSwipe(
                 container.querySelector('#writing-inner'),
                 function(){ writingState.index = Math.max(0, writingState.index - page); renderWriting(); },
