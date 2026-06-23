@@ -931,7 +931,7 @@ const portfolioData = {
   datasets: [
     {
       id: "bdroadrisk",
-      name: "BDRoadRisk-10M",
+      name: "BDRoadRisk",
       subtitle: "Large-Scale GPS Traffic Accident Severity Dataset",
       description:
         "A synthetic dataset of 10 million GPS-based traffic event records simulating road conditions across the urban networks of Dhaka and Chittagong, Bangladesh. Features 23 attributes spanning pre-incident and post-incident conditions, targeting multi-class accident severity classification. A 1.8% boundary label noise is applied at the No_Accident/Minor boundary to reflect real-world reporting ambiguity.",
@@ -967,7 +967,7 @@ const portfolioData = {
       features: 33,
       classCount: 2,
       classLabels: ["Legitimate · 95.1%", "Fraudulent · 4.9%"],
-      formats: ["Parquet (Snappy-compressed)", "CSV"],
+      formats: ["Parquet", "CSV"],
       tags: ["Fraud Detection", "Financial AI", "Big Data", "Behavioral Segmentation"],
       applications: [
         "Fraud Detection",
