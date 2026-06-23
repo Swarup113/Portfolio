@@ -941,8 +941,8 @@ const portfolioData = {
       records: "10M",
       features: 23,
       classCount: 3,
-      classLabels: ["No_Accident · 74.4%", "Minor · 17.3%", "Major · 8.3%"],
-      formats: ["Parquet (Hive-partitioned)", "CSV"],
+      classLabels: ["No_Acc 75%", "Minor 17%", "Major 8%"],
+      formats: ["Parquet", "CSV"],
       tags: ["Traffic Safety", "Accident Severity", "Big Data", "Synthetic GPS", "ITS"],
       applications: [
         "Multi-class Severity Classification",
@@ -966,7 +966,7 @@ const portfolioData = {
       records: "15M",
       features: 33,
       classCount: 2,
-      classLabels: ["Legitimate · 95.1%", "Fraudulent · 4.9%"],
+      classLabels: ["Legitimate 95%", "Fraudulent 5%"],
       formats: ["Parquet", "CSV"],
       tags: ["Fraud Detection", "Financial AI", "Big Data", "Behavioral Segmentation"],
       applications: [

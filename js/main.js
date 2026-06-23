@@ -904,6 +904,9 @@ function datasetCardHtml(d) {
     var classesHtml = d.classLabels.map(function(c) {
         return '<span class="dataset-class-chip">' + c + '</span>';
     }).join('');
+    var formatsHtml = d.formats.map(function(f) {
+        return '<span class="dataset-class-chip">' + f + '</span>';
+    }).join('');
     return '<div class="dataset-card">' +
         '<div class="dataset-header">' +
             '<div class="dataset-icon">' + DS_DB_SVG + '</div>' +
@@ -919,7 +922,8 @@ function datasetCardHtml(d) {
             '<div class="dataset-mini-stat"><span class="dataset-mini-stat-val">' + d.features + '</span><span class="dataset-mini-stat-label">Features</span></div>' +
             '<div class="dataset-mini-stat"><span class="dataset-mini-stat-val">' + d.classCount + '</span><span class="dataset-mini-stat-label">Classes</span></div>' +
         '</div>' +
-        '<div class="dataset-classes-row"><span class="dataset-classes-label">Class Distribution:</span>' + classesHtml + '</div>' +
+        '<div class="dataset-classes-row"><span class="dataset-classes-label">Distribution:</span>' + classesHtml + '</div>' +
+        '<div class="dataset-classes-row"><span class="dataset-classes-label">Available Formats:</span>' + formatsHtml + '</div>' +
         '<div class="dataset-footer">' +
             '<div class="dataset-publisher">' + mendeleyIconHtml() + '<span style="' + ac + '">' + d.publisher + ' · ' + d.year + '</span></div>' +
             '<div class="dataset-footer-actions">' +
