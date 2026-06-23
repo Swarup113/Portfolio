@@ -137,10 +137,20 @@
                 <span>Experience</span>
             </a>
 
-            <a href="#research" class="nav-item" data-section="research">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                <span>Research</span>
-            </a>
+            <!-- Research with dropdown (PC only) -->
+            <div class="nav-dropdown-wrap">
+                <a href="#research" class="nav-item nav-item--has-dropdown" data-section="research">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    <span>Research</span>
+                    <svg class="nav-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </a>
+                <div class="nav-dropdown">
+                    <a href="#datasets" class="nav-dropdown-item" data-section="datasets">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                        <span>Datasets</span>
+                    </a>
+                </div>
+            </div>
 
             <!-- Projects with dropdown (PC only) -->
             <div class="nav-dropdown-wrap">
@@ -648,6 +658,21 @@
             </div>
         </section>
 
+        <section id="datasets" class="section datasets-section">
+            <div class="container">
+                <h2 class="section-title">Datasets</h2>
+                <div class="carousel-container">
+                    <button class="carousel-btn prev" id="datasets-prev">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <div class="datasets-carousel" id="datasets-carousel"></div>
+                    <button class="carousel-btn next" id="datasets-next">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
         <section id="projects" class="section projects-section">
             <div class="container">
                 <h2 class="section-title">Projects</h2>
@@ -782,7 +807,7 @@
 
         <section id="writing" class="section writing-section">
             <div class="container">
-                <h2 class="section-title">Technical Writing</h2>
+                <h2 class="section-title">Tecnhnical Writing</h2>
                 <div class="carousel-container">
                     <button class="carousel-btn prev" id="writing-prev">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

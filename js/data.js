@@ -928,6 +928,59 @@ const portfolioData = {
     },
   ],
 
+  datasets: [
+    {
+      id: "bdroadrisk",
+      name: "BDRoadRisk-10M",
+      subtitle: "Large-Scale GPS Traffic Accident Severity Dataset",
+      description:
+        "A synthetic dataset of 10 million GPS-based traffic event records simulating road conditions across the urban networks of Dhaka and Chittagong, Bangladesh. Features 23 attributes spanning pre-incident and post-incident conditions, targeting multi-class accident severity classification. A 1.8% boundary label noise is applied at the No_Accident/Minor boundary to reflect real-world reporting ambiguity.",
+      publisher: "Mendeley Data",
+      version: "v3",
+      year: "2026",
+      records: "10M",
+      features: 23,
+      classCount: 3,
+      classLabels: ["No_Accident · 74.4%", "Minor · 17.3%", "Major · 8.3%"],
+      formats: ["Parquet (Hive-partitioned)", "CSV"],
+      tags: ["Traffic Safety", "Accident Severity", "Big Data", "Synthetic GPS", "ITS"],
+      applications: [
+        "Multi-class Severity Classification",
+        "Explainability Research",
+        "Big Data Pipelines",
+        "Intelligent Transportation",
+      ],
+      doi: "10.17632/m33bsbsgx2.3",
+      doiUrl: "https://doi.org/10.17632/m33bsbsgx2.3",
+      url: "https://data.mendeley.com/datasets/m33bsbsgx2/3",
+    },
+    {
+      id: "credittransact",
+      name: "CreditTransAct",
+      subtitle: "Profile-Driven Dataset for Scalable Credit Card Fraud Detection",
+      description:
+        "A large-scale synthetic dataset of 15 million credit card transactions across four behavioral segments (Established, Regular, New, Guest) with segment-wise fraud rates from 2.5% to 12%. Fraud cases encode four compound signal clusters: Card-Not-Present, Bot/Card Testing, Account Takeover, and Geo-Velocity. Generated using a reproducible, memory-efficient pipeline with controlled label noise.",
+      publisher: "Mendeley Data",
+      version: "v1",
+      year: "2026",
+      records: "15M",
+      features: 33,
+      classCount: 2,
+      classLabels: ["Legitimate · 95.1%", "Fraudulent · 4.9%"],
+      formats: ["Parquet (Snappy-compressed)", "CSV"],
+      tags: ["Fraud Detection", "Financial AI", "Big Data", "Behavioral Segmentation"],
+      applications: [
+        "Fraud Detection",
+        "Anomaly Detection",
+        "Behavioral Analysis",
+        "FinTech AI",
+      ],
+      doi: "10.17632/y64bbnm2s3.1",
+      doiUrl: "https://doi.org/10.17632/y64bbnm2s3.1",
+      url: "https://data.mendeley.com/datasets/y64bbnm2s3/1",
+    },
+  ],
+
   cvLink:
     "https://drive.google.com/file/d/1keQp8E6SmcYVojAslxPVvs_M11shGD5_/view?usp=sharing",
 };

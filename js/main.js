@@ -79,6 +79,7 @@ function updateProfileImage(theme) {
         renderEducation();
         renderAwards();
         renderCerts();
+        renderDatasets();
         renderTools(toolState.tab);
         // Restore scroll position on mobile and reset flag
         requestAnimationFrame(function() {
@@ -879,6 +880,114 @@ function updateResearchBtns() {
     if (prev) prev.disabled = currentResearchState.index === 0;
     if (next) next.disabled = currentResearchState.index + page >= papers.length;
 }
+
+// ── Datasets ──
+var datasetsState  = { index: 0 };
+var DS_MOB_PAGE    = 1;
+var DS_DESK_PAGE   = 2;
+
+var DS_DB_SVG  = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>';
+var DS_EXT_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>';
+
+function mendeleyIconHtml() {
+    var isDark = document.body.classList.contains('dark-theme');
+    var bg = isDark ? '#e2e2e8' : '#18181b';
+    var fg = isDark ? '#18181b' : '#f8fafc';
+    return '<svg width="13" height="13" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+        '<circle cx="12" cy="12" r="11" fill="' + bg + '"/>' +
+        '<text x="12" y="16.5" text-anchor="middle" font-size="11" font-family="Georgia,serif" font-weight="bold" fill="' + fg + '">M</text>' +
+        '</svg>';
+}
+
+function datasetCardHtml(d) {
+    var ac = accentStyle();
+    var classesHtml = d.classLabels.map(function(c) {
+        return '<span class="dataset-class-chip">' + c + '</span>';
+    }).join('');
+    return '<div class="dataset-card">' +
+        '<div class="dataset-header">' +
+            '<div class="dataset-icon">' + DS_DB_SVG + '</div>' +
+            '<div class="dataset-title-wrap">' +
+                '<div class="dataset-name">' + d.name + '</div>' +
+                '<div class="dataset-subtitle">' + d.subtitle + '</div>' +
+            '</div>' +
+            '<span class="dataset-version-badge">' + d.version + '</span>' +
+        '</div>' +
+        '<p class="dataset-description">' + d.description + '</p>' +
+        '<div class="dataset-mini-stats">' +
+            '<div class="dataset-mini-stat"><span class="dataset-mini-stat-val">' + d.records + '</span><span class="dataset-mini-stat-label">Records</span></div>' +
+            '<div class="dataset-mini-stat"><span class="dataset-mini-stat-val">' + d.features + '</span><span class="dataset-mini-stat-label">Features</span></div>' +
+            '<div class="dataset-mini-stat"><span class="dataset-mini-stat-val">' + d.classCount + '</span><span class="dataset-mini-stat-label">Classes</span></div>' +
+        '</div>' +
+        '<div class="dataset-classes-row"><span class="dataset-classes-label">Distribution:</span>' + classesHtml + '</div>' +
+        '<div class="dataset-footer">' +
+            '<div class="dataset-publisher">' + mendeleyIconHtml() + '<span style="' + ac + '">' + d.publisher + ' · ' + d.year + '</span></div>' +
+            '<div class="dataset-footer-actions">' +
+                '<a href="' + d.url + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:0.74rem;padding:0.28rem 0.82rem;gap:0.32rem">' + DS_EXT_SVG + ' View Details</a>' +
+            '</div>' +
+        '</div>' +
+    '</div>';
+}
+
+function updateDatasetsBtns() {
+    if (isMobile()) return;
+    var datasets = portfolioData.datasets || [];
+    var dp = document.getElementById('datasets-prev');
+    var dn = document.getElementById('datasets-next');
+    if (dp) dp.disabled = datasetsState.index === 0;
+    if (dn) dn.disabled = datasetsState.index + DS_DESK_PAGE >= datasets.length;
+}
+
+function renderDatasets() {
+    var container = document.getElementById('datasets-carousel');
+    if (!container) return;
+    var datasets = portfolioData.datasets || [];
+    if (!datasets.length) return;
+    var dp = document.getElementById('datasets-prev');
+    var dn = document.getElementById('datasets-next');
+
+    if (isMobile()) {
+        var page = DS_MOB_PAGE;
+        var slice = datasets.slice(datasetsState.index, datasetsState.index + page);
+        var cardsHtml = slice.map(datasetCardHtml).join('');
+        container.className = 'datasets-carousel';
+        if (dp) dp.style.display = 'none';
+        if (dn) dn.style.display = 'none';
+        lockAndRender(container, function() {
+            container.innerHTML = buildBottomCarousel(cardsHtml, datasets.length, page, datasetsState.index, 'datasets-carousel-inner', 'ds-inner');
+            attachBubbleNav(container, page, datasetsState, renderDatasets);
+            addSwipe(container.querySelector('#ds-inner'),
+                function() { datasetsState.index = Math.max(0, datasetsState.index - page); renderDatasets(); },
+                function() { if (datasetsState.index + page < datasets.length) { datasetsState.index += page; renderDatasets(); } }
+            );
+        });
+    } else {
+        var page = DS_DESK_PAGE;
+        var slice = datasets.slice(datasetsState.index, datasetsState.index + page);
+        var isFew = slice.length < DS_DESK_PAGE;
+        container.className = 'datasets-carousel' + (isFew ? ' datasets-few' : '');
+        container.innerHTML = slice.map(datasetCardHtml).join('');
+        if (dp) { dp.style.display = ''; dp.disabled = datasetsState.index === 0; }
+        if (dn) { dn.style.display = ''; dn.disabled = datasetsState.index + page >= datasets.length; }
+    }
+}
+
+(function initDatasets() {
+    var dp = document.getElementById('datasets-prev');
+    var dn = document.getElementById('datasets-next');
+    if (dp) dp.addEventListener('click', function() {
+        datasetsState.index = Math.max(0, datasetsState.index - DS_DESK_PAGE);
+        renderDatasets();
+    });
+    if (dn) dn.addEventListener('click', function() {
+        var datasets = portfolioData.datasets || [];
+        if (datasetsState.index + DS_DESK_PAGE < datasets.length) {
+            datasetsState.index += DS_DESK_PAGE;
+            renderDatasets();
+        }
+    });
+    renderDatasets();
+})();
 
 window.openResearchModal = function(title, tab) {
     var papers = tab === 'journal' ? portfolioData.research.journal : portfolioData.research.conference;
