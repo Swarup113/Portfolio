@@ -922,8 +922,10 @@ function datasetCardHtml(d) {
             '<div class="dataset-mini-stat"><span class="dataset-mini-stat-val">' + d.features + '</span><span class="dataset-mini-stat-label">Features</span></div>' +
             '<div class="dataset-mini-stat"><span class="dataset-mini-stat-val">' + d.classCount + '</span><span class="dataset-mini-stat-label">Classes</span></div>' +
         '</div>' +
-        '<div class="dataset-classes-row"><span class="dataset-classes-label">Distribution:</span>' + classesHtml + '</div>' +
-        '<div class="dataset-classes-row"><span class="dataset-classes-label">Available Formats:</span>' + formatsHtml + '</div>' +
+        '<div class="dataset-dist-formats">' +
+            '<div class="dataset-classes-row"><span class="dataset-classes-label"><span style="font-weight: 650;">Distribution:</span></span>' + classesHtml + '</div>' +
+            '<div class="dataset-classes-row"><span class="dataset-classes-label"><span style="font-weight: 650;">Formats:</span></span>' + formatsHtml + '</div>' +
+        '</div>' +
         '<div class="dataset-footer">' +
             '<div class="dataset-publisher">' + mendeleyIconHtml() + '<span style="' + ac + '">' + d.publisher + ' · ' + d.year + '</span></div>' +
             '<div class="dataset-footer-actions">' +
