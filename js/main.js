@@ -1168,9 +1168,9 @@ function renderAwards() {
 var currentCertState = { tab: 'courses', index: 0 };
 var CERT_PAGE = 3;
 var MOB_CERT_PAGE = 2;
-
+ 
 function certPageSize() { return isMobile() ? MOB_CERT_PAGE : CERT_PAGE; }
-
+ 
 (function initCerts() {
     renderCerts(); updateCertBtns();
     var cp = document.getElementById('certifications-prev');
@@ -1178,25 +1178,26 @@ function certPageSize() { return isMobile() ? MOB_CERT_PAGE : CERT_PAGE; }
     if (cp) cp.addEventListener('click', function(){ currentCertState.index = Math.max(0, currentCertState.index - CERT_PAGE); renderCerts(); updateCertBtns(); });
     if (cn) cn.addEventListener('click', function(){ var items = portfolioData.certifications[currentCertState.tab]||[]; if (currentCertState.index + CERT_PAGE < items.length) currentCertState.index += CERT_PAGE; renderCerts(); updateCertBtns(); });
 })();
-
+ 
 function renderCerts() {
     var container = document.getElementById('certifications-carousel');
     if (!container) return;
     var all = portfolioData.certifications[currentCertState.tab] || [];
     var page = certPageSize();
     var slice = all.slice(currentCertState.index, currentCertState.index + page);
-
+ 
     function cardHtml(c) {
         return '<div class="cert-card"><div class="card-image"><img src="' + c.image + '" alt="' + c.title + '" loading="lazy"></div>' +
             '<div class="card-content"><h3 class="card-title" style="font-size:0.9rem">' + c.title + '</h3>' +
-            '<p class="card-subtitle">' + (c.issuer||c.conference||'') + '</p>' +
-            '<div class="card-actions"><a href="' + c.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:0.75rem;padding:0.3rem 0.8rem">' +
+            '<div class="cert-footer">' +
+            '<p class="card-subtitle" style="margin:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (c.issuer||c.conference||'') + '</p>' +
+            '<a href="' + c.link + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:0.75rem;padding:0.3rem 0.8rem;flex-shrink:0">' +
             '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View</a>' +
             '</div></div></div>';
     }
-
+ 
     var isFew = !isMobile() && slice.length < 3;
-
+ 
     if (isMobile()) {
         container.className = 'certifications-carousel';
         lockAndRender(container, function() {
@@ -1217,7 +1218,7 @@ function renderCerts() {
         if (dn) { dn.style.display = ''; dn.disabled = currentCertState.index + page >= all.length; }
     }
 }
-
+ 
 function updateCertBtns() {
     if (isMobile()) return;
     var all = portfolioData.certifications[currentCertState.tab] || [];
@@ -1226,7 +1227,7 @@ function updateCertBtns() {
     if (prev) prev.disabled = currentCertState.index === 0;
     if (next) next.disabled = currentCertState.index + CERT_PAGE >= all.length;
 }
-
+ 
 // ── Modal ──
 function openModal()  { document.getElementById('modal') && document.getElementById('modal').classList.add('active'); }
 function closeModal() { document.getElementById('modal') && document.getElementById('modal').classList.remove('active'); }
