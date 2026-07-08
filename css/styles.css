@@ -549,7 +549,7 @@ body:not(.dark-theme) .nav-item:hover       .nav-chevron { stroke: #fff !importa
     padding: 0.65rem 1rem !important;
 }
 body:not(.dark-theme) .mobile-nav-bar {
-    background: rgba(248,250,252,0.5) !important;
+    background: #F0F0FB !important;
     backdrop-filter: blur(26px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(26px) saturate(180%) !important;
 }
