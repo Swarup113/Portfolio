@@ -310,7 +310,7 @@ const portfolioData = {
       {
         title:
           "NeuroTab: An XAI-Integrated Neurological Tabular Network for Classifying Primary Headache Disorders",
-        shortTitle: "NeuroTab: Headache Classifier",
+        shortTitle: "NeuroTab: Primary Headache Classifier",
         journal: "Applied Intelligence | Under Review",
         summary:
           "Proposed NeuroTab for automated headache disorder diagnosis using clinical tabular data, attaining up to 99.31% accuracy.",
@@ -367,7 +367,7 @@ const portfolioData = {
       {
         title:
           "Analyzing Multiple Data Sources for Suicide Risk Detection: A Deep Learning Hybrid Approach",
-        shortTitle: "Suicide Risk Detection",
+        shortTitle: "Suicidal Ideation Risk Detection System",
         doi: "https://dx.doi.org/10.14569/IJACSA.2024.0150270",
         journal:
           "International Journal of Advanced Computer Science and Applications (IJACSA), Vol. 15 Issue 2, 2024.",
@@ -385,7 +385,7 @@ const portfolioData = {
       {
         title:
           "An XAI-Integrated BiLSTM-GRU-CNN Framework for Early PCOS Detection",
-        shortTitle: "PCOS Detection",
+        shortTitle: "Polycystic Ovary Syndrome Detection Classifier",
         doi: "https://doi.org/10.1109/ICCIT64611.2024.11022529",
         conference:
           "27th International Conference on Computer and Information Technology (ICCIT), 2024",
@@ -401,7 +401,7 @@ const portfolioData = {
       {
         title:
           "Vocal Features-Driven Parkinson's Identification through Attention-Based LSTM-BiGRU with LOPO CV and EBM",
-        shortTitle: "Parkinson's Detection",
+        shortTitle: "Parkinson's Disease Detection Classifier",
         doi: "https://doi.org/10.1109/ICCIT64611.2024.11021796",
         conference:
           "27th International Conference on Computer and Information Technology (ICCIT), 2024",
@@ -417,7 +417,7 @@ const portfolioData = {
       {
         title:
           "Integrating XAI with Hybrid BiGRU-BiLSTM Model for Comprehensive Maternal-Fetal Health Risk Monitoring",
-        shortTitle: "Maternal Health Monitoring",
+        shortTitle: "Maternal Health Risk Monitoring Tool",
         doi: "https://doi.org/10.1109/ICISET62123.2024.10939599",
         conference:
           "4th International Conference on Innovations in Science, Engineering and Technology (ICISET), 2024",
@@ -433,7 +433,7 @@ const portfolioData = {
       {
         title:
           "Hybrid Deep Learning for Dyslexia Identification through Heterogeneous Cognitive and Behavioral Data Analysis",
-        shortTitle: "Dyslexia Identification",
+        shortTitle: "Dyslexia Identification and Classification Method",
         doi: "https://ieeexplore.ieee.org/document/10724337",
         conference:
           "15th International Conference on Computing Communication and Networking Technologies (ICCCNT), 2024",
