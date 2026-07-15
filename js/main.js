@@ -56,7 +56,8 @@ function updateProfileImage(theme) {
 
 (function initTheme() {
     var btn = document.getElementById('theme-toggle');
-    var saved = localStorage.getItem('theme') || 'dark';
+    var saved = localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     applyTheme(saved);
     updateProfileImage(saved);
     updateLogo(saved);
