@@ -1,14 +1,14 @@
 // ── Theme helpers ──
 function accentStyle() {
-    return document.body.classList.contains('dark-theme') ? 'color:#b4b4bc' : 'color:#475569';
+    return document.body.classList.contains('dark-theme') ? 'color:#b3a88f' : 'color:#6f6a5a';
 }
 function dimStyle() {
-    return document.body.classList.contains('dark-theme') ? 'color:#b4b4bc' : 'color:#475569';
+    return document.body.classList.contains('dark-theme') ? 'color:#b3a88f' : 'color:#6f6a5a';
 }
 function citeBadgeStyle() {
     return document.body.classList.contains('dark-theme')
-        ? 'background:rgba(255,255,255,0.06);color:#fafafa;'
-        : 'background:#f1f5f9;color:#0f172a;';
+        ? 'background:rgba(233,226,208,0.06);color:#f6f0df;'
+        : 'background:#f5efe0;color:#1c1a17;';
 }
 
 (function () {
@@ -56,6 +56,7 @@ function updateProfileImage(theme) {
 
 (function initTheme() {
     var btn = document.getElementById('theme-toggle');
+    var saved = localStorage.getItem('theme') || 'dark';
     var saved = localStorage.getItem('theme') ||
     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     applyTheme(saved);
@@ -418,7 +419,7 @@ function renderExperience() {
                         ? `<ul style="list-style:none;padding:0;margin:0.3rem 0 0.75rem 0;font-size:0.75rem;line-height:1.45;" class="exp-desc">
                                ${exp.description.slice(0, 4).map(item => `
                                    <li style="display:flex;gap:0.4rem;align-items:flex-start;margin-bottom:0.4rem">
-                                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${isDark ? '#b4b4bc' : '#475569'}" stroke-width="2" style="flex-shrink:0;margin-top:2px">
+                                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${isDark ? '#b3a88f' : '#6f6a5a'}" stroke-width="2" style="flex-shrink:0;margin-top:2px">
                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                        </svg>
@@ -530,7 +531,7 @@ function renderExpModal() {
         '<button class="carousel-btn" ' + (expModalState.projIdx===0?'disabled':'') + ' onclick="stepExpProj(-1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>' +
         '<button class="carousel-btn" ' + (expModalState.projIdx>=exp.projects.length-1?'disabled':'') + ' onclick="stepExpProj(1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div>' +
         '<div style="display:flex;justify-content:center;gap:0.4rem;margin-top:0.75rem">' +
-        exp.projects.map(function(_,idx){ return '<div style="width:0.6rem;height:0.6rem;border-radius:50%;background:var(--emerald-400);opacity:' + (idx===expModalState.projIdx?1:0.25) + '"></div>'; }).join('') +
+        exp.projects.map(function(_,idx){ return '<div style="width:0.6rem;height:0.6rem;border-radius:50%;background:var(--accent-500);opacity:' + (idx===expModalState.projIdx?1:0.25) + '"></div>'; }).join('') +
         '</div></div>';
 }
 
@@ -562,9 +563,9 @@ function buildBubbles(totalItems, page, currentIndex) {
     var currentPage = Math.min(totalPages - 1, Math.max(0, Math.floor(currentIndex / page)));
 
     var isDark = document.body.classList.contains('dark-theme');
-    // Light mode: blackish dot, dimmed down to a greyish tone when inactive.
-    // Dark mode: whitish dot, dimmed down to a light-whitish/greyish tone when inactive.
-    var rgb = isDark ? '248,250,252' : '7,7,8';
+    // Light mode: ink dot, dimmed down to a warm muted tone when inactive.
+    // Dark mode: parchment dot, dimmed down to a muted warm tone when inactive.
+    var rgb = isDark ? '246,240,223' : '28,26,23';
     var inactiveOpacity = isDark ? 0.38 : 0.28;
 
     var SIZE_ACTIVE = '0.56rem';
@@ -892,8 +893,8 @@ var DS_EXT_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" st
 
 function mendeleyIconHtml() {
     var isDark = document.body.classList.contains('dark-theme');
-    var bg = isDark ? '#e2e2e8' : '#18181b';
-    var fg = isDark ? '#18181b' : '#f8fafc';
+    var bg = isDark ? '#e9e2d0' : '#1c1a17';
+    var fg = isDark ? '#1b1712' : '#fffdf8';
     return '<svg width="13" height="13" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
         '<circle cx="12" cy="12" r="11" fill="' + bg + '"/>' +
         '<text x="12" y="16.5" text-anchor="middle" font-size="11" font-family="Georgia,serif" font-weight="bold" fill="' + fg + '">M</text>' +
@@ -1022,7 +1023,7 @@ window.openResearchModal = function(title, tab) {
 
     document.getElementById('modal-body').innerHTML =
         '<h3 class="card-title" style="font-size:' + (mob ? '1.1rem' : '1.35rem') + ';margin-bottom:' + (mob ? '0.65rem' : '1rem') + ';padding-right:2rem">' + p.shortTitle + '</h3>' +
-        '<div style="width:100%;border-radius:0.5rem;overflow:hidden;margin-bottom:' + (mob ? '0.65rem' : '1rem') + ';background:#f1f5f9">' +
+        '<div style="width:100%;border-radius:0.5rem;overflow:hidden;margin-bottom:' + (mob ? '0.65rem' : '1rem') + ';background:#f5efe0">' +
         '<img src="' + p.architecture + '" alt="Architecture" style="width:100%;height:auto;object-fit:contain"></div>' +
         '<p style="font-size:' + (mob ? '0.74rem' : '0.8rem') + ';' + ac + ';margin-bottom:0.35rem">' + (isJournal ? p.journal : p.conference) + '</p>' +
         (p.dateLabel ? '<p style="font-size:' + (mob ? '0.74rem' : '0.8rem') + ';' + ac + ';margin-bottom:' + (mob ? '0.65rem' : '1rem') + '">Published: ' + p.dateLabel + '</p>' : '<br>') +
@@ -1085,7 +1086,7 @@ function renderEducation() {
         if (edu.course && edu.course.length) {
             coursesHtml = '<div class="card-tags" style="margin:0.5rem 0 0.75rem 0; gap:0.4rem; display:flex; flex-wrap:wrap;">' +
                 edu.course.map(function(c) {
-                    return '<span class="tag" style="font-size:0.7rem; background:var(--light-card-hover, #f1f5f9);">' + c + '</span>';
+                    return '<span class="tag" style="font-size:0.7rem;">' + c + '</span>';
                 }).join('') +
                 '</div>';
         }
@@ -1101,7 +1102,7 @@ function renderEducation() {
             coursesHtml +
             (edu.achievements ? '<ul style="list-style:none;padding:0;margin:0">' + edu.achievements.map(function(a) {
                 return '<li style="display:flex;gap:0.4rem;font-size:0.8rem;margin-bottom:0.4rem;align-items:flex-start">' +
-                    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + (isDark ? '#b4b4bc' : '#475569') + '" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>' +
+                    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + (isDark ? '#b3a88f' : '#6f6a5a') + '" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>' +
                     '<span class="card-description" style="margin:0">' + a + '</span></li>';
             }).join('') + '</ul>' : '') +
             '</div></div>';
