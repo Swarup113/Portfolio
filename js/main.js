@@ -1,11 +1,11 @@
 // ── Theme helpers ──
 function accentStyle() {
-    return document.body.classList.contains('dark-theme') ? 'color:#b3a88f' : 'color:#6f6a5a';
+    return document.body.classList.contains('dark-theme') ? 'color:#cdcdd5' : 'color:#cdcdd5';
 }
 function dimStyle() {
-    return document.body.classList.contains('dark-theme') ? 'color:#b3a88f' : 'color:#6f6a5a';
+    return document.body.classList.contains('dark-theme') ? 'color:#cdcdd5' : 'color:#cdcdd5';
 }
-function citeBadgeStyle() {
+function citeBadgeStyle() { 
     return document.body.classList.contains('dark-theme')
         ? 'background:rgba(233,226,208,0.06);color:#f6f0df;'
         : 'background:#f5efe0;color:#1c1a17;';
