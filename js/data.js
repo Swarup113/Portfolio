@@ -722,6 +722,46 @@ const portfolioData = {
   ],
 
   certifications: {
+    presentations: [
+      {
+        title: "BDRoadRisk: A Scalable Framework for Traffic Accident Severity Data Generation ",
+        conference: "Presented at 10th I-SMAC 2026",
+        link: "https://drive.google.com/file/d/1Gb2ZFR0WLtzk3FgX9lXSmCqn34KeQSz1/view?usp=sharing",
+        image: "https://i.postimg.cc/B6Qzt6pF/BDRoad-Risk.png",
+      },
+      {
+        title: "CreditTransAct: A Credit Card Fraud Data Generation Framework",
+        conference: "Presented at 10th I-SMAC 2026",
+        link: "https://drive.google.com/file/d/1z_90b06LeJwzj874SRBmPTN25lJBIYq9/view?usp=sharing",
+        image: "https://i.postimg.cc/YSfchTwJ/Credi-Trans-Act.png",
+      },
+      {
+        title: "Hybrid Deep Learning for Dyslexia Identification",
+        conference: "Presented at 15th ICCCNT 2024",
+        link: "https://drive.google.com/file/d/1cvTPbGkuvaEjqUCRQXFy8ScGUC7Eb8hl/view",
+        image: "https://i.postimg.cc/rs2xpG1y/3296.jpg",
+      },
+      {
+        title:
+          "Integrating XAI with Hybrid BiGRU-BiLSTM for Maternal-Fetal Health",
+        conference: "Presented at 4th ICISET 2024",
+        link: "https://drive.google.com/file/d/1NSI74kkaSztP3bOoZUyiJZdoCqEkAT_Y/view",
+        image: "https://i.postimg.cc/ZRd6ZsyD/376.jpg",
+      },
+      {
+        title:
+          "An XAI-Integrated BiLSTM-GRU-CNN Framework for Early PCOS Detection",
+        conference: "Presented at 27th ICCIT 2024",
+        link: "https://drive.google.com/file/d/1NfYkcx80yoX02346cw8dZwwyOaOJFrS4/view",
+        image: "https://i.postimg.cc/k5DxYgMC/810.jpg",
+      },
+      {
+        title: "Vocal Features-Driven Parkinson's Identification",
+        conference: "Presented at 27th ICCIT 2024",
+        link: "https://drive.google.com/file/d/1Nh7czoOT3BqHg-C0045Hcr17bSpOfZ3W/view",
+        image: "https://i.postimg.cc/s285kC1h/547.jpg",
+      },
+    ],
     courses: [
       {
         title: "Artificial Intelligence Fundamentals",
@@ -758,34 +798,6 @@ const portfolioData = {
         issuer: "Eduonix",
         link: "https://drive.google.com/file/d/1yuIadSdACwWZw7pihre1VMHUpiKZnaIs/view",
         image: "https://i.postimg.cc/26GLzpSG/6.jpg",
-      },
-    ],
-    presentations: [
-      {
-        title: "Hybrid Deep Learning for Dyslexia Identification",
-        conference: "Presented at 15th ICCCNT 2024",
-        link: "https://drive.google.com/file/d/1cvTPbGkuvaEjqUCRQXFy8ScGUC7Eb8hl/view",
-        image: "https://i.postimg.cc/rs2xpG1y/3296.jpg",
-      },
-      {
-        title:
-          "Integrating XAI with Hybrid BiGRU-BiLSTM for Maternal-Fetal Health",
-        conference: "Presented at 4th ICISET 2024",
-        link: "https://drive.google.com/file/d/1NSI74kkaSztP3bOoZUyiJZdoCqEkAT_Y/view",
-        image: "https://i.postimg.cc/ZRd6ZsyD/376.jpg",
-      },
-      {
-        title:
-          "An XAI-Integrated BiLSTM-GRU-CNN Framework for Early PCOS Detection",
-        conference: "Presented at 27th ICCIT 2024",
-        link: "https://drive.google.com/file/d/1NfYkcx80yoX02346cw8dZwwyOaOJFrS4/view",
-        image: "https://i.postimg.cc/k5DxYgMC/810.jpg",
-      },
-      {
-        title: "Vocal Features-Driven Parkinson's Identification",
-        conference: "Presented at 27th ICCIT 2024",
-        link: "https://drive.google.com/file/d/1Nh7czoOT3BqHg-C0045Hcr17bSpOfZ3W/view",
-        image: "https://i.postimg.cc/s285kC1h/547.jpg",
       },
     ],
     simulations: [
